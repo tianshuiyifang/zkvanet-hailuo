@@ -1,0 +1,61 @@
+<%@page pageEncoding="UTF-8"%> 
+<div class="modal fade" id="deviceCkeck">
+  <div class="modal-dialog">
+    <div class="modal-content w800">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="agencyTitle">指令发送</h4>
+      </div>
+      <div class="modal-body">
+        <div class="p-tb15 mah-400 oy-a">
+          <form id="userForm" class="form-horizontal form-preset form-sm mh-300">
+            <input type="hidden" id="parentId"/>
+          	<input type="hidden" id="fullParentId">
+          	<input type="hidden" id="userId">
+            <div class="form-group">
+              <label  class="col-md-3 control-label" title="选择设备"><span class="c-red">*</span>选择设备：</label>
+              <div class="col-md-8">
+               <span class="easydropdown easydropdown-sm easydropdown-full va-m " id="dev-check" ></span>
+              </div>
+              
+            </div>
+	       <div class="form-group">
+	       	  <label  class="col-md-3 control-label" title="GPS透传">GPS透传：</label>
+              <div class="col-md-8">
+                <input id="gpsorder" name="gpsorder" maxlength="50" type="text" class="form-control form-control-sm" />
+              </div>
+              
+	       </div>
+	        <div class="form-group">
+	       	<div class="col-md-6 control-label">
+                <button type="button" class="btn btn-primary mw-100" onclick="sendGps();">发送</button>
+           	</div>
+           </div>
+	        <div class="form-group">
+	        <label  class="col-md-3 control-label" title="吨位校准">吨位校准：</label>
+              <div class="col-md-8">
+                <input id="weightorder" name="weightorder" maxlength="50" type="text" class="form-control form-control-sm" />
+              </div>
+             </div>
+              <div class="form-group">
+	       	<div class="col-md-6 control-label">
+                <button type="button" class="btn btn-primary mw-100" onclick="sendWeight();">校准发送</button>
+           	</div>
+           </div>
+           <div class="form-group">
+	       	  <label  class="col-md-3 control-label" title="响应结果">响应结果：</label>
+              <div class="col-md-8">
+                <textarea  id="checkresp" name="checkresp" type="text" class="form-control form-control-sm " disabled></textarea>
+              </div>
+              
+	       </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary mw-100" onclick="refreshResp();">刷新回应</button>
+        <button type="button" class="btn btn-default mw-100" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>

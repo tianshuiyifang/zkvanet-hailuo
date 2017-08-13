@@ -1,0 +1,25 @@
+﻿jsonpCallback({
+	"code" : 0,
+	"data" : {
+		"account" : "yanshi",
+		"appLogin" : "1",
+		"createdBy" : "16303",
+		"cycode" : "",
+		"displayFlag" : "1",
+		"email" : "",
+		"enabledFlag" : "1",
+		"fullParentId" : "1,12871,13366,12876,12997,16303,",
+		"id" : 16341,
+		"isBatchSendFM" : "0",
+		"isBatchSendIns" : "0",
+		"language" : "en",
+		"name" : "演示账户",
+		"phone" : "",
+		"recharge" : 0,
+		"status" : "0",
+		"timeZones" : "",
+		"type" : "8",
+		"webLogin" : "1"
+	},
+	"ok" : true
+});

@@ -1,0 +1,157 @@
+<%@page pageEncoding="UTF-8"%> 
+<div class="modal fade" id="showorder">
+  <div class="modal-dialog">
+    <div class="modal-content w800">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="agencyTitle">订单信息</h4>
+      </div>
+      <div class="modal-body">
+        <div class="p-tb15 mah-400 oy-a">
+          <form id="userForm" class="form-horizontal form-preset form-sm mh-300">
+            <input type="hidden" id="parentId"/>
+          	<input type="hidden" id="fullParentId">
+          	<input type="hidden" id="userId">
+            <div class="form-group">
+              <label  class="col-md-2 control-label" title="发货单位"><span class="c-red">*</span>发货单位：</label>
+              <div class="col-md-3">
+                <input id="fahuodanhao" name="fahuodanhao" maxlength="50" type="text" class="form-control form-control-sm" />
+              </div>
+              <label  class="col-md-2 control-label" title="发货数量"><span class="c-red">*</span>发货数量：</label>
+              <div class="col-md-3">
+                <input id="fahuoshuliang" name="fahuoshuliang"  maxlength="30" type="text" class="form-control form-control-sm" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label  class="col-md-2 control-label" title="运输车号"><span class="c-red">*</span>运输车号：</label>
+              <div class="col-md-3">
+                <input id="yunshuchehao" name="yunshuchehao"  maxlength="30" type="text" class="form-control form-control-sm"   />
+              </div>
+              <label  class="col-md-2 control-label" title="出产日期" ><span class="c-red">*</span>出产日期：</label>
+              <div class="col-md-3">
+                <input id="chuchangriqi" name="chuchangriqi"  maxlength="30" type="text" class="form-control form-control-sm" "/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label  class="col-md-2 control-label" title="出产编号" ><span class="c-red"></span>出产编号：</label>
+              <div class="col-md-3">
+                <input id="chuchangbianhao" name="chuchangbianhao" maxlength="20" type="text" class="form-control form-control-sm" />
+              </div>
+            
+              <label  class="col-md-2 control-label" title="区域名" ><span class="c-red"></span>区域名：</label>
+              <div class="col-md-3">
+                <input id="quyuming" name="quyuming" type="text" class="form-control form-control-sm" maxlength="50" />
+              </div>
+            </div>
+             <div class="form-group">
+              <label  class="col-md-2 control-label" title="区域码" ><span class="c-red"></span>区域码：</label>
+              <div class="col-md-3">
+                <input id="quyuma" name="quyuma" type="text" class="form-control form-control-sm"  maxlength="50" />
+              </div>
+            
+              <label  class="col-md-2 control-label" title="运输单位" ><span class="c-red"></span>运输单位：</label>
+              <div class="col-md-3">
+                <input id="yunshudanwei" name="yunshudanwei" type="text" class="form-control form-control-sm"  maxlength="50" />
+              </div>
+            </div>
+            <div class="form-group">
+			<label class="col-md-2 control-label" title="客户名称">
+					客户名称：
+				</label>
+				<div class="col-md-3">
+					<input id="kehumingcheng" name="kehumingcheng" type="text"
+						class="form-control form-control-sm"
+						 maxlength="50"  />
+				</div>
+				<label class="col-md-2 control-label" title="产品名称">
+					产品名称：
+				</label>
+				<div class="col-md-3">
+					<input id="chanpinmingcheng" name="chanpinmingcheng" type="text"
+						class="form-control form-control-sm"
+						maxlength="50"  />
+				</div>
+				</div>
+            <div class="form-group">
+              <label  class="col-md-2 control-label" title="包装方式" ><span class="c-red"></span>包装方式：</label>
+              <div class="col-md-3">
+                <input id="baozhuangfangshi" name="baozhuangfangshi" type="text" class="form-control form-control-sm"  maxlength="50" />
+              </div>
+            
+              <label  class="col-md-2 control-label" title="备注" ><span class="c-red"></span>备注：</label>
+              <div class="col-md-3">
+                <input id="beizhu" name="beizhu" type="text" class="form-control form-control-sm"  maxlength="50" />
+              </div>
+            </div>
+			<div class="form-group">
+              <label  class="col-md-2 control-label" title="订单创建时间" ><span class="c-red"></span>订单创建时间：</label>
+              <div class="col-md-3">
+                <input id="createTime" name="createTime" type="text" class="form-control form-control-sm" placeholder="请输入经销商联系人" maxlength="50" />
+              </div>
+            
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button id="addAgencyBtn" type="button" class="btn btn-primary mw-100" onclick="saveAgency();">保存</button>&nbsp;
+        <button id="updateAgencyBtn" type="button" class="btn btn-primary mw-100" onclick="updateAgency();">保存</button> -->
+        <button type="button" class="btn btn-default mw-100" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div  id="exceptionorder" class="modal fade in" aria-hidden="false">
+    <div class="modal-dialog w800 ">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button aria-label="Close" data-dismiss="modal" class="close createFenceClose" type="button"><span aria-hidden="true"></span></button>
+                <h4 class="modal-title" id="getExceptionTitle"></h4>
+            </div>
+            <div class="modal-body p-0 h300">
+				<iframe class="bc-fff h300" id="exceptionIframe" width="100%"  frameborder="0"></iframe>  
+				<input style="display:none" id="address" />
+				<input style="display:none" id="lat" />
+				<input style="display:none" id="lon" />
+            </div>
+             <div class="modal-footer">
+	        <button id="exceptionButton" type="button" class="btn btn-primary mw-100" data-dismiss="modal" onclick="">确定</button>
+      </div>
+        </div>
+    </div>
+</div>
+<div  id="orderimage" class="modal fade in" aria-hidden="false">
+    <div class="modal-dialog w800 ">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button aria-label="Close" data-dismiss="modal" class="close orderimage" type="button"><span aria-hidden="true"></span></button>
+                <h4 class="modal-title" id="orderimagetitle"></h4>
+            </div>
+            <div class="modal-body p-0 h300">
+				
+				
+				<div class="batch-pic oh">
+					<div class="pr ">
+					<div class="pr fileButton">
+						<div class="pa l0 t0" style="padding:10px">	
+						<button id="fileButton" type="button" class="btn btn-success btn-sm mw-100"><i class="fa fa-image"></i>&nbsp;图片上传</button>
+					
+						</div>
+						<div class="pr transparent z-i1">
+	    					<input  name="file" type="file" value="" onchange="other_upload(this)" ></input>
+						</div>
+					</div>
+					</div>
+					<br>
+					
+                </div>
+                <div  id="imagearea"></div>
+                
+            </div>
+             <div class="modal-footer">
+	        <button id="orderimage" type="button" class="btn btn-primary mw-100" data-dismiss="modal" onclick="">确定</button>
+      </div>
+        </div>
+    </div>
+</div>

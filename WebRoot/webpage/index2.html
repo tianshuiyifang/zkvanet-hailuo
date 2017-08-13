@@ -1,0 +1,124 @@
+
+<div id="mapBox">
+			<div class="map-left fl pr">
+				<span class="side-icon"><i class="fa fa-chevron-left"></i></span>
+				<div class="bc-fff side-left p-lr15">
+					<div  class="user-list">
+						<div class="side-subtitle row" title="yanshi" id="sidesubtitleid">
+							<button class="btn btn-default btn-xs fr js-toggle-tree-btn" type="button" title="收起">收起&nbsp;<i aria-hidden="true" class="fa fa-angle-double-up"></i></button>
+							<b id="account">yanshi</b>
+						</div>
+			
+						<div class="overflow-box oh">
+	              			<div class="content-box p-tb10">
+								<div class="tree-search"><i class="tree-search-icon" id="cusTreeSearchBtn" title="搜索"></i>
+									<input type="text" id="cusTreeKey" value="" placeholder="请输入客户名称或帐号" class="empty fs-12"/>
+									<input type="radio" id="name" name="keyType" class="hide" checked  />
+									<input type="radio" checked="" style="margin-left:36px;" class="hide" name="funType" id="getNodesByParamFuzzy">
+								</div>
+								<div class="tree-scroll default-scrollbar">
+									<div class="ta-c m-tb15" id="TreeLogindata"><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
+									<ul id="treeDemo" class="ztree">
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>			         
+					<div class="drag-line us-n"><span class="arrow"></span></div>
+					<div  class="vehicles-list">
+						<div class="side-subtitle row" title="车辆列表">
+							<button class="btn btn-default btn-xs fr js-toggle-accordion-btn" type="button" title="收起">收起&nbsp;<i aria-hidden="true" class="fa fa-angle-double-down"></i></button>
+							<b>车辆列表</b>
+						</div>
+						<div class="overflow-box oh">
+	              			<div class="content-box p-tb10">
+								<div class="input-group vehicles-input-group">
+									<input type="text" name="nope" id="nope"  placeholder="IMEI/司机/车牌/设备名称" class="form-control" value="" onkeydown="keyDown(event)" >
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" onclick="setWord();searchCondition();" id="index-search" title="搜索">&nbsp;</button>
+									</span>
+									<input type="hidden" name="keyword" id="keyword" />
+									<input type="hidden" name="mapType" id="mapType" />
+									<input type="hidden" name="userId" id="userId" />
+									<input type="hidden" name="account" id="account" />
+								
+								</div>
+							
+								<div class="btn-group btn-group-xs btn-group-justified device-status-tab m-tb5 ta-c js-device-status-tab" role="group" >
+									<a class="btn btn-default btn-primary all" onclick="clerWord();searchCondition('all')" title="全部"><span  class="status">全部</span><br/><span id="indexAll"></span></a>
+									<a class="btn btn-default attention"  onclick="clerWord();searchCondition('attention')" title="已关注"/><span class="status">已关注</span><br/><span id="attentions"></span></a>
+									<a class="btn btn-default online" onclick="clerWord();searchCondition('online')" title="在线"><span class="status" title="在线">在线</span><br/><span id="onlineCount"></span></a>
+									<a class="btn btn-default offline" onclick="clerWord();searchCondition('offline')" title="离线"><span class="status">离线</span><br/><span id="offlineCount"></span></a>
+									<a class="btn btn-default nonactivated" onclick="clerWord();searchCondition('nonactivated')" title="未激活"><span  class="status">未激活</span><br/><span id="nonactivated"></span></a>
+								</div>
+							    
+								<div class="toolsbar clearfix fs-12" >
+									<div class="js-toolsbar-func">
+										
+											<a class="js-add-group add-group c-666 fr cp" onclick="addgroup();"><span class="fs-14"><i class="fa fa-folder-o"></i></span>&nbsp;新建分组</a>
+										
+									</div>
+								</div>
+								<div class="js-vehicles-scroll default-scrollbar" id="devlistDiv">
+									<!-- 车辆列表 -分组管理    START-->
+									<ul id="accordion" class="accordion">
+										<div class="ta-c m-tb15" id="homeOrglogindata"><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
+									</ul>
+								<!-- 车辆列表-分组管理    END-->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+						
+			<div class="map-content">
+				<!--功能区 start-->
+				<div class="breadcrumb-func p-lr15  clearfix b-t1-ddd">
+					
+					<div  class="func fl"><span>刷新间隔：</span>
+						<span class="easydropdown easydropdown-xs va-m">
+							<select class="js-select-intervaltime" id="intervaltime" name="intervaltime" >
+								<option value="10">10s</option>
+								<option value="20" selected="selected">20s</option>
+								<option value="30">30s</option>
+							</select>
+						</span>
+					</div>
+					<div class="func fr">
+						<span class="easydropdown easydropdown-xs va-m">
+							<select class="js-select" onclick="addTrafficControl();" id="selectMap" name="selectMap">
+
+							 
+								<option value="baiduMap" 
+									selected="selected" >百度地图</option>
+								 
+										<option value="googleMap"  >谷歌地图</option>
+							</select>
+						</span>
+					</div>
+					 
+					<div class="fr p-lr15" >
+						<label class="func-label icheck-min text-nowrap"><input type="checkbox" id="checkbox1" >&nbsp;&nbsp;地标</label>
+					</div>
+					<div class="fr p-lr15" >
+						<label class="func-label icheck-min text-nowrap"><input type="checkbox" checked="checked" id="checkboxForDeviceName">&nbsp;&nbsp;显示设备名称</label>
+					</div>
+					<div class="fr">
+						<dl class="vehicle-status vehicle-status-line fs-12">
+							<dd data-toggle="popover" data-placement="bottom" data-content="设备在线，速度 &gt; 0km/h"><i class="marker runing"></i><span class="p-lr10">行驶：<span id="marker_runing">0</span></span></dd>
+							<dd data-toggle="popover" data-placement="bottom" data-content="设备在线，速度 = 0"><i class="marker stopped"></i><span class="p-lr10">静止：<span id="marker_idle">0</span></span></dd>
+							<dd data-toggle="popover" data-placement="bottom" data-content="设备离线"><i class="marker default"></i><span class="p-lr10">离线：<span id="marker_stopped">0</span></span></dd>
+						</dl>
+					</div>
+				</div>
+				<!--功能区 end-->
+				<div class="map-box pr">
+					<span id="refreshCountdown"  class="countdown"> &nbsp;<b>0</b>&nbsp;秒后刷新</span>
+					<span class="map-address dn"  id="mapdreess"></span>
+					<!-- <a class="popover-btn" data-toggle="popover" tabindex="0"><span class="pointer runing"><i class="fa fa-bus"></i></span></a> -->	
+					<div id="allmap"></div>
+					<div class="pa js-full-toggle-btn full-map-toggle-btn ta-c oh cp"><i class="fa fa-arrows-alt"></i></div>
+				</div>
+			</div>
+		</div>

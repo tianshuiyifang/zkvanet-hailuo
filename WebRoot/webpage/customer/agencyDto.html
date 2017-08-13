@@ -1,0 +1,121 @@
+<%@page pageEncoding="UTF-8"%> 
+<div class="modal fade" id="addAgency">
+  <div class="modal-dialog">
+    <div class="modal-content w800">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="agencyTitle">经销商信息</h4>
+      </div>
+      <div class="modal-body">
+        <div class="p-tb15 mah-400 oy-a">
+          <form id="userForm" class="form-horizontal form-preset form-sm mh-300">
+            <input type="hidden" id="parentId"/>
+          	<input type="hidden" id="fullParentId">
+          	<input type="hidden" id="userId">
+            <div class="form-group">
+              <label  class="col-md-2 control-label" title="经销商名称"><span class="c-red">*</span>经销商名称：</label>
+              <div class="col-md-3">
+                <input id="agencyName" name="agencyName" maxlength="50" type="text" class="form-control form-control-sm" placeholder="经销商名称"/>
+              </div>
+              <label  class="col-md-2 control-label" title="经销商代码"><span class="c-red">*</span>经销商代码：</label>
+              <div class="col-md-3">
+                <input id="agencyCode" name="agencyCode"  maxlength="30" type="text" class="form-control form-control-sm" placeholder="请输入经销商代码"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label  class="col-md-2 control-label" title="经销商地址"><span class="c-red">*</span>经销商地址：</label>
+              <div class="col-md-3">
+                <input id="agencyAddress" name="agencyAddress"  maxlength="30" type="text" onclick="getAgencyPosition()" class="form-control form-control-sm " placeholder="点击选择经销商地址"  />
+              </div>
+              <label  class="col-md-2 control-label" title="经销商邮编" ><span class="c-red">*</span>经销商邮编：</label>
+              <div class="col-md-3">
+                <input id="agencyMailCode" name="agencyMailCode"  maxlength="30" type="text" class="form-control form-control-sm" placeholder="请输入经销商邮编"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label  class="col-md-2 control-label" title="经销商电话" ><span class="c-red"></span>经销商电话：</label>
+              <div class="col-md-3">
+                <input id="agencyPhone" name="agencyPhone" maxlength="20" type="text" class="form-control form-control-sm" placeholder="请输入经销商电话"/>
+              </div>
+            
+              <label  class="col-md-2 control-label" title="经销商传真" ><span class="c-red"></span>经销商传真：</label>
+              <div class="col-md-3">
+                <input id="agencyFax" name="agencyFax" type="text" class="form-control form-control-sm" placeholder="请输入经销商传真" maxlength="50" />
+              </div>
+            </div>
+             <div class="form-group">
+              <label  class="col-md-2 control-label" title="经销商联系人" ><span class="c-red"></span>经销商联系人：</label>
+              <div class="col-md-3">
+                <input id="agencyContacts" name="agencyContacts" type="text" class="form-control form-control-sm" placeholder="请输入经销商联系人" maxlength="50" />
+              </div>
+            
+              <label  class="col-md-2 control-label" title="经销商联系人称谓" ><span class="c-red"></span>经销商联系人称谓：</label>
+              <div class="col-md-3">
+                <input id="agencyContactsName" name="agencyContactsName" type="text" class="form-control form-control-sm" placeholder="请输入经销商联系人称谓" maxlength="50" />
+              </div>
+            </div>
+			<div class="form-group">
+			<label class="col-md-2 control-label" title="联系人">
+					经度：
+				</label>
+				<div class="col-md-3">
+					<input id="agencyLat" name="address" type="text"
+						class="form-control form-control-sm "
+						placeholder="请输入经度地址" maxlength="50" disabled />
+				</div>
+				<label class="col-md-2 control-label" title="联系人">
+					纬度：
+				</label>
+				<div class="col-md-3">
+					<input id="agencyLon" name="address" type="text"
+						class="form-control form-control-sm "
+						placeholder="请输入纬度地址" maxlength="50" disabled />
+				</div>
+				</div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="addAgencyBtn" type="button" class="btn btn-primary mw-100" onclick="saveAgency('add');">添加</button>&nbsp;
+        <button id="updateAgencyBtn" type="button" class="btn btn-primary mw-100" onclick="saveAgency('update');">更新</button>
+        <button type="button" class="btn btn-default mw-100" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 创建围栏 -->
+<div  id="createFenceModal" class="modal fade in" aria-hidden="false">
+    <div class="modal-dialog w1200 ">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button aria-label="Close" data-dismiss="modal" class="close createFenceClose" type="button"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="createGeoLand"></h4>
+            </div>
+            <div class="modal-body p-0 h520">
+				<iframe class="bc-fff h520" id="mapIframe" width="100%"  frameborder="0"></iframe>  
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 选择经销商位置 -->
+<div  id="getPosition" class="modal fade in" aria-hidden="false">
+    <div class="modal-dialog w600 ">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button aria-label="Close" data-dismiss="modal" class="close createFenceClose" type="button"><span aria-hidden="true"></span></button>
+                <h4 class="modal-title" id="getPositionTitle"></h4>
+            </div>
+            <div class="modal-body p-0 h520">
+				<iframe class="bc-fff h520" id="positionmapIframe" width="100%"  frameborder="0"></iframe>  
+				<input style="display:none" id="address" />
+				<input style="display:none" id="lat" />
+				<input style="display:none" id="lon" />
+            </div>
+             <div class="modal-footer">
+	        <button id="agencypostion" type="button" class="btn btn-primary mw-100" data-dismiss="modal" onclick="saveaddress();">确定</button>
+      </div>
+        </div>
+    </div>
+</div>

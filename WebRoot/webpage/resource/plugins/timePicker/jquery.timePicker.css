@@ -1,0 +1,48 @@
+@charset "UTF-8";
+/**
+ * 
+ * @authors lihefei (121131636@qq.com)
+ * @date    2016-09-21 11:31:51
+ * @version 0.0.1
+ */
+html {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: inherit;
+          box-sizing: inherit;
+}
+
+ .timepicker { display: none; width: 250px; border:1px solid #ddd; font:12px/1.5 "Microsoft yahei"; cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-color: #fff;
+	box-shadow: 0 1px 2px rgba(0,0,0,.1);
+ }
+.timepicker-body { padding: 5px 15px; }
+.timepicker-footer { padding: 5px 10px; border-top: 1px solid #eee; background-color: #f5f5f5; }
+.timepicker-sliderbar { margin: 10px 0; }
+.timepicker-sliderbar:after { clear: both; content: ""; display: block; visibility: hidden; height: 0; }
+.slider-name,.slider-bar { float: left; }
+.slider-name { width: 30%; }
+.slider-bar { position: relative; width: 70%; height: 6px; background-color: #ccc; margin: 6px 0; }
+.slider-bar .slider-knob { position: absolute; left: 0; top: -3px; width: 20px; height: 12px; border-radius: 2px; background-color: #62a1f6; }
+.slider-bar .slider-knob:hover { z-index: 2; }
+.slider-bar .slider-knob:before, .slider-bar .slider-knob:after {display: none; position: absolute; left: 50%;  }
+.slider-bar .slider-knob:before {  content: attr(data-hover); top:-24px; width: 24px;padding:2px 4px 4px; margin-left: -12px; line-height: 1; border-radius: 4px; color: #fff; text-align: center; background-color: #666; }
+.slider-bar .slider-knob:after { content: ""; top:-6px; width: 0; height: 0; margin-left: -4px; border-style:solid dashed none  dashed ; border-width: 4px 4px 0 4px; border-color: #666 transparent  transparent transparent; }
+.slider-bar .slider-knob:hover:before, .slider-bar .slider-knob:hover:after, .slider-bar .slider-knob.active:before, .slider-bar .slider-knob.active:after { display: block; }
+
+.timepicker-footer:after { clear: both; content: ""; display: block; visibility: hidden; height: 0; }
+.timepicker-btn-noly,.timepicker-btn-clear,.timepicker-btn-confirm {float: right; margin-right: 8px; padding: 2px 8px; border:1px solid #ccc; border-radius: 2px; background-color: #fff;  outline: none; cursor: pointer; opacity: .8;  }
+.timepicker-btn-noly:hover,.timepicker-btn-clear:hover,.timepicker-btn-confirm:hover {opacity: 1;}
+.timepicker-btn-noly { float: left; }
+.timepicker-btn-confirm { margin-right: 0; border-color:#62a1f6; background-color: #62a1f6; color: #fff; }

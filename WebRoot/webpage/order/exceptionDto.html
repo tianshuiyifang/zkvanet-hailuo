@@ -1,0 +1,20 @@
+<%@page pageEncoding="UTF-8"%> 
+<div  id="exceptionorder" class="modal fade in" aria-hidden="false">
+    <div class="modal-dialog w600 ">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button aria-label="Close" data-dismiss="modal" class="close createFenceClose" type="button"><span aria-hidden="true"></span></button>
+                <h4 class="modal-title" id="getExceptionTitle"></h4>
+            </div>
+            <div class="modal-body p-0 h520">
+				<iframe class="bc-fff h520" id="exceptionIframe" width="100%"  frameborder="0"></iframe>  
+				<input style="display:none" id="address" />
+				<input style="display:none" id="lat" />
+				<input style="display:none" id="lon" />
+            </div>
+             <div class="modal-footer">
+	        <button id="exceptionButton" type="button" class="btn btn-primary mw-100" data-dismiss="modal" onclick="">确定</button>
+      </div>
+        </div>
+    </div>
+</div>

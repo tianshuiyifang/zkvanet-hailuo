@@ -1270,7 +1270,7 @@ function exitSys()
 										      --%>
 										       </div>
 										</div>
-										<button type="button" style="padding-left:20px" class="btn btn-sm btn-primary" title="校准" onclick="checkGpsWeight();">校准</button>
+										<button type="button" style="padding-left:20px" class="btn btn-sm btn-primary checkGpsWeight" title="校准" onclick="checkGpsWeight();">校准</button>
 										    
 										<div class="js-more-condition-box m-t10 dn">
 											<div class="form-group">
@@ -5573,6 +5573,7 @@ function toIndex(userId,account,parentId,imei){
 	<script type="text/javascript">
 	    var userId="<%=request.getAttribute("userId")%>";
 	    var global_userId="<%=request.getAttribute("userId")%>";
+	    var login_userId="<%=request.getAttribute("userId")%>";
 		var account="<%=request.getAttribute("userName")%>";
 		var imeis='';
 		var keyword='';

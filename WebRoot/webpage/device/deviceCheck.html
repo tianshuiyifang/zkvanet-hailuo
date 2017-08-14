@@ -1,4 +1,6 @@
 <%@page pageEncoding="UTF-8"%> 
+
+
 <div class="modal fade" id="deviceCkeck">
   <div class="modal-dialog">
     <div class="modal-content w800">
@@ -12,40 +14,85 @@
             <input type="hidden" id="parentId"/>
           	<input type="hidden" id="fullParentId">
           	<input type="hidden" id="userId">
-            <div class="form-group">
+            <div class="form-group" >
               <label  class="col-md-3 control-label" title="选择设备"><span class="c-red">*</span>选择设备：</label>
-              <div class="col-md-8">
+              <div class="col-md-9">
                <span class="easydropdown easydropdown-sm easydropdown-full va-m " id="dev-check" ></span>
               </div>
               
             </div>
-	       <div class="form-group">
+	       <div class="form-group" >
 	       	  <label  class="col-md-3 control-label" title="GPS透传">GPS透传：</label>
-              <div class="col-md-8">
+              <div class="col-md-7">
                 <input id="gpsorder" name="gpsorder" maxlength="50" type="text" class="form-control form-control-sm" />
               </div>
-              
-	       </div>
-	        <div class="form-group">
-	       	<div class="col-md-6 control-label">
+              <div class="col-md-2 control-label" style="padding-top:0px">
                 <button type="button" class="btn btn-primary mw-100" onclick="sendGps();">发送</button>
-           	</div>
-           </div>
-	        <div class="form-group">
+           	  </div>
+	       </div>
+	        <div class="form-group" >
 	        <label  class="col-md-3 control-label" title="吨位校准">吨位校准：</label>
-              <div class="col-md-8">
+              <div class="col-md-7">
                 <input id="weightorder" name="weightorder" maxlength="50" type="text" class="form-control form-control-sm" />
               </div>
-             </div>
-              <div class="form-group">
-	       	<div class="col-md-6 control-label">
+              	<div class="col-md-2 control-label" style="padding-top:0px">
                 <button type="button" class="btn btn-primary mw-100" onclick="sendWeight();">校准发送</button>
            	</div>
-           </div>
-           <div class="form-group">
+             </div>
+           <div class="form-group" style="margin-bottom:5px">
 	       	  <label  class="col-md-3 control-label" title="响应结果">响应结果：</label>
               <div class="col-md-8">
-                <textarea  id="checkresp" name="checkresp" type="text" class="form-control form-control-sm " disabled></textarea>
+             <!--    <textarea  id="checkresp" name="checkresp" type="text" class="form-control form-control-sm " disabled></textarea> -->
+            <div class="alarm-body">
+	    <div class="table-header">
+	      <table class="table table-condensed table-hover table-ellipsis m-b0" id="alarmMessageTableHeader">
+	        <thead>
+	        <tr>
+	          <th title="id">id</th>
+	          <th title="sid">sid</th>
+	          <th title="msgId">消息编号</th>
+	          <th title="消息">消息</th>
+	          <th title="状态">状态</th>
+	          <th title="创建时间">创建时间</th>
+	          <th title="更新时间">更新时间</th>
+	          <th title="结果">结果</th>
+	        </tr>
+	        </thead>
+	      </table>
+	    </div>
+	    <div class="table-scrollbar oy-a h150">
+	      <table class="table table-condensed table-normal-a table-hover table-ellipsis m-b0" id="alarmMessageTableContent">
+	        <colgroup>
+	          <col width="12%">
+	          <col width="14%">
+	          <col width="10%">
+	          <col width="12%">
+	          <col width="12%">
+	          <col width="14%">
+	          <col width="14%">
+	          <col width="12%">
+	          
+	        </colgroup>
+	        <tbody id="checkresp">
+	        	<script type="text/html" id="checkresplist">
+				{{each data as row i}}
+					<tr>
+          				<td title="{{row.id}}" style="text-align:center">{{row.id}}</td>
+						<td title="{{row.sid}}" style="text-align:center">{{row.sid}}</td>
+          				<td  title="{{row.msgId}}" style="text-align:center">{{row.msgId}}</td>
+          				<td  title="{{row.message}}" style="text-align:center">{{row.message}}</td>
+						<td  title="{{row.status}}" style="text-align:center">{{row.status}}</td>
+						<td  title="{{row.createTime}}" style="text-align:center">{{row.createTime}}</td>
+                        <td  title="{{row.updateTime}}" style="text-align:center">{{row.updateTime}}</td>
+                        <td  title="{{row.result}}" style="text-align:center">{{row.result}}</td>
+        			</tr>
+				{{/each}}	
+        	</script>
+	        </tbody>
+	      </table>
+	    </div>
+	  </div>
+                
               </div>
               
 	       </div>

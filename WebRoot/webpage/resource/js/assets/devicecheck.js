@@ -2,6 +2,7 @@ function checkGpsWeight(){
 	
 	$("#deviceCkeck").modal();
 	complex_initDevCheck();
+	$("#checkresp").html();
 }
 
 function sendGps(){
@@ -21,12 +22,15 @@ function sendGps(){
 	    data:{"userId":$.parseJSON(getCookie("selectHistory")).userId,"imei":devImei,"order":gpsOrder},
 		url : _ctx + "rest/deviceControl/sendorder",
 		success : function(ret) {
-			if (ret.statusCode == 0) {
-				if(ret.statusCode){
-				
-				}
-			} else {
-				layer.msg($.i18n.prop("comm.Failed"), {icon : 2});
+			if (ret.statusCode == -1) {
+				layer.msg("设备未上线/发送失败");
+				return ;
+			} else if(ret.statusCode == 1){
+				layer.msg("发送成功");
+				return ;
+			} else if(ret.statusCode == 2){
+				layer.msg("收到设备回应");
+				return ;
 			}
 		},
 		error : function(e) {
@@ -51,23 +55,55 @@ function sendWeight(){
 	    data:{"userId":$.parseJSON(getCookie("selectHistory")).userId,"imei":devImei,"order":weightorder},
 		url : _ctx + "rest/deviceControl/sendorder",
 		success : function(ret) {
-			if (ret.statusCode == 0) {
-				if(ret.statusCode){
-				
-				}
-			} else {
-				layer.msg($.i18n.prop("comm.Failed"), {icon : 2});
+			if (ret.statusCode == -1) {
+				layer.msg("设备未上线/发送失败");
+				return ;
+			} else if(ret.statusCode == 1){
+				layer.msg("发送成功");
+				return ;
+			} else if(ret.statusCode == 2){
+				layer.msg("收到设备回应");
+				return ;
 			}
 		},
 		error : function(e) {
 		}
 	});
 }
+Date.prototype.format = function(fmt) { 
+    var o = { 
+       "M+" : this.getMonth()+1,                 //月份 
+       "d+" : this.getDate(),                    //日 
+       "h+" : this.getHours(),                   //小时 
+       "m+" : this.getMinutes(),                 //分 
+       "s+" : this.getSeconds(),                 //秒 
+       "q+" : Math.floor((this.getMonth()+3)/3), //季度 
+       "S"  : this.getMilliseconds()             //毫秒 
+   }; 
+   if(/(y+)/.test(fmt)) {
+           fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length)); 
+   }
+    for(var k in o) {
+       if(new RegExp("("+ k +")").test(fmt)){
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        }
+    }
+   return fmt; 
+}      
+
+$(function(){
+	var loginUserId=login_userId;
+	if(loginUserId==1){
+     $(".checkGpsWeight").show();
+	}else{
+	 $(".checkGpsWeight").hide();
+	}
+});
 
 function refreshResp(){
 	
 	var devImei=$("select[name='devcheck']").val();
-	$("#checkresp").html("有结果");
+	
 	$.ajax({
 		type:"post",
 		async: false,
@@ -75,12 +111,18 @@ function refreshResp(){
 	    data:{"userId":$.parseJSON(getCookie("selectHistory")).userId,"imei":devImei},
 		url : _ctx + "rest/deviceControl/queryOrder",
 		success : function(ret) {
-			if (ret.statusCode == 0) {
-				if(ret.statusCode){
-				
+			if (ret.statusCode == 1) {
+				if(ret.data!=null){
+				    for(var i=0;i<ret.data.length;i++){
+				     var createTime=new Date(ret.data[i].createTime);
+				     var updateTime=new Date(ret.data[i].updateTime);
+				     ret.data[i].createTime= createTime.format("yyyy-MM-dd hh:mm:ss");
+				     ret.data[i].updateTime= updateTime.format("yyyy-MM-dd hh:mm:ss");
+				    }
 				}
+				$("#checkresp").html(template("checkresplist",ret));
 			} else {
-				layer.msg($.i18n.prop("comm.Failed"), {icon : 2});
+				layer.msg("无结果");
 			}
 		},
 		error : function(e) {

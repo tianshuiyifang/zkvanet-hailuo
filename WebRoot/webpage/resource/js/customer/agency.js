@@ -170,6 +170,7 @@ function getAgency(pageCurrent,param){
 	if(param.pageSize==undefined){
 		param.pageSize=pageSize;
 	}
+	
 	param.pageCurrent=pageCurrent;
 	$.ajax({
 		type:"post",
@@ -210,6 +211,12 @@ function getAgency(pageCurrent,param){
 
 $("#searchAgency").on("click",function(){
 	
+	
+	searchAgencyFunc();
+	
+})
+function searchAgencyFunc(){
+	
 	var id=null;
 	var leftNode = leftTree.getSelectedNodes()[0];
 	if(id==null){
@@ -221,10 +228,12 @@ $("#searchAgency").on("click",function(){
 	//每页条数
 	pageSize = 10;
 	totalRow=0;
+	if($("#searchAgentVal").val()!=""){
+		param.agencyName=$("#searchAgentVal").val();
+	}
 	getAgency(pageCurrent,param);
-	
-	
-})
+}
+
 function saveAgency(type){
 	
 	//基础校验

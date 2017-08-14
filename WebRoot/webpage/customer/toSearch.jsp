@@ -1390,8 +1390,18 @@ function delCookie(name){
 			                  <div class="fl" style="padding-top: 5px;padding-left: 10px;">
 			                    <button class="btn btn-primary btn-sm js-add-agency" type="button" title="新增经销商"><i class="fa fa-plus"></i>&nbsp;新增经销商</button>
 			                   </div>
-			                  
+			                  <div class="fr" style="top: 2px;position: relative;">
+									<div class="fr search-input-group w300">
+										<div class="input-group">
+											<input type="text" value="" class="form-control form-control-sm form-search" placeholder='请输入代理商名称' id="searchAgentVal" onkeydown="keyDown(event)"><span class="input-group-btn"><button class="btn btn-primary btn-sm" type="button" onclick="searchAgencyFunc();" ><i class="fa fa-search"></i>&nbsp;搜索</button></span>
+										</div>
+									</div>
+									<div class="fr b1-ccc  b-r0 p-lr10 p-tb5 lh-1-5 bc-fafafa ws-n">
+											<label class="searchagencyName">&nbsp;代理商名称</label>&nbsp;&nbsp;
+										</div>
+			                    </div>
 			                </div>
+			                 
 			                <div class="table-header">
 			                	<table class="table table-hover table-ellipsis m-b0" id="clientTableHeader">
 				                  <thead>

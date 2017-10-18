@@ -835,9 +835,9 @@ function showAccTab(){
 }
 //TODO
 function initTime(allType){
-	$("#startTime_"+allType).focus(function(){
+	$("#startTime").focus(function(){
 		var start = {
-			    elem: '#startTime_'+allType,
+			    elem: '#startTime',
 			    event: 'focus',
 			    format: "YYYY-MM-DD hh:mm",
 			    //min: laydate.now(), //设定最小日期为当前日期
@@ -845,15 +845,12 @@ function initTime(allType){
 			    max: laydate.now(), //最大日期
 			    istime: true,
 			    istoday: true,
-			    choose: function(datas){
-			    	$("#qucikTime_"+allType).children().removeClass("btn-primary");
-			    }
 			};
 		laydate(start);
 	});
-	$("#endTime_"+allType).focus(function(){
+	$("#endTime").focus(function(){
 		var end = {
-		    elem: '#endTime_'+allType,
+		    elem: '#endTime',
 		    event: 'focus',
 		    format: "YYYY-MM-DD hh:mm",
 		    //min: laydate.now(),
@@ -861,9 +858,6 @@ function initTime(allType){
 		    max: laydate.now(), //最大日期
 		    istime: true,
 		    istoday: true,
-		    choose: function(datas){
-		    	$("#qucikTime_"+allType).children().removeClass("btn-primary");
-		    }
 		};
 		laydate(end);
 	});

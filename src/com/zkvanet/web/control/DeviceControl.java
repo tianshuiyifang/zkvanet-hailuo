@@ -134,6 +134,7 @@ public class DeviceControl {
 			dp.setDevName(dd.getName());
 			dp.setDeviceName(dd.getName());
 			dp.setImei(dd.getImei());
+			dp.setPackageType(dd.getPackageType());
 			dp.setSn(sn);
 			dp.setSim(dd.getSim());
 			if(dd.getActivTime()!=null){
@@ -178,6 +179,7 @@ public class DeviceControl {
 			dp.setDeviceName(dd.getName());
 			dp.setImei(dd.getImei());
 			dp.setSim(dd.getSim());
+			dp.setPackageType(dd.getPackageType());
 			dp.setUserId(dd.getBelongUserId().toString());
 			if(dd.getActivTime()!=null){
 				dp.setActivationTime(sdf.format(dd.getActivTime()));
@@ -244,6 +246,7 @@ public class DeviceControl {
 	  	     
         	  devdto.setDeviceTypeId((Integer)mctype);
         	  devdto.setDeviceGroupId(10);
+        	  devdto.setPackageType(dev.getPackageType());
         	  devdto.setActivTime(str2Date(dev.getActivTime(),sdf));
         	  devdto.setPlatformEndDate(str2Date(dev.getPlatformEndDate(),sdf));
         	  devdto.setRemark(dev.getReMark());
@@ -283,6 +286,7 @@ public class DeviceControl {
     	  devdto.setImei(dev.getImei());
     	  devdto.setSim(dev.getSim());
     	  devdto.setCreateTime(new Date());
+    	  devdto.setPackageType(dev.getPackageType());
     	  devdto.setDeviceTypeId(Integer.parseInt(dev.getMcType()));
     	  devdto.setDeviceGroupId(10);
     	  devdto.setActivTime(str2Date(dev.getActivTime(),sdf));

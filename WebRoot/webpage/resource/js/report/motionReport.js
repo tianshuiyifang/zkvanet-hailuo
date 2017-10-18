@@ -1077,6 +1077,8 @@ function initRunReport(param){
 				if(data.result.length>0){
 					isExportRun=true;
 				}
+				
+				sportTotalRecord=returnData.data.totalRow;
 				/*$("#allmileage").html(allmileage);   
 				$("#alloverSpeedTimes").html(alloverSpeedTimes);
 				$("#allstopTimes").html(allstopTimes); */
@@ -1213,44 +1215,47 @@ function initMileageReport(pageNo,intPageSize,param){
 	var startTime = $("#startTime_mileage").val();	
 	var endTime   = $("#endTime_mileage").val();
 	var type	  = $("input[name=type]:checked").val();
-	if(!initCheckPickerTime({"startTime":startTime,"endTime":endTime},type)){
-		cleanMileageData();
-		return
-	}
-	if(!checkInputDevNameAndImei("mileage")){
-		//parent.layer.msg($.i18n.prop("cust.PleaseenterthedevicenameorIMEI"),{icon: 7});
-		cleanMileageData();
-		return
-	}
+	
+	$("#rchangshangId").val(userId);
+	$("#startTime").val(startTime);
+	$("#endTime").val(endTime);
+	
+	
+//	if(!initCheckPickerTime({"startTime":startTime,"endTime":endTime},type)){
+//		cleanMileageData();
+//		return
+//	}
+//	if(!checkInputDevNameAndImei("mileage")){
+//		//parent.layer.msg($.i18n.prop("cust.PleaseenterthedevicenameorIMEI"),{icon: 7});
+//		cleanMileageData();
+//		return
+//	}
 	var imeis = $("#queryDevice_select_mileage").val();
 	if(imeis){
 		var checkImeis = checkExpiredActivation(imeis);
 		
-		if(checkImeis.indexOf("b")>=0){
-//			parent.layer.confirm($.i18n.prop("header.Report.ImeiNoData")+": "+checkImeis.replace("b",""), {
+//		if(checkImeis.indexOf("b")>=0){
+////			parent.layer.confirm($.i18n.prop("header.Report.ImeiNoData")+": "+checkImeis.replace("b",""), {
+////				btn: [$.i18n.prop("comm.Confirm")] //按钮
+////			});
+//			cleanMileageData();
+//			return;
+//		}
+//		if(checkImeis){
+//			layer.confirm(checkImeis+$.i18n.prop("cust.CheckExpiredActivation"), {
 //				btn: [$.i18n.prop("comm.Confirm")] //按钮
 //			});
-			cleanMileageData();
-			return;
-		}
-		if(checkImeis){
-			layer.confirm(checkImeis+$.i18n.prop("cust.CheckExpiredActivation"), {
-				btn: [$.i18n.prop("comm.Confirm")] //按钮
-			});
-			cleanMileageData();
-			return;
-			//parent.layer.msg(all+$.i18n.prop("cust.CheckExpiredActivation"), {time: 2000});
-		}
+//			cleanMileageData();
+//			return;
+//			//parent.layer.msg(all+$.i18n.prop("cust.CheckExpiredActivation"), {time: 2000});
+//		}
 	}
-	setCaching(userId,"Mileage",null,startTime,endTime,$("#queryDevice_select_mileage").val(),type);
-	if(!param){
-		param = {"userId": userId,"imeis":$("#queryDevice_select_mileage").val(),"startTime":startTime,"endTime":endTime,"type":type,"startRow":MileagePageNo,"pageSize":MileagePageSize};
-	}
-	param.startRow = MileagePageNo;
+	param = {"changshangId": userId,"startTime":startTime,"endTime":endTime,};
+	param.pageCurrent = MileagePageNo;
 	param.pageSize = MileagePageSize;
 	$.ajax({
 		type:'POST',
-		url:_ctx+"/mileageReportController/getList",  
+		url:_ctx+"rest/reportControl/runReport/getList",  
 		async:true, 
 		cache:false,
 		data:param,
@@ -1266,66 +1271,24 @@ function initMileageReport(pageNo,intPageSize,param){
 			ajaxError("initMileageReport() ",e);
 		},  
 		success:function(returnData){
-			if(returnData.code==0 && returnData.data.data && returnData.data.data.length>0){
+			if(returnData.statusCode==0 && returnData.data && returnData.data.list.length>0){
 				isExportMileage = true;
-				//var allmileages=0;       		 //总里程
-				//var allmileageshours=0;		 	 //总耗时
-				var data = {"result":returnData.data.data}
+				   var data = {"result":returnData.data.list}
 				
-//				$.each(data.result,function(i,v){
-//					allmileages	     = (Number(allmileages)+Number(v.dis)).toFixed(3);
-//					allmileageshours = Number(allmileageshours)+Number(v.runTime);
-//				});
-//				$.each(data.result,function(i,v){
-//					v.startAddr = "";
-//					v.endAddr = "";
-//					
-//				});
-				if(type=="segment"){   //按里程统计
 					var  time = 0;
-//					if (allmileageshours!="" && allmileageshours !=null) {
-//						var hour = Math.floor (allmileageshours / 3600);
-//						var other = allmileageshours % 3600;
-//						var minute = Math.floor (other / 60);
-//						var second = (other % 60).toFixed (0);
-//						time = hour + "小时" + minute + "分"+second+"秒";
-//					}
-					time=returnData.data.totalTime.replace("小时",$.i18n.prop('header.MileageReport.hours')).replace("分", $.i18n.prop('header.MileageReport.minutes')).replace("秒", $.i18n.prop('Alert.seconds'));
-					$("#allmileages").html(returnData.data.totalDistiance);
-					$("#allmileageshours").html(time);
-					if(data.result && data.result.length > 0){
-						$.each(data.result,function(i,v){
-							if(v.runTimeSecond){
-								v.runTimeSecond = v.runTimeSecond.replace("小时",$.i18n.prop('header.MileageReport.hours')).replace("分", $.i18n.prop('header.MileageReport.minutes')).replace("秒", $.i18n.prop('Alert.seconds'));
-							}
-						});
-					}
 					$('#mileage-tbody').html(template('mileage-tbody-json',{result: data.result,pageNo:MileagePageNo,pageSize:MileagePageSize}));
 					$("#mileage-noData").hide();
 					$("#mileage-day-noData").hide();
 					$("#paging-mileage").show();
 					$("#pageNoMileage").val(MileagePageNo);
 					$("#pageSizeMileage").val(MileagePageSize);
-					MileageTotalRecord = returnData.data.dataTotalRows;
+					MileageTotalRecord = returnData.data.totalRow;
 					$('#mileage-tbody').show();
 					$(".mileage-statistical-box .table-scrollbar").scrollTop(0);
 					if(MileagePageNo == 1){
 						initMileagePage(param);
 					}
-				}else{
-					
-					$("#allmileages-day").html(returnData.data.totalDistiance);
-					$('#mileage-day-tbody').html(template('mileage-day-tbody-json',{result: data.result,pageNo:MileagePageNo,pageSize:MileagePageSize}));
-					$("#paging-day").show();
-					$("#mileage-noData").hide();
-					$("#mileage-day-noData").hide();
-					
-					MileageTotalRecord = returnData.data.dataTotalRows;
-					$("#mileage-day-tbody").show();
-					if(MileagePageNo == 1){
-						initMileageDayPage(param);
-					}
-				}
+				
 			}else{
 				if(type=="segment"){   //按里程统计
 					$("#allmileages").html(0);
@@ -1353,10 +1316,6 @@ function initMileageReport(pageNo,intPageSize,param){
 function exportMileageReport(){
 	$("#Mileageimeis").val();
 	if(isExportMileage){
-		if($("#language").val()!="zh" && $("#typeMileage").val() == "segment"){
-			var jsonMileage = getJsonMileage();
-			$("#jsonMileage").val(jsonMileage);
-		}
 		$("#MileageFrom").submit();
 	}else{
 		layer.msg($.i18n.prop("header.MileageReport.NoDataForExporting"), {time: 2000}); 
@@ -1401,56 +1360,19 @@ function initOverspeedReport(pageNo,intPageSize,param){
 	var startTime = $("#startTime_overspeed").val();		
 	var endTime   = $("#endTime_overspeed").val();
 	var speed     = $("input[name=speed]").val(); 
-	if(!initCheckPickerTime({"startTime":startTime,"endTime":endTime})){
-		cleanOverSpeedData();
-		return
-	}
-	if(!checkInputDevNameAndImei("Overspeed")){
-		cleanOverSpeedData();
-		return
-	}
-	if(speed){
-	    if(!((/^(\+|-)?\d+$/.test(speed)) && speed > 0 )){  
-	    	layer.msg($.i18n.prop("comm.IsNum"), {time: 2000});
-	    	$("input[name=speed]").focus();
-	    	$('#overspeed-tbody').html(template('overspeed-tbody-json',null));
-	    	$("#overspeed-noData").show();
-	    	$("#paging-overspeed").hide();
-	    	$("#overspeed-loading").hide();
-		    return;
-	    }  
-	}
+	$("#achangshangId").val(userId);
+	$("#startTime").val(startTime);
+	$("#endTime").val(endTime);
 	var imeis = $("#queryDevice_select_Overspeed").val();
-	if(imeis){
-		
-		var checkImeis = checkExpiredActivation(imeis);
-		if(checkImeis.indexOf("b")>=0){
-//			parent.layer.confirm($.i18n.prop("header.Report.ImeiNoData")+": "+checkImeis.replace("b",""), {
-//				btn: [$.i18n.prop("comm.Confirm")] //按钮
-//			});
-			cleanOverSpeedData();
-			return;
-		}
-		if(checkImeis){
-			layer.confirm(checkImeis+$.i18n.prop("cust.CheckExpiredActivation"), {
-				btn: [$.i18n.prop("comm.Confirm")] //按钮
-			});
-			cleanOverSpeedData();
-			return;
-		}
-	}
-	setCaching(userId,"Overspeed",null,startTime,endTime,$("#queryDevice_select_Overspeed").val(),null);
-	if(!param){
-		param = {"speed":speed,"userId":userId,"imeis":$("#queryDevice_select_Overspeed").val(),"startTime":startTime,"endTime":endTime,"startRow":OverSpeedPageNo,"pageSize":OverSpeedPageSize};
-	}
-	param.startRow = OverSpeedPageNo;
+	param = {"changshangId":userId,"startTime":startTime,"endTime":endTime,"startRow":OverSpeedPageNo,"pageSize":OverSpeedPageSize};
+	param.pageCurrent = OverSpeedPageNo;
 	param.pageSize = OverSpeedPageSize;
 	$("#pageNoOverspeed").val(OverSpeedPageNo);
 	$("#pageSizeOverspeed").val(OverSpeedPageSize);
 	//if(!checkInputDevNameAndImei("Overspeed") && !initCheckPickerTime({"startTime":startTime,"endTime":endTime})){$("#overspeed-loading").hide();return}
 	$.ajax({
 		type:'POST',
-		url:_ctx+"/overspeed/getList",  
+		url:_ctx+"rest/reportControl/runReport/getListagency",  
 		async:true, 
 		cache:false,
 		data:param,
@@ -1461,16 +1383,16 @@ function initOverspeedReport(pageNo,intPageSize,param){
 			ajaxError("initOverspeedReport() ",e);
 		},  
 		success:function(returnData){
-			if(returnData.code==0 && returnData.data && returnData.data.length>0){
+			if(returnData.statusCode==0 && returnData.data && returnData.data.list.length>0){
 //				$.each(returnData.data,function(i,v){
 //					v.addr = "";
 //				});
 				isOverspeed = true;
-				OverSpeedTotalRecord = returnData.dataTotalRows;
+				OverSpeedTotalRecord = returnData.data.totalRow;
 				if(OverSpeedPageNo == 1){
 					initOverSpeedPage(param);
 				}
-				$('#overspeed-tbody').html(template('overspeed-tbody-json',{"result":returnData.data,pageNo:OverSpeedPageNo,pageSize:OverSpeedPageSize}));
+				$('#overspeed-tbody').html(template('overspeed-tbody-json',{"result":returnData.data.list,pageNo:OverSpeedPageNo,pageSize:OverSpeedPageSize}));
 				$('#overspeed-tbody').show();
 				$("#overspeed-noData").hide();
 				$("#paging-overspeed").show();
@@ -1577,38 +1499,14 @@ function initStopCarReport(type,pageNo,intPageSize,param){
 	var startTime = $("#startTime_"+type).val();		
 	var endTime   = $("#endTime_"+type).val();
 	var acc	  = $("#acc-statue-"+type).val();
-	if(!initCheckPickerTime({"startTime":startTime,"endTime":endTime})){
-		cleanStopCarData(type);
-		return
-	}
-	if(!checkInputDevNameAndImei(type)){
-		cleanStopCarData(type);
-		return
-	}
 	var imeis = $("#queryDevice_select_"+type).val();
-	if(imeis){
-		var checkImeis = checkExpiredActivation(imeis);
-		if(checkImeis.indexOf("b")>=0){
-//			parent.layer.confirm($.i18n.prop("header.Report.ImeiNoData")+": "+checkImeis.replace("b",""), {
-//				btn: [$.i18n.prop("comm.Confirm")] //按钮
-//			});
-			cleanStopCarData(type);
-			return;
-		}
-		if(checkImeis){
-			layer.confirm(checkImeis+$.i18n.prop("cust.CheckExpiredActivation"), {
-				btn: [$.i18n.prop("comm.Confirm")] //按钮
-			});
-			cleanStopCarData(type);
-			return;
-		}
-	}
-	setCaching(userId,type,acc,startTime,endTime,$("#queryDevice_select_"+type).val(),null);
+	
+	$("#aachangshangId").val(userId);
+	$("#startTime").val(startTime);
+	$("#endTime").val(endTime);
 	$("#type"+type).val(type);
-	if(!param){
-		param = {"userId": userId,"imeis":$("#queryDevice_select_"+type).val(),"startTime":startTime,"endTime":endTime,"acc":acc,"startRow":StopCarPageNo,"pageSize":StopCarPageSize};
-	}
-	param.startRow = StopCarPageNo;
+	param = {"changshangId": userId,"startTime":startTime,"endTime":endTime};
+	param.pageCurrent = StopCarPageNo;
 	param.pageSize = StopCarPageSize;
 	if(acc == "off"){
 		$("#pageNoStopCar").val(StopCarPageNo);
@@ -1617,10 +1515,17 @@ function initStopCarReport(type,pageNo,intPageSize,param){
 		$("#pageNoStopNotOff").val(StopCarPageNo);
 		$("#pageSizeStopNotOff").val(StopCarPageSize);
 	}
+	
+	var url ="rest/reportControl/runReport/getListagency";
+	if(type=="stopNotOff"){
+		$("#ochangshangId").val(userId);
+		url="rest/reportControl/runReport/getListOrder";
+	}
+	
 	//if(!checkInputDevNameAndImei("Parking") && !initCheckPickerTime({"startTime":startTime,"endTime":endTime})){$("#stopcar-loading").hide();return}
 	$.ajax({
 		type:'POST',
-		url:_ctx+"/stopCar/getList",  
+		url:_ctx+url,  
 		async:true, 
 		cache:false,
 		data:param,
@@ -1638,33 +1543,11 @@ function initStopCarReport(type,pageNo,intPageSize,param){
 			}
 		},
 		success:function(returnData){
-			if(returnData.code==0 && returnData.data && returnData.data.length>0){
-//				$.each(returnData.data,function(i,v){
-//					v.addr = "";
-//				});
+			if(returnData.statusCode==0 && returnData.data && returnData.data.list.length>0){
 				isStopCarRun=true;
 				var  time = 0;
-				var data = {"result":returnData.data}
-				$.each(data.result,function(i,v){
-					//stopcar_alltimes = stopcar_alltimes*1+v.stopSecond*1;
-					if(v.acc=="on"){
-						v.acc=$.i18n.prop("comm.ParkingNotOFF");
-					}else{
-						v.acc=$.i18n.prop("header.StopCarReport.Stop");
-					}
-				});
+				var data = {"result":returnData.data.list}
 				var stopcar_alltimes=returnData.msg;	
-				if (stopcar_alltimes!="" && stopcar_alltimes !=null) {
-					var hour = Math.floor (stopcar_alltimes / 3600);
-					var other = stopcar_alltimes % 3600;
-					var minute = Math.floor (other / 60);
-					var second = (other % 60).toFixed (0);
-					time = hour + "小时" + minute + "分"+second+"秒";
-				}
-				if($("#language").val()!="zh"){
-					time=time.replace("小时",$.i18n.prop('header.MileageReport.hours')).replace("分", $.i18n.prop('header.MileageReport.minutes')).replace("秒", $.i18n.prop('Alert.seconds'));
-					//time=time.replace("小时","hours").replace("分", "minutes").replace("秒", "second");
-				}
 				$("#"+type+"-alltimes").html(time);
 				$("#"+type+"-tbody").html(template(type+"-tbody-json",{result:data.result,pageNo:StopCarPageNo,pageSize:StopCarPageSize}));
 				StopCarTotalRecord = returnData.dataTotalRows;

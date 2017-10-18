@@ -73,8 +73,15 @@ public class DeviceListPojo {
 			private String vehicleNumber   ;
 			private String	activTime;
 			private String platformEndDate;
+			private Integer packageType = 1;
 			
 			
+			public Integer getPackageType() {
+				return packageType;
+			}
+			public void setPackageType(Integer packageType) {
+				this.packageType = packageType;
+			}
 			public String getActivTime() {
 				return activTime;
 			}

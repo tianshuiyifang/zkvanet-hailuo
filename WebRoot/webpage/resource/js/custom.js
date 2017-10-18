@@ -39,8 +39,36 @@ function alarmToggle(){
 	   checkboxAllSelectToggle("#alarmAllSelect","input[name='alarm_item']");
 	});
 }
-$("#alarmMessage .alarm-close").click(function(){
+$("#alarmMessage .alarm-close ").click(function(){
 	$("#alarmMessage").toggle(); 
+});
+$("#orderMessage .order-close-c ").click(function(){
+	$("#orderMessage").css({"width":"900px","height":"250px","right":"15px","bottom":"15px"});
+	$(".alarm-body .table-scrollbar").css({"height":"200px"});
+	$("#orderMessage").toggle(); 
+});
+$("#orderMessage .order-close-e ").click(function(){
+	var winWidth;
+	var winHeight;
+	// 获取窗口宽度
+	if (window.innerWidth)
+	winWidth = window.innerWidth;
+	else if ((document.body) && (document.body.clientWidth))
+	winWidth = document.body.clientWidth;
+	// 获取窗口高度
+	if (window.innerHeight)
+	winHeight = window.innerHeight;
+	else if ((document.body) && (document.body.clientHeight))
+	winHeight = document.body.clientHeight;
+	// 通过深入 Document 内部对 body 进行检测，获取窗口大小
+	if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth)
+	{
+	winHeight = document.documentElement.clientHeight;
+	winWidth = document.documentElement.clientWidth;
+	}
+	$("#orderMessage").css({"width":winWidth,"height":winHeight,"right":"0px","bottom":"0px"});
+	var newwinHeight=winHeight*0.9;
+	$(".alarm-body .table-scrollbar").css({"height":newwinHeight});
 });
 //告警面板消息切换
 function alarmInfoToggle(){

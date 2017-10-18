@@ -238,7 +238,6 @@ setJsLanguage(locale);
 			<div class="navbar-right p-15 p-b0 ta-r">
 				<div class="user-time">
 					
-						<a  href="/business/ConmmandLogs/toBusinessLog">业务日志</a>&emsp;
 					
 					<!-- <span class="pr theme-switch"><a class="js-theme-switch-btn theme-switch-btn cp c-fff ">切换主题&nbsp;<i class="fa fa-caret-down"></i></a> 
 		            <div class="theme-box pa c-666 p-lr10 p-tb5 ta-l lh-2 b1-ccc bc-fff">
@@ -273,7 +272,8 @@ setJsLanguage(locale);
 				<li id="customerManagement"><a href="meunController.do?search"><i class="fa fa-group"></i>&nbsp;客户管理</a></li>
 				<li id="reportsManagement"><a href="meunController.do?report"><i class="fa fa-table" aria-hidden="true"></i>&nbsp;统计报表</a></li>
 				<li id="devicesManagement"><a href="meunController.do?device"><i class="fa fa-hdd-o" aria-hidden="true"></i>&nbsp;设备管理</a></li>
-				<li id="orderManagement"><a href="meunController.do?order"><i class="fa fa-hdd-o" ></i>&nbsp;订单管理</a></li>
+                <li id="orderManagementext"><a href="meunController.do?orderext"><i class="fa fa-hdd-o" ></i>&nbsp;订单管理</a></li>
+				<li id="orderManagement"><a href="meunController.do?order"><i class="fa fa-hdd-o" ></i>&nbsp;订单审核</a></li>
 		</ul>
 		<div id="complexQuery" class="navbar-right  p-10" data-option="{'renderingFlag':false}"></div>
 	</div>
@@ -1179,12 +1179,12 @@ function exitSys()
 <div class="motion-nav">
 <div class="side-busines account-side-busines p-tb10" id="motion-ReportTab">
 <ul class="tab-nav" >
-<li class="active" data="sport"><a class="cp" onclick="cleanRunData(1)" >订单统计</a></li>
-<!-- <li data="mileage"><a class="cp" onclick="showMileageTab()" >里程报表</a></li>
-<li data="Overspeed" ><a class="cp" onclick="showOverspeedTab()">超速报表</a></li> 
-<li data="stopCar"><a class="cp" onclick="showStopCarTab()">停留报表</a></li>
-<li data="stopNotOff"><a class="cp" onclick="showStopNotOffTab()">停车未熄火报表</a></li>
-<li data="acc"><a class="cp" onclick="showAccTab()">ACC报表</a></li> -->
+<li class="active" data="sport"><a class="cp" onclick="cleanRunData(1)" >车辆订单统计</a></li>
+ <li data="mileage"><a class="cp" onclick="showMileageTab()" >车辆订单报警统计</a></li>
+<li data="Overspeed" ><a class="cp" onclick="showOverspeedTab()">经销商订单统计</a></li> 
+<li data="stopCar"><a class="cp" onclick="showStopCarTab()">经销商订单报警统计</a></li>
+<li data="stopNotOff"><a class="cp" onclick="showStopNotOffTab()">订单异常统计</a></li>
+<!--<li data="acc"><a class="cp" onclick="showAccTab()">ACC报表</a></li> -->
 </ul>
 </div>
 </div>
@@ -1221,7 +1221,7 @@ function exitSys()
 								<p class="fr word-tip m-b0">
 									<i class="fa fa-exclamation-circle c-F0AD4E"></i>&nbsp; 该统计为隔天离线统计，仅统计昨天及以前的相关数据。
 								</p>
-                  				<b>订单统计</b>
+                  				<b>车辆订单统计</b>
                   				</div>
 							</div>
 							<div class="right-tab-con">
@@ -1256,23 +1256,22 @@ function exitSys()
 									</form>
 								</div>
 								<div class="table-header">
-									<!-- <div class="p-tb8 p-lr15 b-b1-ddd fs-14 ta-r bc-fff">
-										<b>总计：</b> 
-										<span>总里程&nbsp;<b id="allmileage">0</b>&nbsp;KM</span>,
-										<span>超速&nbsp;<b id="alloverSpeedTimes">0</b>&nbsp;次</span>,
-										<span>停留&nbsp;<b id="allstopTimes">0</b>&nbsp;次</span>
-									</div> -->
 									<table id="sportTableHeader" class="table table-hover table-ellipsis m-b0">
 										<thead>
 											<tr>
-												<th>序号</th>
-												<th>设备id</th>
+												<th>编号</th>
+												<th>设备IMEI号</th>
 												<th>车牌号</th>
-												<th>订单数量</th>
-												<th>总载重</th>
-												<th>总运输时长(时)</th>
-												<th>报警订单数</th>
-												<th>总里程数(公里)</th>
+												<th>订单总数</th>
+												<th title="订单总里程（公里）">订单总里程(公里)</th>
+												<th title="平均车速（公里/小时）">平均车速(公里/小时)</th>
+												<th title="滞留次数">滞留次数</th>
+												<th title="滞留总时长（小时）">滞留总时长(/时)</th>
+												
+												<th title="累计总载重（吨）">累计总载重(吨)</th>
+												<th title="运输总时长（小时）">运输总时长(/时)</th>
+												<th title="平均运输时长（小时）">平均运输时长(/时)</th>
+												<th title="平均里程数（公里）">平均里程数(公里)</th>
 											</tr>
 										</thead>
 									</table>
@@ -1280,27 +1279,35 @@ function exitSys()
 								<div class="table-scrollbar oy-a" >
 									<table id="sportTableContent" class="table table-hover table-ellipsis">
 										<colgroup>
-											<col width="100">
-											<col> 
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
+											<col width="5%">
+											<col width="8%"> 
+											<col width="5%">
+											<col width="6%">
+											<col width="12%">
+											<col width="12%">
+											<col width="6%">
+											<col width="10%">
+											<col width="6%">
+											<col width="10%">
+											<col width="10%">
+											<col width="10%">
 										</colgroup>
 										<tbody id="run-tbody">
 											<script type="text/html" id="run-tbody-json">
 													{{each result as row i}}
 													 	<tr>
-															<td>{{i+1}}</td>
 															<td title="{{row.deviceId}}">{{row.deviceId}} </td>
-															<td title="{{row.yunshuchehao}}">{{row.yunshuchehao}}</td>
+															<td title="{{row.imei}}">{{row.imei}} </td>
+															<td title="{{row.plateNumber}}">{{row.plateNumber}}</td>
 															<td title="{{row.orderCount}}">{{row.orderCount}}</td>
+															<td title="{{row.orderMileage}}">{{row.orderMileage}}</td>
+															<td title="{{row.avgSpeed}}">{{row.avgSpeed}}</td>
+															<td title="{{row.timeoutExcepTimesSum}}">{{row.timeoutExcepTimesSum}}</td>
+															<td title="{{row.timeoutExcepDurationSum}}">{{row.timeoutExcepDurationSum}}</td>
 															<td title="{{row.weightSum}}">{{row.weightSum}}</td>
 															<td title="{{row.duration}}">{{row.duration}}</td>
-															<td title="{{row.orderWaringCount}}">{{row.orderWaringCount}}</td>
-															<td title="{{row.orderMileage}}">{{row.orderMileage}}</td>
+															<td title="{{row.avgDuration}}">{{row.avgDuration}}</td>
+															<td title="{{row.avgMileage}}">{{row.avgMileage}}</td>
 													 	</tr>
 													{{/each}}
 													</script>
@@ -1312,55 +1319,20 @@ function exitSys()
 							</div>
 						</div>
 					<!--运动总览  END -->
-<!--里程统计  START index=1 -->
+<!--车辆订单报警统计  START index=1 -->
 <div class="mileage-statistical-box dn">
 <div class="rightside-header clearfix">
 <div class="p-tb5"> 
 <p class="fr word-tip m-b0" id="milage_day" style="display: none;">
 <i class="fa fa-exclamation-circle c-F0AD4E"></i>&nbsp; <b>该统计为隔天离线统计，仅统计昨天及以前的相关数据。</b>
 </p>
-<b>里程报表</b>
+<b>车辆订单报警统计</b>
 </div>
 </div>
 <div class="right-tab-con">
 <div class="funcbar">
-<form action="/mileageReportController/export"  class="form-inline search-criteria clearfix p-tb10" method="post" id="MileageFrom"> 
-<div class="m-b10 clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first" title="设备名称">设备名称:</label>
-<div class="pr d-ib">
-<div class="input-group input-group-sm">
-<input type="text" size="37"  name="imeis" id="queryDevice_select_mileage" onkeydown="keyDownMileage(event)" onclick="showQueryTab({'target':'mileage','checkFlag':true,'isQuery':false})" onkeyup="javascript:query_history = $(this).val();" placeholder="请输入设备名称或IMEI" class="form-control search-text js-select-user-sales" >
-<span class="input-group-btn"><button type="button" onclick="showQueryTab({'target':'mileage','checkFlag':true,'isQuery':true})" class="btn btn-default queryDevice_btn_mileage" title=""><i class="fa fa-caret-down"></i></button></span>
-</div>
-<div id="queryDevice_div_mileage" class="js-equipment-items equipment-items b1-ccc dn">
+<form action="rest/reportControl/runReport/devexportalert"  class="form-inline search-criteria clearfix p-tb10"  method="post" id="MileageFrom"> 
 
-<div class="list-box auto-scrollbar">
-<ul id="queryDevice_Tree_mileage" class="ztree">
-</ul>
-<div class="ta-c c-666 p-tb10 noDataHide"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div>
-<div class="ta-c m-tb15 TreeLogindataTable" ><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
-</div>
-<div class="p-tb5 p-lr15 b-t1-ccc clearfix hideConfirmClose">
-<div class="fr">
-<button type="button" onclick="treeCheckboxAllSelect('mileage')" class="btn btn-primary btn-xs">&nbsp;确定&nbsp;</button>
-<button type="button" onclick="javascript:$('#queryDevice_div_mileage').hide()" class="btn btn-default btn-xs js-btn-close">&nbsp;取消&nbsp;</button>
-</div>
-<label class="icheck-min "><input type="checkbox" class="deviceAllCheckbox">&nbsp;全选</label>
-</div>
-</div>
-</div>
-</div>
-<div class="form-group p-t5 fl"> 
-<label title="统计方式">统计方式:</label>&nbsp;
-<label class="icheck-min" title="里程"><input id="checkSegment"  value="segment" type="radio" checked="checked" name="type">&nbsp;里程</label>&nbsp;&nbsp;
-
-   
-<label class="icheck-min" title="天">&nbsp;<input  value="day"    type="radio" name="type">&nbsp;天</label>
-
-
-</div>
-</div> 
 <div class=" clearfix">	
 <div class="form-group fl p-r15">
 <label class="label-first" title="快捷时间">快捷时间:</label>
@@ -1384,38 +1356,26 @@ function exitSys()
 <button type="button"  onclick="exportMileageReport()" class="btn btn-default btn-sm">导出</button>
 </div> 
 </div>
-<input type="hidden" name="userIdMileage" id="userIdMileage"/>
-<input type="hidden" name="startTimeMileage" id="startTimeMileage">
-<input type="hidden" name="endTimeMileage" id="endTimeMileage">
-<input type="hidden" name="imeisMileage" id="imeisMileage">
-<input type="hidden" name="typeMileage" id="typeMileage">	
-<input type="hidden" name="jsonMileage" id="jsonMileage">
-<input type="hidden" name="pageNoMileage" id="pageNoMileage">	
-<input type="hidden" name="pageSizeMileage" id="pageSizeMileage">
+<input type="hidden" name="changshangId" id="rchangshangId">
+<input type="hidden" name="startTime" id="startTime">
+<input type="hidden" name="endTime" id="endTime">
 </form>
 </div>
 <!--按里程统计  START -->
 <div class="segment-box">  
 <div class="table-header">
-<div class="p-tb8 p-lr15 b-b1-ddd fs-14 ta-r bc-fff">
-<b>总计：</b> 
-<span>总里程&nbsp;<b id="allmileages">0</b>&nbsp;KM</span>,
-<span>总用时&nbsp;<b id="allmileageshours">0</b>&nbsp;</span>
-</div>
+
 <table  class="table table-hover table-ellipsis m-b0" id="mileageTableHeader">
 <thead>
 <tr>
-<th title="序号">序号</th>
-<th title="设备名称">设备名称</th>
-<th title="设备IMEI">设备IMEI</th>
-<th title="型号">型号</th>
-<th title="开始时间">开始时间</th>
-<th title="结束时间">结束时间</th> 
-<th title="起点">起点</th>
-<th title="终点">终点</th>
-<th title="总里程(KM)">总里程(KM)</th>
-<th title="总用时(时间)">总用时(时间)</th>
-<th title="平均速度(KM/H)">平均速度(KM/H)</th>
+<th title="设备ID">设备ID</th>
+<th title="车牌号">车牌号</th>
+<th title="异常报警总数">异常报警总数</th>
+<th title="吨位异常报警总数">吨位异常报警总数</th>
+<th title="滞留异常报警总数">滞留异常报警总数</th>
+<th title="滞留次数">滞留次数</th> 
+<th title="滞留总时长（小时）">滞留总时长(小时)</th>
+
 </tr>
 </thead>
 </table>
@@ -1423,47 +1383,26 @@ function exitSys()
 <div class="table-scrollbar oy-a">
 <table id="mileageTableContent" class="table table-hover table-ellipsis">
 <colgroup>
-<col width="80">
-<col>
-<col width="130">
-<col>
-<col>
-<col>
-<col>
-<col>
-<col>
-<col>
-<col>
+<col width="14%">
+<col width="14%">
+<col width="14%">
+<col width="14%">
+<col width="14%">
+<col width="15%">
+<col width="15%">
+
 </colgroup>
 <tbody id="mileage-tbody">
 <script type="text/html" id="mileage-tbody-json">
 {{each result as row i}}
 <tr>
-<td>{{(pageNo-1)*pageSize+(i+1)}}</td>
-<td title="{{row.deviceName}}">{{row.deviceName}}</td>
-<td title="{{row.imei}}">{{row.imei}}</td>
-<td title="{{row.mcType}}">{{row.mcType}}</td>
-<td title="{{row.startTime}}">{{row.startTime}}</td>
-<td title="{{row.endTime}}">{{row.endTime}}</td>
-<td title="">
-	 {{if row.startAddr == "" || row.startAddr == null}}
-			<span id="mileage_start_{{i}}" style="display:none;"><i class="fa fa-spinner fa-pulse fa-fw"></i>正在解析地址</span>
-			<a    id="mileage_a_start_{{i}}" href="javascript:;" onclick="clickAddres('start_{{i}}','{{row.startLng}}','{{row.startLat}}','mileage')">查看地址</a>
-	 {{else}}
-			{{row.startAddr}}
-	 {{/if}}
-</td>
-<td title="">
-	 {{if row.endAddr == "" || row.startAddr == null}}
-			<span id="mileage_end_{{i}}" style="display:none;"><i class="fa fa-spinner fa-pulse fa-fw"></i>正在解析地址</span>
-			<a    id="mileage_a_end_{{i}}" href="javascript:;" onclick="clickAddres('end_{{i}}','{{row.endLng}}','{{row.endLat}}','mileage')">查看地址</a>
-	 {{else}}
-			{{row.endAddr}}
-	 {{/if}}
-</td>
-<td title="{{row.dis}}">{{row.dis}}</td>
-<td title="{{row.runTimeSecond}}">{{row.runTimeSecond}}</td>
-<td title="{{row.avgSpeed}}">{{row.avgSpeed}}</td>
+<td title="{{row.deviceId}}">{{row.deviceId}}</td>
+<td title="{{row.plateNumber}}">{{row.plateNumber}}</td>
+<td title="{{row.exceptCount}}">{{row.exceptCount}}</td>
+<td title="{{row.weightExcepCount}}">{{row.weightExcepCount}}</td>
+<td title="{{row.timeoutExcepCount}}">{{row.timeoutExcepCount}}</td>
+<td title="{{row.timeoutExcepTimesSum}}">{{row.timeoutExcepTimesSum}}</td>
+<td title="{{row.timeoutExcepDurationSum}}">{{row.timeoutExcepDurationSum}}</td>
 </tr>
 {{/each}}
 </script>
@@ -1475,96 +1414,19 @@ function exitSys()
 </div>
 </div>
 <!--按里程统计  END -->
-<!--按天统计  START -->
-<div class="day-box dn">
-<div class="table-header">
-<div class="p-tb8 p-lr15 b-b1-ddd fs-14 ta-r bc-fff">
-<b>总计：</b> 
-<span>总里程&nbsp;<b id="allmileages-day">0</b>&nbsp;KM</span>
-</div>
-<table id="dayTableHeader" class="table table-hover table-ellipsis m-b0">
-<thead>
-<tr>
-<th>序号</th>
-<th>设备名称</th>
-<th>设备IMEI</th>
-<th>型号</th>
-<th>日期</th>
-<th>总里程(KM)</th>
-</tr>
-</thead>
-</table>
-</div>
-<div class="table-scrollbar oy-a">
-<table id="dayTableContent" class="table table-hover table-ellipsis">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody id="mileage-day-tbody">
-<script type="text/html" id="mileage-day-tbody-json">
-{{each result as row i}}
-<tr>
-<td>{{(pageNo-1)*pageSize+(i+1)}}</td>
-<td title="{{row.deviceName}}">{{row.deviceName}} </td>
-<td title="{{row.imei}}">{{row.imei}}</td>
-<td title="{{row.mcType}}">{{row.mcType}}</td>
-<td title="{{row.atDay | dateFormat}}">{{row.atDay | dateFormat}}</td>
-<td title="{{row.dis}}">{{row.dis}}</td>
-</tr>
-{{/each}}
-</script>
-</tbody>
-</table>
-<div id="mileage-day-noData"><div class="ta-c c-666 p-tb10"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div></div>
-<div id="paging-day" class="simple-pagination-custom ta-c p-b10"></div>
-<div id="mileage-day-loading" hidden="true" class="ta-c p-tb25"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
-</div>
-</div>
-<!--按天程统计  END -->
+
 </div>
 </div>
 <!--超速统计  START index=2 -->	
 <div class="overspeed-statistical-box dn">
 <div class="rightside-header clearfix">
 <div class="p-tb5">
-<b>超速报表</b>
+<b>经销商订单统计</b>
 </div>
 </div>
 <div class="right-tab-con">
 <div class="funcbar">
-<form action="/overspeed/export" class="form-inline search-criteria clearfix p-tb10" method="post" id="OverspeedFrom"> 
-<div class="m-b10 clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first" title="设备名称">设备名称:</label>
-<div class="pr d-ib">
-<div class="input-group input-group-sm">
-<input type="text" size="37" name="imeis"  id="queryDevice_select_Overspeed" onkeydown="keyDownOverspeed(event)" onclick="showQueryTab({'target':'Overspeed','checkFlag':true,'isQuery':false})" onkeyup="javascript:query_history = $(this).val();" placeholder="请输入设备名称或IMEI" class="form-control search-text js-select-user-sales" >
-<span class="input-group-btn"><button type="button" onclick="showQueryTab({'target':'Overspeed','checkFlag':true,'isQuery':true})" class="btn btn-default queryDevice_btn_Overspeed" title=""><i class="fa fa-caret-down"></i></button></span>
-</div>
-<div id="queryDevice_div_Overspeed" class="js-equipment-items equipment-items b1-ccc dn">
-<div class="list-box auto-scrollbar">
-<ul id="queryDevice_Tree_Overspeed" class="ztree"></ul>
-<div class="ta-c c-666 p-tb10 noDataHide"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div>
-<div class="ta-c m-tb15 TreeLogindataTable" ><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
-</div>
-<div class="p-tb5 p-lr15 b-t1-ccc clearfix hideConfirmClose">						                        		
-<div class="fr">
-<button type="button" onclick="treeCheckboxAllSelect('Overspeed')" class="btn btn-primary btn-xs">&nbsp;确定&nbsp;</button>
-<button type="button" onclick="javascript:$('#queryDevice_div_Overspeed').hide()" class="btn btn-default btn-xs js-btn-close">&nbsp;取消&nbsp;</button>
-</div>
-<label class="icheck-min"><input type="checkbox" class="deviceAllCheckbox">&nbsp;全选</label>
-</div>
-</div>
-</div>
-<label class="m-l50 m-r15" title="速度">速度大于等于：</label>
-<input type="text" name="speed" class="form-control form-control-sm" size="5"/>
-</div>
-</div> 
+<form action="rest/reportControl/runReport/agencyexport" class="form-inline search-criteria clearfix p-tb10" method="post" id="OverspeedFrom"> 
 <div class="clearfix">
 <div class="form-group fl p-r15"> 
 <label class="label-first" title="快捷时间">快捷时间:</label>
@@ -1588,27 +1450,26 @@ function exitSys()
 <button type="button" onclick="exportOverspeedReport()" class="btn btn-default btn-sm">导出</button>
 </div>
 </div>
-<input type="hidden" name="userIdOverspeed" id="userIdOverspeed">
-<input type="hidden" name="startTimeOverspeed" id="startTimeOverspeed">
-<input type="hidden" name="endTimeOverspeed" id="endTimeOverspeed">
-<input type="hidden" name="imeisOverspeed" id="imeisOverspeed">
-<input type="hidden" name="jsonOverspeed" id="jsonOverspeed">
-<input type="hidden" name="pageNoOverspeed" id="pageNoOverspeed">
-<input type="hidden" name="pageSizeOverspeed" id="pageSizeOverspeed">
+<input type="hidden" name="changshangId" id="achangshangId">
+<input type="hidden" name="startTime" id="startTime">
+<input type="hidden" name="endTime" id="endTime">
+
 </form>
 </div>
 <div class="table-header">
 <table class="table table-hover table-ellipsis m-b0" id="overspeedTableHeader">
 <thead>
 <tr>
-<th title="序号">序号</th>
-<th title="设备名称">设备名称</th>
-<th title="设备IMEI">设备IMEI</th>
-<th title="型号">型号</th>
-<th title="定位时间">定位时间</th>
-<th title="速度">速度(KM/H)</th>
-<th title="地址">地址</th>
-<th title="经度/纬度">经度/纬度</th>
+<th title="经销商ID">经销商ID</th>
+<th title="经销商名称">经销商名称</th>
+<th title="平均车速">平均车速</th>
+<th title="累计总载重（吨）">累计总载重（吨）</th>
+<th title="订单总数">订单总数</th>
+<th title="运输总时长（小时） ">运输总时长（小时）</th>
+<th title="订单总里程（公里）">订单总里程（公里）</th>
+<th title="平均运输时长（小时）">平均运输时长（小时）</th>
+<th title="平均里程数（公里）">平均里程数（公里）</th>
+<th title="厂商ID">厂商ID</th>
 </tr>
 </thead>
 </table>
@@ -1616,37 +1477,31 @@ function exitSys()
 <div class="table-scrollbar oy-a">
 <table id="overspeedTableContent" class="table table-hover table-ellipsis table-normal-a">
 <colgroup>
-<col width="60">
-<col width="150"> 
-<col width="150">
-<col width="120">
-<col width="150">
-<col width="120">
-<col>
-<col  width="180">
+<col width="10%">
+<col width="10%"> 
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
 </colgroup>
 <tbody id="overspeed-tbody" >
 <script type="text/html" id="overspeed-tbody-json">
 {{each result as row i}}
 <tr>
-<td>{{(pageNo-1)*pageSize+(i+1)}}</td>
-<td title="{{row.deviceName}}">{{row.deviceName}} </td>
-<td title="{{row.imei}}">{{row.imei}}</td>
-<td title="{{row.mcType}}">{{row.mcType}}</td>
-<td title="{{row.time}}">{{row.time}}</td>
-<td title="{{row.speed}}">
-			{{if row.speed != "" || row.speed != null}}{{row.speed}}
-			{{else}}0
-			{{/if}}
-</td>
-<td title="">{{if row.addr == "" || row.addr == null}}
-			<span id="overspeed_end_{{i}}" style="display:none;"><i class="fa fa-spinner fa-pulse fa-fw"></i>正在解析地址</span>
-			<a    id="overspeed_a_end_{{i}}" href="javascript:;" onclick="clickAddres('end_{{i}}','{{row.lng}}','{{row.lat}}','overspeed')">查看地址</a>
-	 {{else}}
-			{{row.addr}}
-	 {{/if}}
-</td>
-<td><a onclick="Mapposition({'lng':{{row.lng}},'lat':{{row.lat}}})" title="{{row.lng}}/{{row.lat}}" >{{row.lng}}&nbsp;/&nbsp;{{row.lat}}</a></td>
+<td title="{{row.agencyId}}">{{row.agencyId}} </td>
+<td title="{{row.agencyName}}">{{row.agencyName}} </td>
+<td title="{{row.avgSpeed}}">{{row.avgSpeed}}</td>
+<td title="{{row.weightSum}}">{{row.weightSum}}</td>
+<td title="{{row.orderCount}}">{{row.orderCount}}</td>
+<td title="{{row.duration}}">{{row.duration}}</td>
+<td title="{{row.orderMileage}}">{{row.orderMileage}}</td>
+<td title="{{row.avgDuration}}">{{row.avgDuration}}</td>
+<td title="{{row.avgMileage}}">{{row.avgMileage}}</td>
+<td title="{{row.changshangId}}">{{row.changshangId}}</td>
 </tr>
 {{/each}}
 </script>
@@ -1663,50 +1518,12 @@ function exitSys()
 <div class="remain-statistical-box dn">
 <div class="rightside-header clearfix">
 <div class="p-tb5">
-<b>停留报表</b>
+<b>经销商订单报警统计</b>
 </div>
 </div>
 <div class="right-tab-con">
 <div class="funcbar">
-<form action="/stopCar/export?type=0" class="form-inline search-criteria clearfix p-tb10" method="post" id="StopCarFrom"> 
-<div class="m-b10 clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first" title="设备名称">设备名称:</label>
-<div class="pr d-ib">
-<div class="input-group input-group-sm">
-<input type="text" size="37" name="imeis" id="queryDevice_select_stopCar" onkeydown="keyDownParking(event)" onclick="showQueryTab({'target':'stopCar','checkFlag':true,'isQuery':false})" onkeyup="javascript:query_history = $(this).val();" placeholder="请输入设备名称或IMEI" class="form-control search-text js-select-user-sales" >
-<span class="input-group-btn"><button type="button" onclick="showQueryTab({'target':'stopCar','checkFlag':true,'isQuery':true})" class="btn btn-default queryDevice_btn_stopCar" title=""><i class="fa fa-caret-down"></i></button></span>					  
-</div>
-<div id="queryDevice_div_stopCar" class="js-equipment-items equipment-items b1-ccc dn">						                        		
-<div class="list-box auto-scrollbar">
-<ul id="queryDevice_Tree_stopCar" class="ztree">
-</ul>
-<div class="ta-c c-666 p-tb10 noDataHide"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div>
-<div class="ta-c m-tb15 TreeLogindataTable" ><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
-</div>
-<div class="p-tb5 p-lr15 b-t1-ccc clearfix hideConfirmClose">
-<div class="fr">
-<button type="button" onclick="treeCheckboxAllSelect('stopCar')" class="btn btn-primary btn-xs">&nbsp;确定&nbsp;</button>
-<button type="button" onclick="javascript:$('#queryDevice_div_stopCar').hide()" class="btn btn-default btn-xs js-btn-close">&nbsp;取消&nbsp;</button>
-</div>
-<label class="icheck-min"><input type="checkbox" class="deviceAllCheckbox">&nbsp;全选</label>
-</div>
-</div>
-</div>
-</div>
-<div class="form-group" style="display: none;">
-<label>状态:</label>
-<div class="d-ib w120 va-m">
-<span class="easydropdown easydropdown-sm easydropdown-full va-m">
-<select class="js-select" id="acc-statue-stopCar" name="acc"> 
-
-<option value="off">停留</option>
-
-</select>
-</span>
-</div>
-</div>
-</div>									
+<form action="rest/reportControl/runReport/agencyalertexport" class="form-inline search-criteria clearfix p-tb10" method="post" id="StopCarFrom"> 
 <div class="clearfix">
 <div class="form-group fl p-r15">
 <label class="label-first">快捷时间:</label>
@@ -1730,34 +1547,23 @@ function exitSys()
 <button type="button" onclick="exportStopCarReport()" class="btn btn-default btn-sm">导出</button>
 </div>
 </div>
-<input type="hidden" name="userIdstopCar" id="userIdstopCar"/>
-<input type="hidden" name="statusCachingstopCar" id="statusCachingstopCar">
-<input type="hidden" name="startTimestopCar" id="startTimestopCar">
-<input type="hidden" name="endTimestopCar" id="endTimestopCar">
-<input type="hidden" name="imeisstopCar" id="imeisstopCar">
-<input type="hidden" name="jsonStopCar" id="jsonStopCar">
-<input type="hidden" name="pageNoStopCar" id="pageNoStopCar">
-<input type="hidden" name="pageSizeStopCar" id="pageSizeStopCar">
+<input type="hidden" name="changshangId" id="aachangshangId">
+<input type="hidden" name="startTime" id="startTime">
+<input type="hidden" name="endTime" id="endTime">
 </form>
 </div>
 <div class="table-header">
-<div class="p-tb8 p-lr15 b-b1-ddd fs-14 ta-r bc-fff">
-<b>总计：</b> 
-<span>停留时间&nbsp;<b id="stopCar-alltimes">0</b>&nbsp;</span>
-</div>
 <table class="table table-hover table-ellipsis m-b0" id="remainTableHeader">
 <thead>
 <tr>
-<th title="序号">序号</th>
-<th title="设备名称">设备名称</th>
-<th title="设备IMEI">设备IMEI</th>
-<th title="型号">型号</th>
-<th title="状态">状态</th>
-<th title="开始时间">开始时间</th>
-<th title="结束时间">结束时间</th>
-<th title="地址">地址</th>
-<th title="经度/纬度">经度/纬度</th>
-<th title="停留时间">停留时间</th>
+<th title="经销商ID">经销商ID</th>
+<th title="经销商名称">经销商名称</th>
+<th title="异常报警总数">异常报警总数</th>
+<th title="载重异常报警总数">载重异常报警总数</th>
+<th title="滞留异常报警总数">滞留异常报警总数</th>
+<th title="滞留次数">滞留次数</th>
+<th title="滞留总时长（小时）">滞留总时长（小时）</th>
+<th title="报警订单数">报警订单数</th>
 </tr>
 </thead>
 </table>
@@ -1765,37 +1571,27 @@ function exitSys()
 <div class="table-scrollbar oy-a">
 <table id="remainTableContent" class="table table-hover table-ellipsis table-normal-a">
 <colgroup>
-<col width="60">
-<col> 
-<col>
-<col width="100">
-<col>
-<col>
-<col>
-<col>
-<col>
-<col>
+<col width="12%">
+<col width="12%"> 
+<col width="12%">
+<col width="12%">
+<col width="13%">
+<col width="13%">
+<col width="13%">
+<col width="13%">
 </colgroup>
 <tbody id="stopCar-tbody">
 <script type="text/html" id="stopCar-tbody-json">
 {{each result as row i}}
 <tr>
-<td>{{(pageNo-1)*pageSize+(i+1)}}</td>
-<td title="{{row.deviceName}}">{{row.deviceName}} </td>
-<td title="{{row.imei}}">{{row.imei}}</td>
-<td title="{{row.mcType}}">{{row.mcType}}</td>
-<td title="{{row.acc}}">{{row.acc}}</td>
-<td title="{{row.startTime}}">{{row.startTime}}</td>
-<td title="{{row.endTime}}">{{row.endTime}}</td>
-<td title="">{{if row.addr == "" || row.addr == null}}
-			<span id="stopcar_end_{{i}}" style="display:none;"><i class="fa fa-spinner fa-pulse fa-fw"></i>正在解析地址</span>
-			<a    id="stopcar_a_end_{{i}}" href="javascript:;" onclick="clickAddres('end_{{i}}','{{row.lng}}','{{row.lat}}','stopcar')">查看地址</a>
-	 {{else}}
-			{{row.addr}}
-	 {{/if}}
-</td>
-<td><a onclick="Mapposition({'lng':{{row.lng}},'lat':{{row.lat}}})"  title="{{row.lng}}/{{row.lat}}">{{row.lng}}&nbsp;/&nbsp;{{row.lat}}</a></td>
-<td title="{{row.durSecond}}">{{row.durSecond}}</td>
+<td title="{{row.agencyId}}">{{row.agencyId}} </td>
+<td title="{{row.agencyName}}">{{row.agencyName}} </td>
+<td title="{{row.exceptCount}}">{{row.exceptCount}}</td>
+<td title="{{row.weightExcepCount}}">{{row.weightExcepCount}}</td>
+<td title="{{row.timeoutExcepCount}}">{{row.timeoutExcepCount}}</td>
+<td title="{{row.timeoutExcepTimesSum}}">{{row.timeoutExcepTimesSum}}</td>
+<td title="{{row.timeoutExcepDurationSum}}">{{row.timeoutExcepDurationSum}}</td>
+<td title="{{row.orderWaringCount}}">{{row.orderWaringCount}}</td>
 </tr>
 {{/each}}
 </script>
@@ -1813,49 +1609,12 @@ function exitSys()
 <div class="not-extinguish-box dn">
 <div class="rightside-header clearfix">
 <div class="p-tb5">
-<b>停车未熄火报表</b>
+<b>订单异常统计</b>
 </div>
 </div>
 <div class="right-tab-con">
 <div class="funcbar">
-<form action="/stopCar/export?type=1" class="form-inline search-criteria clearfix p-tb10" method="post" id="stopNotOffFrom"> 
-<div class="m-b10 clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first" title="设备名称">设备名称:</label>
-<div class="pr d-ib">
-<div class="input-group input-group-sm">
-<input type="text" size="37" name="imeis" id="queryDevice_select_stopNotOff" onkeydown="keyDownStopNotOff(event)" onclick="showQueryTab({'target':'stopNotOff','checkFlag':true,'isQuery':false})" onkeyup="javascript:query_history = $(this).val();" placeholder="请输入设备名称或IMEI" class="form-control search-text js-select-user-sales" >
-<span class="input-group-btn"><button type="button" onclick="showQueryTab({'target':'stopNotOff','checkFlag':true,'isQuery':true})" class="btn btn-default queryDevice_btn_stopNotOff" title=""><i class="fa fa-caret-down"></i></button></span>					  
-</div>
-<div id="queryDevice_div_stopNotOff" class="js-equipment-items equipment-items b1-ccc dn">						                        		
-<div class="list-box auto-scrollbar">
-<ul id="queryDevice_Tree_stopNotOff" class="ztree">
-</ul>
-<div class="ta-c c-666 p-tb10 noDataHide"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div>
-<div class="ta-c m-tb15 TreeLogindataTable" ><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
-</div>
-<div class="p-tb5 p-lr15 b-t1-ccc clearfix hideConfirmClose">
-<div class="fr">
-<button type="button" onclick="treeCheckboxAllSelect('stopNotOff')" class="btn btn-primary btn-xs">&nbsp;确定&nbsp;</button>
-<button type="button" onclick="javascript:$('#queryDevice_div_stopNotOff').hide()" class="btn btn-default btn-xs js-btn-close">&nbsp;取消&nbsp;</button>
-</div>
-<label class="icheck-min"><input type="checkbox" class="deviceAllCheckbox">&nbsp;全选</label>
-</div>
-</div>
-</div>
-</div>
-<div class="form-group" style="display: none;">
-<label>状态:</label>
-<div class="d-ib w120 va-m">
-<span class="easydropdown easydropdown-sm easydropdown-full va-m">
-<select class="js-select" id="acc-statue-stopNotOff" name="acc"> 
-<option value="on">停车未熄火</option> 
-</select>
-</span>
-</div>
-
-</div>
-</div>									
+<form action="rest/reportControl/runReport/orderexception" class="form-inline search-criteria clearfix p-tb10" method="post" id="stopNotOffFrom"> 
 <div class="clearfix">
 <div class="form-group fl p-r15">
 <label class="label-first">快捷时间:</label>
@@ -1879,34 +1638,25 @@ function exitSys()
 <button type="button" onclick="exportstopNotOffReport()" class="btn btn-default btn-sm">导出</button>
 </div>
 </div>
-<input type="hidden" name="stopNotOffUserId" id="stopNotOffUserId"/>
-<input type="hidden" name="statusCachingstopNotOff" id="statusCachingstopNotOff">
-<input type="hidden" name="startTimestopNotOff" id="startTimestopNotOff">
-<input type="hidden" name="endTimestopNotOff" id="endTimestopNotOff">
-<input type="hidden" name="imeisstopNotOff" id="imeisstopNotOff">
-<input type="hidden" name="jsonStopNotOff" id="jsonStopNotOff">
-<input type="hidden" name="pageNoStopNotOff" id="pageNoStopNotOff">
-<input type="hidden" name="pageSizeStopNotOff" id="pageSizeStopNotOff">
+<input type="hidden" name="changshangId" id="ochangshangId">
+<input type="hidden" name="startTime" id="startTime">
+<input type="hidden" name="endTime" id="endTime">
 </form>
 </div>
 <div class="table-header">
-<div class="p-tb8 p-lr15 b-b1-ddd fs-14 ta-r bc-fff">
-<b>总计：</b> 
-<span>停留时间&nbsp;<b id="stopNotOff-alltimes">0</b>&nbsp;</span>
-</div>
 <table class="table table-hover table-ellipsis m-b0" id="notExtinguishTableHeader">
 <thead>
 <tr>
-<th title="序号">序号</th>
-<th title="设备名称">设备名称</th>
-<th title="设备IMEI">设备IMEI</th>
-<th title="型号">型号</th>
-<th title="状态">状态</th>
-<th title="开始时间">开始时间</th>
-<th title="结束时间">结束时间</th>
-<th title="地址">地址</th>
-<th title="经度/纬度">经度/纬度</th>
-<th title="停留时间">停留时间</th>
+<th title="设备ID">设备ID</th>
+<th title="车牌号">车牌号</th>
+<th title="订单ID">订单ID</th>
+<th title="发货单号">发货单号</th>
+<th title="发货单号">发货单号</th>
+<th title="经销商名称">经销商名称</th>
+<th title="载重异常报警总数">载重异常报警总数</th>
+<th title="滞留异常报警总数">滞留异常报警总数</th>
+<th title="滞留次数">滞留次数</th>
+<th title="滞留总时长（小时）">滞留总时长（小时）</th>
 </tr>
 </thead>
 </table>
@@ -1914,37 +1664,31 @@ function exitSys()
 <div class="table-scrollbar oy-a">
 <table id="notExtinguishTableContent" class="table table-hover table-ellipsis table-normal-a">
 <colgroup>
-<col width="60">
-<col> 
-<col>
-<col width="100">
-<col>
-<col>
-<col>
-<col>
-<col>
-<col>
+<col width="10%">
+<col width="10%"> 
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
 </colgroup>
 <tbody id="stopNotOff-tbody">
 <script type="text/html" id="stopNotOff-tbody-json">
 {{each result as row i}}
 <tr>
-<td>{{(pageNo-1)*pageSize+(i+1)}}</td>
-<td title="{{row.deviceName}}">{{row.deviceName}} </td>
-<td title="{{row.imei}}">{{row.imei}}</td>
-<td title="{{row.mcType}}">{{row.mcType}}</td>
-<td title="{{row.acc}}">{{row.acc}}</td>
-<td title="{{row.startTime}}">{{row.startTime}}</td>
-<td title="{{row.endTime}}">{{row.endTime}}</td>
-<td title="">{{if row.addr == "" || row.addr == null}}
-			<span id="stopNotOff_end_{{i}}" style="display:none;"><i class="fa fa-spinner fa-pulse fa-fw"></i>正在解析地址</span>
-			<a    id="stopNotOff_a_end_{{i}}" href="javascript:;" onclick="clickAddres('end_{{i}}','{{row.lng}}','{{row.lat}}','stopNotOff')">查看地址</a>
-	 {{else}}
-			{{row.addr}}
-	 {{/if}}
-</td>
-<td><a onclick="Mapposition({'lng':{{row.lng}},'lat':{{row.lat}}})"  title="{{row.lng}}/{{row.lat}}">{{row.lng}}&nbsp;/&nbsp;{{row.lat}}</a></td>
-<td title="{{row.durSecond}}">{{row.durSecond}}</td>
+<td title="{{row.deviceId}}">{{row.deviceId}} </td>
+<td title="{{row.plateNumber}}">{{row.plateNumber}} </td>
+<td title="{{row.orderId}}">{{row.orderId}}</td>
+<td title="{{row.orderNo}}">{{row.orderNo}}</td>
+<td title="{{row.agencyName}}">{{row.agencyName}}</td>
+<td title="{{row.exceptCount}}">{{row.exceptCount}}</td>
+<td title="{{row.weightExcepCount}}">{{row.weightExcepCount}}</td>
+<td title="{{row.timeoutExcepCount}}">{{row.timeoutExcepCount}}</td>
+<td title="{{row.timeoutExcepTimesSum}}">{{row.timeoutExcepTimesSum}}</td>
+<td title="{{row.timeoutExcepDurationSum}}">{{row.timeoutExcepDurationSum}}</td>
 </tr>
 {{/each}}
 </script>

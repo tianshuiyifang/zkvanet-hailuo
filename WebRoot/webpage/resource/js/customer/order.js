@@ -42,6 +42,85 @@ function uploadimage(orderid,orderNo){
 	getImage(orderNo);
 }
 
+function showVerify(orderid,salesCheckStatus,salesCheckMsg,
+		marketCheckStatus,marketCheckMsg,
+		financialCheckStatus,financialCheckMsg){
+	
+	id=orderid;
+	
+	$("#showVerify").modal();
+	
+	//审核标签
+	$('#verifyTitle').html("");
+	var title="订单审核";
+	
+	$('#saleAdvise').attr("disabled",true);
+	$('#marketAdvise').attr("disabled",true);
+	$('#financeAdvise').attr("disabled",true);
+	
+	if($('.csrole').val()=='1'){
+		title="订单审核-厂商管理员";
+		$('#verifyStatusBtn').hide();
+		$('#nverifyStatusBtn').hide();
+	}else if($('.csrole').val()=='2'){
+		title="订单审核-销售";
+		$('#saleAdvise').attr("disabled",false);
+	}else if($('.csrole').val()=='3'){
+		title="订单审核-市场";
+		$('#marketAdvise').attr("disabled",false);
+	}else if($('.csrole').val()=='4'){
+		title="订单审核-财务";
+		$('#financeAdvise').attr("disabled",false);
+	}else{
+		//其他用户隐藏确定按钮
+		$('#verifyStatusBtn').hide();
+		$('#nverifyStatusBtn').hide();
+	}
+	$('#verifyTitle').html(title);
+	
+	//审核图表
+	
+	$('#marketAdvisetag').html("市场部审核");
+	$('#financeAdvisetag').html("财务部审核");
+	$('#saleAdvisetag').html("销售部审核");
+	
+	var htmlpass="<i class='fa  fa-check-square' style='color:#29de29;left:15px;position:relative'>&nbsp&nbsp审核通过</i>";
+	var htmlnopass="<i class='fa  fa-exclamation' style='color:#efa22c;left:15px;position:relative'>&nbsp&nbsp审核不通过</i>"
+	var htmlno="<i class='fa  fa-circle' style='color:#96a296;left:15px;position:relative'>&nbsp&nbsp未审核</i>";
+	
+	
+	if(salesCheckStatus==1){
+		$('#saleAdvisetag').append(htmlpass);
+	}else if(salesCheckStatus==2){
+		$('#saleAdvisetag').append(htmlnopass);
+	}else{
+		$('#saleAdvisetag').append(htmlno);
+	}
+	
+	if(marketCheckStatus==1){
+		$('#marketAdvisetag').append(htmlpass);
+	}else if(marketCheckStatus==2){
+		$('#marketAdvisetag').append(htmlnopass);
+	}else{
+		$('#marketAdvisetag').append(htmlno);
+	}
+	
+	if(financialCheckStatus==1){
+		$('#financeAdvisetag').append(htmlpass);
+	}else if(financialCheckStatus==2){
+		$('#financeAdvisetag').append(htmlnopass);
+	}else{
+		$('#financeAdvisetag').append(htmlno);
+	}
+	
+	$('#saleAdvise').val(salesCheckMsg);
+	$('#marketAdvise').val(marketCheckMsg);
+	$('#financeAdvise').val(financialCheckMsg);
+	
+	
+	
+}
+
 function other_upload(file) { 
 		
 		if(!file.files || !file.files[0]){
@@ -61,7 +140,38 @@ function other_upload(file) {
 	 	}
 	 	reader.readAsDataURL(file.files[0]);
 }	
-
+function  verifyStatus(statusCode){
+	var msg;
+	var url='';
+	if($('.csrole').val()=='2'){
+		url='rest/Gps/salesCheck';
+		msg=$('#saleAdvise').val();
+	}else if($('.csrole').val()=='3'){
+		url='rest/Gps/marketCheck';
+		msg=$('#marketAdvise').val();
+	}else if($('.csrole').val()=='4'){
+		url='rest/Gps/financialCheck';
+		msg=$('#financeAdvise').val();
+	}
+	
+	$.ajax({
+			type:'POST',
+			url: url, 
+			data: {"id": id,"statusCode":statusCode,"msg":msg},
+			async: false,
+			dataType: 'json',
+			success: function(data){
+					if(data.statusCode==0){
+						layer.msg('审核成功');
+						$("#showVerify").modal('hide');
+						showorder();
+				}
+			},
+			error: function(err){
+					layer.msg('网络故障');
+				}
+	});
+} 
 function  getImage(orderNo){
 	
 	$.ajax({
@@ -129,7 +239,41 @@ $(document).ready(function(){
 	
 	 var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
 	 ztreeOnClick(null,"treeDemo",treeObj.getNodes()[0]);
+	 
+	 initTime();
+	 $(".order_status").easyDropDown();
+	 
 });
+
+function initTime(){
+	$("#startTime").focus(function(){
+		var start = {
+			    elem: '#startTime',
+			    event: 'focus',
+			    format: "YYYY-MM-DD hh:mm:ss",
+			    //min: laydate.now(), //设定最小日期为当前日期
+			    min: laydate.now(-90),
+			    max: laydate.now(), //最大日期
+			    istime: true,
+			    istoday: true,
+			};
+		laydate(start);
+	});
+	$("#endTime").focus(function(){
+		var end = {
+		    elem: '#endTime',
+		    event: 'focus',
+		    format: "YYYY-MM-DD hh:mm:ss",
+		    //min: laydate.now(),
+		    min: laydate.now(-90),
+		    max: laydate.now(), //最大日期
+		    istime: true,
+		    istoday: true,
+		};
+		laydate(end);
+	});
+}
+
 var userId;
 function showorder(id){
 	if(id==null||id==undefined){
@@ -151,6 +295,15 @@ function showorder(id){
 	if($("#orderNo").val()!=""){
 		param.orderNo=$("#orderNo").val();
 	}
+	if($("#startTime").val()!=""){
+		param.start_Time=$("#startTime").val();
+	}
+	if($("#endTime").val()!=""){
+		param.end_Time=$("#endTime").val();
+	}
+	if($(".order_status").val()!="-1"){
+		param.hasWaring=$(".order_status").val();
+	}
 	$.ajax({
 		type:"post",
 		async: true,
@@ -165,12 +318,45 @@ function showorder(id){
 	    url:_ctx+"rest/Gps/getOrderByPage",
 		success:function(ret){
 			if(ret.statusCode==0){
-				var data = {"result":ret.data.list};
 				if(ret.data.list!=null){
 					//totalRow=Math.ceil(ret.data.totalRow/pageSize);
 					totalRow=ret.data.totalRow;
+					
+					//统计图片数目
+					for(var i=0;i<ret.data.list.length;i++){
+						var totalPic=0;
+						if(ret.data.list[i].pic1!=null){
+							totalPic=totalPic+1;
+						}
+						if(ret.data.list[i].pic2!=null){
+							totalPic=totalPic+1;
+						}
+						if(ret.data.list[i].pic3!=null){
+							totalPic=totalPic+1;
+						}
+						if(ret.data.list[i].pic4!=null){
+							totalPic=totalPic+1;
+						}
+						if(ret.data.list[i].pic5!=null){
+							totalPic=totalPic+1;
+						}
+						if(ret.data.list[i].pic6!=null){
+							totalPic=totalPic+1;
+						}
+						if(ret.data.list[i].pic7!=null){
+							totalPic=totalPic+1;
+						}
+						if(ret.data.list[i].pic8!=null){
+							totalPic=totalPic+1;
+						}
+						ret.data.list[i].totalP=totalPic;
+					}
+					
 				}
+				var data = {"result":ret.data.list};
 				$("#run-tbody").html(template("run-tbody-json",data));
+				$("tbody>tr:odd").css('background','#f2f7fb'); 
+				$("tbody>tr:even").css('background','#ffffff');
 				initRunPage(param);
 			}
 		},

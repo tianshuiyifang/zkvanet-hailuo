@@ -90,7 +90,7 @@ function showInfo(e){
      var address = addComp.province +  addComp.city + addComp.district + addComp.street + addComp.streetNumber;
 
      //画图
-     var label = new BMap.Label(address,{offset:new BMap.Size(20,-10)});
+      var label = new BMap.Label(address,{offset:new BMap.Size(20,-10)});
       marker.setLabel(label);
       
       parent.setAddress(address,lat,lng);

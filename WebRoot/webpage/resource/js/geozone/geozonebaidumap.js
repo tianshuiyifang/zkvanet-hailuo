@@ -67,7 +67,7 @@ function intoBaiDuMapTools(myDrawingModes,mode){
 		        scale: 0.6 //工具栏缩放比例
 		    },
 		    circleOptions: {
-		    	enableClicking:false,
+		    	enableClicking:true,
 		    	strokeColor : "#0000FF",
 		   		strokeOpacity : 0.8,
 		   		strokeWeight : 2,
@@ -101,7 +101,7 @@ function intoBaiDuMapTools(myDrawingModes,mode){
 		   		draggable:false//是否可拖动	
 		    }, //多边形的样式*/	
 	     polygonOptions: {
-		    	enableClicking:false,
+		    	enableClicking:true,
 		    	strokeColor : "#0000FF",
 		   		strokeOpacity : 0.8,
 		   		strokeWeight : 2,
@@ -116,9 +116,9 @@ function intoBaiDuMapTools(myDrawingModes,mode){
 	drawingManagerBaidu.setDrawingMode(myDrawingModes);//默认进入地图开启画多边形
 	//添加鼠标绘制工具监听事件，用于获取绘制结果
 	drawingManagerBaidu.addEventListener('overlaycomplete', overlaycomplete);
-	if(mode==1){
+	//if(mode==1){
 		drawingManagerBaidu.open();
-	}
+	//}
 	
 }
 
@@ -131,7 +131,7 @@ function intoBaiDuMapTools(myDrawingModes,mode){
 $("#drawAreaGeo").click(function(){
 	if(myMapType == "baidu"){
 		infoWindow.close();
-		allMap.clearOverlays();
+		//allMap.clearOverlays();
 		intoBaiDuMapTools("hander");
 		drawingManagerBaidu.close();
 	}else{
@@ -215,7 +215,7 @@ function displayCircle(radius,flag){
 
 function switchingDrawing(drawingType){
 	infoWindow.close();
-	allMap.clearOverlays();
+	//allMap.clearOverlays();
 	intoBaiDuMapTools(drawingType,1);
 	definitionDrawingType = drawingType;
 	if(drawingType == "circle"){
@@ -308,7 +308,7 @@ function alertHtml(flag){
 	};
 	infoWindow = new BMap.InfoWindow(htmlcontent,opts);  // 创建信息窗口对象 
 	infoWindow.addEventListener("close", function(e) {
-		allMap.clearOverlays();
+		//allMap.clearOverlays();
     	if(areaFence == "1"){
     		intoBaiDuMapTools("hander");
         	drawingManagerBaidu.close();
@@ -432,6 +432,11 @@ function showLonLat(arr){
 //弹框后输入围栏信息保存
 function saveBaiduGeozoneInfo(){
 	var totalRecord=parseInt($("#userCount").val());
+	if($("#agencyId").val()=='new'){
+		$(parent.document.getElementById('areaRail')).val($("#coors").val());
+		parent.createFenceModalHide();
+	}
+
 	var agencyId=parseInt($("#agencyId").val());
 	$("#saveGeoBu").removeAttr("onclick");
 	$("#geonameHtml").removeClass("form-control-error");
@@ -531,16 +536,17 @@ function saveBaiduGeozoneInfo(){
 }
 
 //围栏保存到后台  geoorlamk:0为电子围栏
-var postSaveUrl=_ctx+"rest/geozoneControl/geozone/addgeozone";
+var postSaveUrl=_ctx+"../../rest/geozoneControl/geozone/addgeozone";
 var NameMaxLength=20;
 var DescMaxLength=40;
 function ajaxMapFencingSave(mapType,coors,radius,geoname,description,agencyId){
+	
 	if(geoname!=''){
 		var zoom=allMap.getZoom();
 		var geonId = $("#geonId").val();
 		$.ajax({
 			type:'POST',
-			url:"../../rest/geozoneControl/geozone/addgeozone",
+			url:"postSaveUrl",
 			data:{
 				"agencyId":agencyId,
 				"id":geonId,
@@ -573,8 +579,8 @@ function ajaxMapFencingSave(mapType,coors,radius,geoname,description,agencyId){
 							$("#radius").val(radius);
 						},1000);
 					}else if(geoorlamk == 1){
-						parent.layer.msg($.i18n.prop("保存成功"), {time: 2000});
-						parent.createFenceModalHide();
+						layer.msg($.i18n.prop("保存成功"), {time: 2000});
+						//parent.createFenceModalHide();
 //						allMap.clearOverlays();
 //						parent.getLamkList('1','10','1');
 					}else if(geoorlamk == 2){
@@ -834,14 +840,51 @@ var styleOptions = {
     }
 var pointParams = null; 
 var myPoint = [];
+var myPoints = [];
 function  showPolygon(btn){
-	
+	debugger
 	getPoint();
-	if(myPoint.length==0){
+	if(myPoints.length==0){
 		return ;
 	}
-    var polygon = new BMap.Polygon(myPoint, styleOptions);  //创建多边形
-    allMap.addOverlay(polygon);   //增加多边形
+	for(var i=0;i<myPoints.length;i++){
+		var myPointsi=myPoints[i];
+		var pointId=myPointsi[myPointsi.length-1];
+		//myPoints[i].pop(myPointsi.length-1);
+		var polygon = new BMap.Polygon(myPoints[i], styleOptions);  //创建多边形
+		polygon.id=pointId;
+		polygon.addEventListener("dblclick",function(e){
+			layer.confirm("是否删除", {
+				title:$.i18n.prop("comm.Operationtips"),
+				btn: [$.i18n.prop("comm.Yes"),$.i18n.prop("comm.Cancel")],  
+				shade: false       
+			}, function(){
+				$.ajax({
+					url: "../../rest/geozoneControl/geozone/delgeozone", 
+					data:{"id":e.currentTarget.id},  
+					async: false,
+					cache: false,
+					type: "POST",
+					dataType: 'json',
+					success: function (returnData){
+						if (returnData && returnData.statusCode==0){
+							e.currentTarget.hide();
+							layer.msg("删除成功", {icon: 1});
+							
+						}
+					},
+					error:function(e){
+						//ajaxError("index.jsp",e);
+					},
+					complete:function(XMLHttpRequest, textStatus){
+						authorityValide(XMLHttpRequest);
+					}
+				});
+			})
+		})
+	    allMap.addOverlay(polygon);   //增加多边形
+	}
+    
     //overlays.push(polygon); //是否把该图像加入到编辑和删除行列
     //showText();
    }
@@ -861,7 +904,8 @@ function  showPolygon(btn){
       allMap.addOverlay(label);  
  }
 function getPoint(){
-	var id=$("#agencyId").val();
+	
+	var id=$("#agencyId").val();;
 	$.ajax({
 		type:"post",
 		async: false,
@@ -873,18 +917,26 @@ function getPoint(){
 			authorityValide(XMLHttpRequest);
 		},
 	    data:{"agencyId":id},
-	    url:_ctx+"../../rest/loginController/getSingleAgency",
+	    url:_ctx+"../../rest/loginController/getAgencyPoint",
 		success:function(ret){
 			if(ret.statusCode==0){
 				var data =null;
-				if(ret.data!=null&&ret.data.agencyRail!=null){
-					var a=ret.data.agencyRail;
-					pointParams=a.substring(1,a.length-2).split(';');
+				if(ret.data!=null&&ret.data!=null){
 					
-					for (var i = 0; i < pointParams.length; i++) {
-						var point=pointParams[i].split(',');
-						myPoint.push(new BMap.Point(point[1],point[0]));
+					for(var m = 0; m < ret.data.length; m++){
+						var railpoint=[];
+						var l=ret.data;
+						var a=l[m].railData;
+						pointParams=a.substring(1,a.length-2).split(';');
+						
+						for (var i = 0; i < pointParams.length; i++) {
+							var point=pointParams[i].split(',');
+							railpoint.push(new BMap.Point(point[1],point[0]));
+						}
+						railpoint.push(l[m].id);
+						myPoints.push(railpoint);
 					}
+					
 				}
 			}
 		},

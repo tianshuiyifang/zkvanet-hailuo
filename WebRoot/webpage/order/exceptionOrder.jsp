@@ -103,14 +103,14 @@
 	      <table class="table table-condensed table-hover table-ellipsis m-b0" id="alarmMessageTableHeader">
 	        <thead>
 	        <tr>
-	          <th title="id">id</th>
-	          <th title="deviceId">deviceId</th>
-	          <th title="订单ID">订单ID</th>
-	          <th title="异常消息">异常消息</th>
-	          <th title="生成时间">生成时间</th>
-	          <th title="生成时间">处理结果</th>
-	          <th title="异常状态">异常状态</th>
-	          <th title="操作">操作</th>
+	          <th title="id" width="8%">id</th>
+	          <th title="deviceId" width="8%">deviceId</th>
+	          <th title="订单ID" width="10%">订单ID</th>
+	          <th title="异常消息" width="14%">异常消息</th>
+	          <th title="生成时间" width="12%">生成时间</th>
+	          <th title="处理意见" width="12%">处理意见</th>
+	          <th title="异常状态" width="10%">异常状态</th>
+	          <th title="操作" width="22%">操作</th>
 	        </tr>
 	        </thead>
 	      </table>
@@ -118,14 +118,14 @@
 	    <div class="table-scrollbar oy-a h200">
 	      <table class="table table-condensed table-normal-a table-hover table-ellipsis m-b0" id="alarmMessageTableContent">
 	        <colgroup>
-	          <col width="12%">
-	          <col width="12%">
-	          <col width="12%">
-	          <col width="12%">
-	          <col width="12%">
-	          <col width="14%">
+	          <col width="8%">
+	          <col width="8%">
+	          <col width="10%">
 	          <col width="14%">
 	          <col width="12%">
+	          <col width="12%">
+	          <col width="10%">
+	          <col width="26%">
 	          
 	        </colgroup>
 	        <tbody id="exceptiontable">
@@ -137,17 +137,16 @@
           				<td  title="{{row.orderId}}">{{row.orderId}}</td>
           				<td  title="{{row.message}}">{{row.message}}</td>
 						<td  title="{{row.createTime}}">{{row.createTime}}</td>
-						<td  title="{{row.processResult}}">
-						{{if row.processResult==null}}暂无结果
-						{{else}}{{row.processResult}}{{/if}}
-						</td>
+						<td  title="{{row.processResult}}">{{row.processResult}}</td>
           				<td  title="{{row.status}}">
 						{{if row.status==0}}未处理{{/if}}
 					    {{if row.status==1}}已处理{{/if}}
 						</td>
-						<td  title="{{row.status}}">暂无</td>
-						<td>
-						</td>
+						<td  title="{{row.status}}">
+                        <input  {{if row.status==1}}disabled{{/if}} id="{{row.id}}" placeholder='请输入处理意见'></input>
+                        <button {{if row.status==1}}disabled{{/if}} type="button" style='height: 20px;padding-top: 0px;top: -2px;position: relative;' onclick="handleexception('{{row.id}}')" class="btn btn-primary btn-sm">处理</button>
+                        </td>
+						
         			</tr>
 				{{/each}}
         	</script>
@@ -166,7 +165,7 @@
 <script type="text/javascript">	
 $(document).ready(function(){
 		var id =$(".id").val(); 
-	  showexception(id)
+	    showexception(id)
 })
 Date.prototype.format = function(fmt) { 
      var o = { 
@@ -222,7 +221,40 @@ Date.prototype.format = function(fmt) {
 		}
 	});
 }
+function handleexception(id){
 
+	var desc=$("#"+id+"").val();
+	
+	if(desc==""){
+	
+          layer.msg("未填写处理意见");
+          
+ 	}
+ 	
+	var param ={"id":id,"desc":desc};
+	
+	$.ajax({
+		type:"post",
+		async: true,
+	    cache: false,
+	    dataType :"json",
+		beforeSend:function(XHR){
+		},
+		complete:function(XMLHttpRequest, textStatus){
+		},
+	    data:param,
+	    url:"../../rest/Gps/handleException",
+		success:function(ret){
+			if(ret.statusCode==0){
+					var id =$(".id").val(); 
+	                showexception(id);
+			}
+		},
+		error:function(e){
+			ajaxError("customer_search.jsp",e);
+		}
+	});
+}
 </script>
 
 

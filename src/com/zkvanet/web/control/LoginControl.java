@@ -15,7 +15,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import net.sf.json.JSONArray;  
+import net.sf.json.JSONObject;  
+  
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,11 +32,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.carnet.admin.api.AgencyRailService;
 import com.carnet.admin.api.AgencyService;
 import com.carnet.admin.api.LoginService;
 import com.carnet.admin.common.ResultDto;
 import com.carnet.admin.common.RoleCode;
 import com.carnet.admin.dto.AgencyDto;
+import com.carnet.admin.dto.AgencyRailDto;
 import com.carnet.admin.dto.OrderDto;
 import com.carnet.admin.dto.RoleDto;
 import com.carnet.admin.dto.UserInfoDto;
@@ -72,6 +76,8 @@ public class LoginControl {
 	@Autowired
 	private AgencyService agencyManager;
 
+	@Autowired
+	private AgencyRailService agencyRailManager;
 	/**
 	 * 检查用户名称
 	 * 
@@ -83,30 +89,36 @@ public class LoginControl {
 	@RequestMapping(params = "checkuser")
 	@ResponseBody
 	public ResultDto<UserInfoDto> checkuser(UserInfoDto user, HttpServletRequest req) {
-		HttpSession session = ContextHolderUtils.getSession();
-		//AjaxJson j = new AjaxJson();
-        if (req.getParameter("langCode")!=null) {
-        	req.getSession().setAttribute("lang", req.getParameter("langCode"));
-        }
-        ResultDto<UserInfoDto> result=loginManager.login(user.getLoginName(), user.getPassWord());
-            if (result.getStatusCode()==1) {
-//                j.setMsg(result.getMessage());
-//                j.setSuccess(false);
-            	
-            } else {
-            	
-               saveLoginSuccessInfo(req, result.getData());
-            	
-            }
-            if(result.getData()==null){
-            	return result;
-            }
-            ResultDto<UserInfoDto> userInfo = loginManager.getUserInfo(result.getData().getId());
+//		HttpSession session = ContextHolderUtils.getSession();
+//		//AjaxJson j = new AjaxJson();
+//        if (req.getParameter("ChangShangRole")!=null) {
+//        	req.getSession().setAttribute("ChangShangRole", req.getParameter("ChangShangRole"));
+//        }
+      //  ResultDto<UserInfoDto> result=loginManager.login(user.getLoginName(), user.getPassWord());
+        ResultDto<UserInfoDto> result=loginManager.loginChild(user.getLoginName(), user.getPassWord());
+        if(result.getData()==null)return result;
+        ResultDto<UserInfoDto> userInfo = loginManager.getUserInfo(result.getData().getId());
             if(userInfo!=null){
-            	result.setData(userInfo.getData());
-            }
-            
+            	result.getData().setRole(userInfo.getData().getRole());
+        }
+        saveLoginSuccessInfo(req, result.getData());    
 		return result;
+	}
+	
+	@SuppressWarnings("unused")
+	@RequestMapping(params = "saveloginInfo")
+	@ResponseBody
+	public int saveloginInfo(HttpServletRequest req) {
+		HttpSession session = ContextHolderUtils.getSession();
+        try {
+			UserInfoDto u=(UserInfoDto)JSONObject.toBean(JSONObject.fromObject(req.getParameter("userinfo")),UserInfoDto.class);
+			saveLoginSuccessInfo(req, u);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
+		}  
+		return 1;
 	}
 	  /**
 		 * 用户登录
@@ -137,7 +149,7 @@ public class LoginControl {
 				modelMap.put("ActivedCount",user.getActivedCount());
 				modelMap.put("userType",user.getRole().getRoleName());
 				modelMap.put("userPhone",user.getMobile());
-				return new ModelAndView("/index");
+				return new ModelAndView("/iShow");
 			} else {
 				return new ModelAndView("/login");
 			}
@@ -154,7 +166,9 @@ public class LoginControl {
 
 	        HttpSession session = ContextHolderUtils.getSession();
 	        session.setAttribute(ResourceUtil.LOCAL_CLINET_USER, user);
-
+	        if(user.getChildAccount()!=null){
+	        	session.setAttribute("ChangShangRole",user.getChildAccount().getUserType());
+	        }
 	       //【基础权限】切换用户，用户分拥有不同的权限，切换用户权限错误问题
 	        //当前session为空 或者 当前session的用户信息与刚输入的用户信息一致时，则更新Client信息
 	        Client clientOld = ClientManager.getInstance().getClient(session.getId());
@@ -168,7 +182,6 @@ public class LoginControl {
 				session.invalidate();
 				session=req.getSession(true);//session初始化
 				session.setAttribute(ResourceUtil.LOCAL_CLINET_USER, user);
-				session.setAttribute("randCode",req.getParameter("randCode"));//保存验证码
 				checkuser(user,req);
 			}
 	    }
@@ -429,6 +442,14 @@ public class LoginControl {
 	    	
 	    	return resultDto;
 	    }
+	    @RequestMapping(value = "getAgencyPoint")
+	    public @ResponseBody  ResultDto<List<AgencyRailDto>> getAgencyPoint(Integer agencyId){
+	    	
+	    	ResultDto<List<AgencyRailDto>> resultDto = agencyRailManager.listByAgencyId(agencyId);
+	    	
+	    	return resultDto;
+	    }
+	    
 	    @RequestMapping(value = "deleteSingleAgency")
 	    public @ResponseBody  ResultDto deleteSingleAgency(Integer agencyId){
 	    		

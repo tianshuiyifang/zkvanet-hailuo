@@ -228,7 +228,6 @@ setJsLanguage(locale);
 			<div class="navbar-right p-15 p-b0 ta-r">
 				<div class="user-time">
 					
-						<a  href="/business/ConmmandLogs/toBusinessLog">业务日志</a>&emsp;
 					
 				
 		            
@@ -253,7 +252,8 @@ setJsLanguage(locale);
 				<li id="customerManagement"><a href="meunController.do?search"><i class="fa fa-group"></i>&nbsp;客户管理</a></li>
 				<li id="reportsManagement"><a href="meunController.do?report"><i class="fa fa-table" aria-hidden="true"></i>&nbsp;统计报表</a></li>
 				<li id="devicesManagement"><a href="meunController.do?device"><i class="fa fa-hdd-o" aria-hidden="true"></i>&nbsp;设备管理</a></li>
-				<li id="orderManagement"><a href="meunController.do?order"><i class="fa fa-hdd-o" aria-hidden="true"></i>&nbsp;订单管理</a></li>
+				<li id="orderManagementext"><a href="meunController.do?orderext"><i class="fa fa-hdd-o" ></i>&nbsp;订单管理</a></li>
+				<li id="orderManagement"><a href="meunController.do?order"><i class="fa fa-hdd-o" ></i>&nbsp;订单审核</a></li>
 				</ul>
 		<div id="complexQuery" class="navbar-right  p-10"></div>
 	</div>
@@ -1277,6 +1277,7 @@ function delCookie(name){
 		              <ul class="js-equipment-tab-nav tab-nav tab-auto-nav clearfix">
 		                <li id="markDev" class="active" title="我的车辆"><a class="cp" onclick="initDevTableAndPage();">我的车辆</a></li>
 		                <li id="searchAgency"  title="下级客户"><a class="cp" >下级经销商</a></li>
+		                <li id="searchArea"  title="下级客户"><a class="cp" >区域管理</a></li>
 		              </ul>
 		             
 		            </div>
@@ -1469,90 +1470,60 @@ function delCookie(name){
 				              </div>
 				              
 				           </div>
+				           <div class="area-con-box">
+			                <div class="func clearfix p-10">
+			                  <div class="fl" style="padding-top: 5px;padding-left: 10px;">
+			                    <button class="btn btn-primary btn-sm js-add-agency-area" type="button" title="新增区域围栏"><i class="fa fa-plus"></i>&nbsp;新增区域围栏</button>
+			                   </div>
+			                </div>
+			                 
+			                <div class="table-header">
+			                	<table class="table table-hover table-ellipsis m-b0" id="clientTableHeader">
+				                  <thead>
+				                    <tr>
+				                      <th  title="序号">序号</th> 
+				                      <th title="区域码">区域码</th>
+				                      <th title="区域名">区域名</th>
+				                      <th title="区域负责人">区域负责人</th>
+				                      <th title="操作">操作</th>
+				                    </tr>
+				                  </thead>
+				            </table>
+			                </div>
+			                <div class="table-scrollbar oy-a">       
+				                <table class="table table-hover table-ellipsis" id="clientTableContent">
+				                  <colgroup>
+						              <col width="10%" />
+						              <col width="20%"/>
+						              <col  width="20%"/>
+						              <col width="20%"/>
+						              <col width="20%"/>
+					              </colgroup>
+				                  <tbody id="markAgencyAreaTable">
+				                  	<script type="text/html" id="agency-area-info">
+
+				                  	{{each result as row i}}
+				                    <tr>
+				                      <td >{{row.id}}</td>
+				                      <td title="{{row.areaName}}">{{row.areaName}}</td>
+				                      <td title="{{row.areaCode}}">{{row.areaCode}}</td>
+				                      <td title="{{row.areaManager}}">{{row.areaManager}}</td>
+				                      <td>
+											<a title="编辑" class="cp js-editor-users-btn" onclick="agencyareaUpdateModal('{{row.id}}','{{row.areaName}}','{{row.areaCode}}','{{row.areaManager}}','{{row.areaRail}}');">编辑</a>
+									        <a title="删除" class="cp js-editor-users-btn" onclick="deleteAgencyarea('{{row.id}}');">删除</a>
+                                    </td>
+				                    </tr>
+				                    {{/each}}
+				                    </script>
+					                  </tbody>
+									   
+				                </table>
+				                <div id="paging-agency-area" class="simple-pagination-custom ta-c p-b10"></div>
+				              </div>
+				              
+				           </div>
 			            </div>
 		          </div>
-		        <div class="expired-con-box dn" id="expireDev">
-					<div class="drop-list bg-gradient-title">
-						<div class="easydropdown-group">
-							<span class="easydropdown easydropdown-sm">
-								<select id="devDueType" onchange="initExpirationDevTable()" class="due-type">
-									<option>用户到期</option>
-									<option>平台到期</option>
-								</select>
-							</span>
-							<span class="easydropdown easydropdown-sm">
-								<select id="devDueTimeType" onchange="initExpirationDevTable()" class="due-timetype">
-									<option>即将到期</option>
-									<option>已过期</option>
-								</select>
-							</span>
-							<span class="easydropdown easydropdown-sm">
-								<select id="devDueTime" onchange="initExpirationDevTable()" class="due-time dn">
-									<option>7天内</option>
-									<option>30天内</option>
-									<option>60天内</option>
-									<option>7-30天内</option>
-									<option>30-60天内</option>
-								</select>
-								<select id="devDueTime_expired" onchange="initExpirationDevTable()" class="due-time dn">
-									<option>7天内</option>
-									<option>30天内</option>
-									<option>60天内</option>
-									<option>7-30天内</option>
-									<option>30-60天内</option>
-									<option>60天以上</option>
-								</select>
-							</span>
-						</div>
-					  </div>
-					  <div class="func clearfix p-tb10 p-lr15 b-b1-ddd">
-						<div class="fl">
-							
-							<span id="ProlongUserExpiration"><button class="btn btn-default btn-sm extended-time-btn" onclick="openExpirationModal('update')" type="button" title="批量延长用户到期">&nbsp;批量延长用户到期</button>&nbsp;</span>
-							<span class="dn"><button class="btn btn-default btn-sm extended-platform-due-btn" onclick="openAllotDevProlongModal('')" type="button" title="批量延长平台到期">&nbsp;批量延长平台到期</button>&nbsp;</span>
-							<%--<button class="btn btn-default btn-sm" onclick="listExport()" type="button" title="导出"><i class="fa fa-file-excel-o"></i>&nbsp;导出</button>
-						--%></div>
-					  </div>
-					  <div class="table-header">
-					  	 <table class="table table-hover table-ellipsis m-b0" id="expiraTableHeader">
-							  <thead>
-			                    <tr>
-			                      <th title="序号"><span class="icheck-min"><input id="expirationDevAllCheck" type="checkbox"></span>&nbsp;序号</th>
-			                      <th title="设备名称">设备名称</th>
-			                      <th title="IMEI">IMEI</th>
-			                      <th title="设备类型">设备类型</th>
-			                      <th title="激活时间">激活时间</th>
-			                      <th title="Sim">SIM</th>
-			                      <th title="userexpiration">用户到期</th>
-			                      <th title="所属分组">所属分组</th>
-			                      <th title="绑定用户">绑定用户</th>
-			                      <th title="操作">操作</th>
-			                    </tr>
-			                  </thead>
-			                </table>
-					  </div>
-					  <div class="table-scrollbar oy-a">
-						 <table class="table table-hover table-ellipsis" id="expiraTableContent">
-						 	  <colgroup>
-					              <col width="70"/>
-					              <col width="120"/>
-					              <col width="130"//>
-					              <col/>
-					              <col/>
-					              <col/>
-					              <col/>
-					              <col/>
-					              <col/>
-					              <col width="210"/>
-				              </colgroup>
-			                  <tbody id="markExpirationDevTable">
-			                  </tbody>
-						  </table>
-						  <div id="paging-expiration-dev" class="simple-pagination-custom ta-c"></div>
-		                  <div id="expiration-dev-noData"><div class="ta-c c-666 p-b10"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div></div>
-						  <div class="ta-c m-tb15 dn" id="logindata-expiration-dev"><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
-				 	  </div>
-			 	  </div>
 	       	  </div>
 	       	  <input type="text"  value=""  id="isDueCustomer"  class="dn"/>
 	       	</div>  
@@ -1584,281 +1555,8 @@ function delCookie(name){
   <!-- footer end --> 
 </div>
 
-<div id="alarmSidebar" class="alarm-sidebar-box">
-  <div class="alarm-sidebar sidebar">
-  	<a href="javascript:;" class="js-side-close side-close"></a>
-    <h4 class="side-title p-lr15 p-tb10"><i class="fa fa-volume-up va-m"></i>&nbsp;告警消息</h4>
-    <div class="js-sidebar-scroll oy-a " id="mark_prompt">
-        <div class="ta-c c-666 p-tb10" id="logindata"><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据......</div>
-    	<div id="isNull"  style="display: none;"><div class="ta-c c-666 p-tb10"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i>暂无数据&nbsp;</span></div></div>
-      <ul id="markAlarmInfo" class="fs-14 alarm-side-list">
-        <script type="text/html" id="unReadInfo">
-			{{each data as row i}}
-				<li><a>
-          			<dl>
-            			<dt class="m-tb5 m-b10">
-              			<span class="badge">{{row.typeName}}</span></dt>
-            			<dd class="m-tb5 fs-12"><b>设备名称：</b>{{row.devName}}</dd>
-            			<dd class="m-tb5 fs-12"><b>告警类型： </b>{{row.statusName}}</dd>
-            			<dd class="m-tb5 fs-12"><b>告警时间：</b>{{row.pushTime}}</dd>
-          			</dl>
-          		</a></li>
-			{{/each}}
-		</script>
-      </ul>
-    </div>
 
-  </div>
-  <form id="logoutFrom" name="logoutFrom" action="/logout?service=" method="post">
-  	<input type="submit">
-  </form>
-</div>
 
-<input type="hidden" id="alarmIds" value="" />
-<a class="alarm-toggle-btn pf ta-c oh cp js-alarm-toggle-btn hidden" id="gaojing" title="报警"> <i class="fa fa-bell-o"></i></a>
-<div class="alarm-info" id="alarmMessage">
-  <div class="alarm-header clearfix">
-    <h5 class="fl m-0"><span class="fs-18 c-df7312"><i class="fa fa-bell-o"></i></span>&nbsp;报警管理</h5>
-    <a  class="alarm-close fr fs-18 cp" title="缩小"><i class="fa fa-compress" ></i></a>
-    <div class="alarm-tools fr ws-n">
-      <span>
-      	告警时间：
-      <input type="text" id="alarm_startTime" readonly="readonly" class="form-control form-control-xs form-control-inline" size="12" placeholder="开始时间">
-      <input type="text" id="alarm_endTime" readonly="readonly" class="form-control form-control-xs  form-control-inline" size="12" placeholder="结束时间">
-      &emsp;
-      </span>
-      <!-- <a class="cp" onclick="javascript:readAlarm('');">全部标为已读</a>
-      <a class="cp js-type-filter-btn" onclick="javascript:alarmFilter();">报警内容筛选</a> -->
-      <span id="lowerLevelSpan" class="icheck-min"><label class="m-b0"><input type="checkbox" id="lowerLevel" onchange="getAlarmInfoList(true,1)">&nbsp;下级设备告警&nbsp;&nbsp;&nbsp;&nbsp;</label></span>
-      <span class="icheck-min"><label class="m-b0"><input type="checkbox" id="alarmSound">&nbsp;开启报警声音</label></span>
-    </div>
-  </div>
-  <div class="alarm-body">
-    <div class="table-header">
-      <table class="table table-condensed table-hover table-ellipsis m-b0" id="alarmMessageTableHeader">
-        <thead>
-        <tr>
-          <th title="IMEI">IMEI</th>
-          <th title="IMEI">账号</th>
-          <th title="告警类型">告警类型</th>
-          <th title="告警时间">告警时间</th>
-          <th title="定位时间">定位时间</th>
-          <th title="定位状态">定位状态</th>
-          <th title="操作">操作</th>
-        </tr>
-        </thead>
-      </table>
-    </div>
-    <div class="table-scrollbar oy-a h200">
-      <table class="table table-condensed table-normal-a table-hover table-ellipsis m-b0" id="alarmMessageTableContent">
-        <colgroup>
-          <col width="130">
-          <col width="80">
-          <col width="100">
-          <col width="130">
-          <col width="130">
-          <col>
-          <col width="100">
-        </colgroup>
-        <tbody id="alarmInfoTable">
-        	<script type="text/html" id="alarmInfoList">
-				{{each data as row i}}
-					<tr onclick="bindAlarmInfo('{{row.bdlat}}','{{row.bdlng}}','{{row.gglat}}','{{row.gglng}}','{{i}}')" {{if row.readStatus == -1}}{{else}} class="read" {{/if}}>
-          				<td title="{{row.imei}}"><a onclick="openDeviceInfoModal('{{row.imei}}')">{{row.imei}}</a></td>
-          				<td id="" title="{{row.account}}">
-							{{if row.account == null || row.account == ''}}
-								未查询
-							{{else}}
-								{{row.account}}
-							{{/if}}
-						</td>
-          				<td id="alertType{{i}}" title="{{row.statusName}}">{{row.statusName}}</td>
-          				<td id="alertTime{{i}}" title="{{row.createTime}}">{{row.pushTime}}</td>
-          				<td id="positionTime{{i}}" title="{{row.pushTime}}">{{row.pushTime}}</td>
-          				<td title="已定位">已定位</td>
-						<td>
-						</td>
-        			</tr>
-				{{/each}}
-        	</script>
-        </tbody>
-      </table>
-      <div id="alarm_logindata" class="ta-c m-tb15">
-		<i class="fa fa-spinner fa-pulse fa-fw fa-2x"></i>
-		正在加载数据...
-	  </div>
-      <div id="alarm_nodata" class="dn"><div class="ta-c c-666 p-tb10"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div></div>
-    </div>
-  </div>
-
-</div>
-<div id="alarmDeviceInfo" class="modal fade in"  aria-hidden="false">
-  <div class="modal-dialog" >
-    <div class="modal-content w900">
-      <div class="modal-header">
-        <button aria-label="Close" data-dismiss="modal" class="close" type="button">
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title">
-     		设备编辑
-        </h4>
-      </div>
-      <div class="modal-body">
-        <div class="h450 oy-a" id="edit_device_info_alarm">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-sm btn-primary mw-100" type="button" id="btn-submit-vehilebund" onclick="complex_device_info_submit('alarm','alarmDeviceInfo')">保存</button>&nbsp;
-        <button data-dismiss="modal" class="btn btn-sm btn-default mw-100" type="button">取消</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="alarmFilterModal">
-  <div class="modal-dialog">
-    <div class="modal-content  w600">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">报警类型筛选</h4>
-      </div>
-      <div class="modal-body">
-        <div class="h280 oy-a">
-          <div class="p-lr15 p-t10"><label class="icheck-min"><input type="checkbox" id="alarmAllSelect">&nbsp;全选</label></div>
-          <ul class="list-fl alarm-item  clearfix c-666 b-0 p-b0" id="alarmTypeTable">
-          	<script type="text/html" id="alarmTypeList">
-          		{{each data as row i}}
-          			<li><label class="icheck-min" title="{{row.value}}"><input type="checkbox" value="{{row.id}}" name="alarm_item">&nbsp;{{row.value}}</label></li>
-          		{{/each}}
-			</script>
-          </ul>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary mw-100" onclick="AlarmInfofilter()">保存</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script id="alarmInfoTpl" type="text/html">
-    <div id="alarmInfo" class="map-popover" style="top:60px; left: 84px;width:350px">
-      <div class="popover-header">
-      <b>报警信息</b>
-      <span class="popover-close" title="关闭">&times;</span></div>
-      <div class="popover-body">
-        <table style="table-layout: fixed;width: 100%;height:156px">
-          <tbody>
-			<tr>
-              <th  width="70"   title="设备名称" >设备名称：</th>
-              <td title="{{devName}}" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{devName}}</td>
-            </tr>
-			<tr>
-              <th title="告警类型">告警类型：</th>
-              <td title="{{alertType}}" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{alertType}}</td>
-            </tr>
-			<tr>
-              <th title="告警时间">告警时间：</th>
-              <td title="{{alertTime}}">{{alertTime}}</td>
-            </tr>
-            <tr>
-              <th title="定位时间">定位时间：</th>
-              <td title="{{alertTime}}">{{alertTime}}</td>
-            </tr>
-			 <tr>
-              <th title="报警地址">报警地址：</th>
-              <td id="addr{{alarmInfoIndex}}" title="获取地址中">获取地址中</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-</script>
-
-<!-- 告警处理modal -->
-	<div class="modal fade" id="alarmDealModal_deal">
-		<div class="modal-dialog">
-			<div class="modal-content w600">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title">告警处理</h4>
-				</div>
-				<div class="modal-body">
-					<form class="form-horizontal form-preset form-ellipsis p-tb25" id="alarmDealForm" action="">
-						
-						<div class="form-group">
-							<label class="col-md-3 control-label" title="处理人" >处理人：</label>
-							<div class="col-md-6">
-								<input type="text" name="inputDealUserName" value="yanshi" placeholder="请输入处理人姓名"
-									class="form-control" id="alarmDealModal_deal_inputDealUserName">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-md-3 control-label" title="处理内容">处理内容：</label>
-							<div class="col-md-6">
-								<textarea class="form-control" rows="5" cols="40" name="dealContent" placeholder="请输入处理内容"
-									 id="alarmDealModal_deal_dealContent"></textarea>
-							</div>
-						</div>
-						<input type="hidden" name="alarmId" id="alarmDealModal_deal_alarmId" value="">
-						<input type="hidden" name="id" id="alarmDealModal_deal_alarmDealId" value="">
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary mw-100" id="saveAlarmDealBtn">处理</button>
-					<button type="button" class="btn btn-default mw-100"
-						data-dismiss="modal">取消</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-<!-- 查看告警处理 -->
-	<div class="modal fade" id="alarmDealModal_show">
-		<div class="modal-dialog w600">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title">查看处理</h4>
-				</div>
-				<div class="modal-body">
-					<div class="oy-a mah-300">
-						<form class="form-horizontal form-preset p-tb25" action="">
-							<div class="form-group">
-								<label class="col-md-4 control-label" title="处理人" >处理人：</label>
-								<div class="col-md-6">
-									<label id="alarmDealModal_show_dealUserName" class="control-label" title="" ></label>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-md-4 control-label" title="处理账号">处理账号：</label>
-								<div class="col-md-6">
-									<label id="alarmDealModal_show_dealAccount" class="control-label" title="" ></label>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-md-4 control-label" title="处理时间">处理时间：</label>
-								<div class="col-md-6">
-									<label id="alarmDealModal_show_dealTime" class="control-label" title="" ></label>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-md-4 control-label" title="处理内容">处理内容：</label>
-								<div class="col-md-6">
-									<label id="alarmDealModal_show_dealContent" class="p-t7" title="" ></label>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 
 
 <!-- custom --> 
@@ -1874,99 +1572,12 @@ function delCookie(name){
 	
 	var lowerLevel= 0; //是否查询下级设备
 	
-	var alarm_startTime_history = laydate.now(-30,'YYYY-MM-DD');
-	var alarm_endTime_history = laydate.now(new Date().getTime(),'YYYY-MM-DD');
-	
 	$(document).ready(function(){
 		
 		var locale='zh';
 		
 		setJsLanguage(locale);
-        
-		//报警声音控制
-		$("#alarmSound").iCheck().on("ifClicked",function(){
-			if(!$("#alarmSound").attr("checked")){
-				SetCookie("alarmSoundFlag", 1);
-				if($("input[name='markAlarmId']").length>0){
-					audioPlay("webpage/resource/media/alarm.wav");//播放
-				}
-			}else{
-			    audioPlay("");//暂停
-				SetCookie("alarmSoundFlag", 0);
-			}
-		});
 		
-		$("#lowerLevel").iCheck().on("ifChecked",function(event){
-			lowerLevel=1;
-			getAlarmInfoList(true,1);
-		}).on("ifUnchecked",function(even){
-			lowerLevel=0;
-			getAlarmInfoList(true,1);
-		});
-		
-		$("#alarm_startTime").focus(function(){
-			laydate({
-				  elem: '#alarm_startTime',
-				  format: 'YYYY-MM-DD', //日期格式
-				  min:laydate.now(-90,'YYYY-MM-DD'),
-				  max:laydate.now(new Date().getTime(),'YYYY-MM-DD'),
-				  event: 'focus', //响应事件。
-				  choose: function(dates){
-					  var time =  new Date(dates.replace('-',"/").replace('-',"/")).getTime();
-					  if($("#alarm_endTime").val() && new Date($("#alarm_endTime").val().replace('-',"/").replace('-',"/")).getTime() < time){
-						  layer.msg($.i18n.prop("comm.StarttimegtEndtime"));
-						  $('#alarm_startTime').val(alarm_startTime_history);
-						  return;
-					  }
-					  getAlarmInfoList(true,1);
-				  }
-				});
-		});
-		$("#alarm_endTime").focus(function(){
-			laydate({
-				  elem: '#alarm_endTime',
-				  format: 'YYYY-MM-DD', //日期格式
-				  min:laydate.now(-90,'YYYY-MM-DD'),
-				  max:laydate.now(new Date().getTime(),'YYYY-MM-DD'),
-				  event: 'focus', //响应事件。
-				  choose: function(dates){
-					  var time =  new Date(dates.replace('-',"/").replace('-',"/")).getTime();
-					  if($("#alarm_startTime").val() && new Date($("#alarm_startTime").val().replace('-',"/").replace('-',"/")).getTime() > time){
-						  layer.msg($.i18n.prop("comm.StarttimegtEndtime"));
-						  $('#alarm_endTime').val(alarm_endTime_history);
-						  return;
-					  }
-					  getAlarmInfoList(true,1);
-				  }
-				});
-		});
-		
-		$("#alarm_startTime").val(alarm_startTime_history);
-		$("#alarm_endTime").val(alarm_endTime_history);
-		
-		var alarmSoundFlag = getCookie("alarmSoundFlag");
-		if(alarmSoundFlag && alarmSoundFlag == 0){
-			$("#alarmSound").iCheck('uncheck');
-		}else{
-			$("#alarmSound").iCheck("check");
-		}
-		//alarmFilter();
-		
-		//getAlarmInfoList(true,1);
-		
-		// setInterval(function(){
-			// getAlarmInfoList(false,2);
-		// },5000);
-		
-		$('#alarmFilterModal').on('hidden.bs.modal', function (e) {
-			if(filterModalFlag){
-				cancleSelect();
-			}
-		});
-		//app用户隐藏下级告警选项
-		if("8"=="3"){
-			$("#lowerLevelSpan").remove();
-		}
 	});
 	
 	var header='customerManagement';
@@ -2016,45 +1627,6 @@ function delCookie(name){
 	}
 	
 	
-	function AlarmInfofilter(){
-		var check = $("input[name='alarm_item']");
-		var flag = false;
-		var statusStr = "";
-		$.each(check,function(i,v){
-			if($(v).attr("checked")){
-				flag = true;
-				statusStr += $(v).val()+",";
-			}
-		});
-		if(flag){
-			if(statusStr){  //处理记忆
-				statusStr = statusStr.substring(0, statusStr.length-1);
-				$.ajax({
-					url:"/alarmInfo/saveAlarmType",
-					data: {"statusStr":statusStr},
-				    dataType: 'json',
-				    success: function(ret){
-				    	filterModalFlag = false;
-						getAlarmInfoList(true,1);
-						$("#alarmFilterModal").modal('hide');
-				    },
-				    complete:function(XMLHttpRequest, textStatus){
-// 						authorityValide(XMLHttpRequest);
-						if(XMLHttpRequest.responseText){
-							var data = eval('('+XMLHttpRequest.responseText+')');
-							if(data.code == -1000){
-								layer.msg($.i18n.prop('cust.VirtualAccountPermissionDenied'),{icon:2});
-								cancleSelect();
-							}
-						}
-						
-					}
-				});
-			}
-		}else{
-			layer.msg($.i18n.prop('Business.Pleaseselectthetypeofalarm'));
-		}
-	}
 	
 	
 	//点击个人资料跳转到用户信息页面
@@ -2067,63 +1639,11 @@ function delCookie(name){
 		window.location.href="/useradmin/changePwd";
 	});
 	
-	//当前告警覆盖物
-	var currentAlarmMaker;
-	function bindAlarmInfo(bdlat,bdlng,gglat,gglng,alarmInfoIndex){
-		if($("#index").hasClass("active")){
-			if($("#selectMap").val()=="baiduMap"){
-				var stopFlagIcon=_ctx+"webpage/resource/images/36x43/alarm.png";
-				var stopFlagLable = new BMap.Label("", {
-					offset : new BMap.Size(-27, -27)
-				});
-				var stopFlagPoint =new BMap.Point(bdlng, bdlat);
-				var stopFlagMaker = new BMap.Marker(stopFlagPoint, {
-					icon : new BMap.Icon(stopFlagIcon, new BMap.Size(23, 27)),
-					offset : new BMap.Size(6,-12),
-					imageOffset : new BMap.Size(0,0)
-				});
-				if(currentAlarmMaker&&currentAlarmMaker.position==null){
-					allMap.removeOverlay(currentAlarmMaker);
-				}
-				allMap.addOverlay(stopFlagMaker);
-				currentAlarmMaker=stopFlagMaker;
-				(function(stopFlagMaker,alarmInfoIndex){
-					stopFlagMaker.addEventListener("click",function(e){
-						showBaiduStopAlarmInfo(stopFlagMaker,alarmInfoIndex);
-					});
-				})(stopFlagMaker,alarmInfoIndex);
-				showBaiduStopAlarmInfo(stopFlagMaker,alarmInfoIndex);
-			}else{
-				var stopFlagIcon = {url:_ctx+"webpage/resource/images/36x43/alarm.png" ,size:new google.maps.Size(23, 27),origin:new google.maps.Point(0,0),anchor:new google.maps.Point(3,26)};
-				googleMarker=new google.maps.Marker({
-					position :new google.maps.LatLng(gglat,gglng),
-					icon : stopFlagIcon,
-					map : allMap
-				});
-				if(currentAlarmMaker&&currentAlarmMaker.position!=null){
-					currentAlarmMaker.setMap(null);
-				}
-				currentAlarmMaker=googleMarker;
-				(function(googleMarker,alarmInfoIndex){
-					google.maps.event.addListener(googleMarker, 'click', function() {
-						showGoogleStopFlag(googleMarker,alarmInfoIndex);
-					});
-				})(googleMarker,alarmInfoIndex);
-				showGoogleStopFlag(googleMarker,alarmInfoIndex);
-			};
-		}
-	}
 	
 	var prev_infowindow = null;
 	var prev_maker = null;//告警信息图标
 	//百度地图点击告警信息事件
 	function showBaiduStopAlarmInfo(stopFlagMaker,alarmInfoIndex){
-// 		if($("#addr"+alarmInfoIndex).text()==""||$("#addr"+alarmInfoIndex).text()==null){
-// 			getPointBaiDuLocation(stopFlagMaker.point,"addr"+alarmInfoIndex);
-// 			if($("#addr"+alarmInfoIndex).text()==""||$("#addr"+alarmInfoIndex).text()==null){
-// 				$("#addr"+alarmInfoIndex).text("获取地址失败！");
-// 			}
-// 		}
 		var datas={devName:$('#devName'+alarmInfoIndex).html(),alertType:$('#alertType'+alarmInfoIndex).html(),speed:$('#speed'+alarmInfoIndex).html(),alertTime:$('#alertTime'+alarmInfoIndex).html(),positionTime:$('#positionTime'+alarmInfoIndex).html(),alarmInfoIndex:alarmInfoIndex};
 		getPointBaiDuLocation(stopFlagMaker.point,"addr"+alarmInfoIndex);
 
@@ -2158,331 +1678,10 @@ function delCookie(name){
 		prev_maker.setZIndex(10000);
 	}
 	
-	//谷歌地图点击告警信息事件
-	function showGoogleStopFlag(googleMarker,alarmInfoIndex){
-// 		$("#addr"+alarmInfoIndex).text("");
-// 		getGoogleLocation(googleMarker.position,"addr"+alarmInfoIndex);
-// 		if($("#addr"+alarmInfoIndex).text()==""||$("#addr"+alarmInfoIndex).text()==null){
-// 			$("#addr"+alarmInfoIndex).text("获取地址失败！");
-// 		}
-		var datas={devName:$('#devName'+alarmInfoIndex).html(),alertType:$('#alertType'+alarmInfoIndex).html(),speed:$('#speed'+alarmInfoIndex).html(),alertTime:$('#alertTime'+alarmInfoIndex).html(),positionTime:$('#positionTime'+alarmInfoIndex).html(),alarmInfoIndex:alarmInfoIndex};
-		window.setTimeout(function (){
-			getGoogleLocation(googleMarker.position,"addr"+alarmInfoIndex);
-		},500);
-		
-		var tpl = template('alarmInfoTpl',datas);
-		var content = $(tpl);
-		var portrait=-291;//减上加下
-		
-		var infowindow = new InfoBox({
-			content : content.get(0),
-			disableAutoPan : false,
-			maxWidth : 0,
-			pixelOffset : new google.maps.Size(-246, portrait),//加右减左
-			zIndex : null,
-			closeBoxURL : "",
-			isHidden : false,
-			pane : "floatPane",
-			enableEventPropagation : false
-		});
-		
-		content.find(".popover-close").click(function() {
-			InfoWindow_falg = false;
-			infowindow.close();
-		});
-		
-		if (prev_infowindow) {
-			prev_infowindow.close();
-		}
-		infowindow.open(allMap,googleMarker);
-		prev_infowindow=infowindow;
-		prev_maker.setZIndex(10000);
-	}
 	
 	
 	var requestThread = 0 ;
-	//告警管理
-	function getAlarmInfoList(flag,updateListFlag){
-		var statusStr = "";
-		if($("#alarmTypeTable li").length > 0){
-			var check = $("input[name='alarm_item']");
-			$.each(check,function(i,v){
-				if($(v).attr("checked")){
-					statusStr += $(v).val()+",";
-				}
-			});
-		}
-		if(statusStr){
-			statusStr = statusStr.substring(0, statusStr.length-1);
-		}
-		
-		//从客户树选择时，根据选择的客户刷新告警信息列表
-		var treeObject = $.fn.zTree.getZTreeObj("treeDemo");
-		var searchUserId=0;
-		if(treeObject!=null){
-		   var node = treeObject.getSelectedNodes()[0];
-		   if(node!=null){
-				if(lowerLevel==1){  
-					searchUserId =  node.fullParentId+node.id;
-				}else{
-					searchUserId = node.id;
-				}
-			}
-		}
-		//异步请求，最后一次请求参数，保证响应回来的数据是正确
-		requestThread++;  
-		
- 		$.ajax({
-			url:"rest/customControl/alertInfo",
-			data: {"pageNo":1,"pageSize":50,"statusStr":statusStr,"updateListFlag":updateListFlag,"lowerLevel":lowerLevel,"searchUserId":searchUserId,"requestThread":requestThread,"startTime":$("#alarm_startTime").val(),"endTime":$("#alarm_endTime").val()},
-			async: true,
-		    cache: false,
-		    type:"post",
-		    dataType: 'json',
-		    beforeSend:function(XHR){
-				if(flag){
-					$("#alarm_nodata").hide();
-			    	$('#alarmInfoTable').hide();
-					$("#alarm_logindata").show();
-				}
-			},
-		    complete: function(){
-				$("#alarm_logindata").hide();
-		    	$('#alarmInfoTable').show();
-		    	if($("#alarmMessage").is(":visible")){
-		    		tableHeaderAutoWidth("#alarmMessageTableHeader","#alarmMessageTableContent");
-		    	}
-		    },
-		    success: function(ret){
-		    	//定时刷新 和 多次请求没有及时响应的，保持最后一次响应的结果
-		    	if( (ret && ret.code == -2)|| (parseInt(ret.totalDistiance)<requestThread) ){
-		    		return;
-		    	}
-		    	// 去闪灯和提示音
-		    	$(".js-alarm-toggle-btn").removeClass("active");
-    			audioPlay("");
-    			
-		    	if(ret && ret.code==0  && ret.data.length>0 ){
-		    		//有数据返回并且是同一请求
-	    			$('#alarmInfoTable').html(template('alarmInfoList',{"data" : ret.data}));//装填数据
-	    			var unread = false;
-	    			var imeiMap = new Map();
-	    			$.each(ret.data,function(i,v){
-	    				if(v.readStatus == -1){
-	    					unread = true;
-	    				}
-	    				if(v.readStatus == -1 && !imeiMap.get(v.imei)){
-	    					imeiMap.put(v.imei);
-	    				}
-	    			});
-	    			$("#carAlarm").text(imeiMap.arr.length);
-	    			if(unread){
-	    				$(".js-alarm-toggle-btn").addClass("active");
-	    				if($("#alarmSound").attr("checked")){//播放
-		    				audioPlay("/resource/media/alarm.wav");
-    					}
-	    			}
-	    			$("#alarmMessage").show();
-		    	}else{//清空列表,ret.code=-1加载列表没有数据返回,updateListFlag非法操作不等于1、2
-		    		$("#alarmMessage").show();
-		    		$('#alarmInfoTable').html(template('alarmInfoList',null));
-		    		$("#alarm_nodata").show();
-		    		return;
-		    	}
-		    }
-		    
-		});		
-	}
 	
-	//告警内容筛选
-	function alarmFilter(){
-		if($("#alarmTypeTable li").length == 0){
-			$.ajax({
-				url:"/alarmInfo/getAllAlarmType",
-				async: false,
-			    cache: false,
-			    dataType: 'json',
-			    complete: function(){
-			    	if($("#alarmMessage").is(":visible")){
-			    		tableHeaderAutoWidth("#alarmMessageTableHeader","#alarmMessageTableContent");
-			    	}
-			    },
-			    success: function(ret){
-			    	if(ret && ret.code==0){
-			    		if(ret.data && ret.data.length>0){
-			    			$('#alarmTypeTable').html(template('alarmTypeList',{"data" : ret.data}));//装填数据
-			    			checkboxSelectLine("#alarmAllSelect","input[name='alarm_item']");
-			    			//告警类型回选处理
-			    			if(ret.msg){
-			    				$.each(ret.msg.split(","),function(index,value){
-				    			     $("input[name='alarm_item'][value='"+value+"']").iCheck('check')
-				    			});
-			    			}else{//默认选择
-			    				$("#alarmAllSelect").iCheck('check');
-				    			$("input[name='alarm_item']").iCheck('check');
-				    			$("input[name='alarm_item'][value='ACC_ON']").iCheck('uncheck');
-				    			$("input[name='alarm_item'][value='ACC_OFF']").iCheck('uncheck');
-			    			}
-			    		}
-			    	}
-			    }
-			});
-		}
-		alarmFilterHistory = [];
-		filterModalFlag = true;
-		$.each($("input[name='alarm_item']"),function(i,v){
-			if($(v).attr("checked")){
-				alarmFilterHistory.push($(v).val());
-			}
-		});
-	}
-	
-	function cancleSelect(){
-		$("#alarmAllSelect").iCheck("uncheck");
-		$("input[name='alarm_item']").iCheck("uncheck");
-		$.each(alarmFilterHistory,function(i,v){
-			$("input[name='alarm_item'][value='"+v+"']").iCheck("check");
-		});
-		if(alarmFilterHistory.length == $("input[name='alarm_item']").length){
-			$("#alarmAllSelect").iCheck("check");
-		}
-	}
-	
-	
-	//标为已读、全部标为已读
-	function readAlarm(alarmId){
-		if(!alarmId){
-			$.each($("input[name='markAlarmId']"),function(i,v){
-				if($(v).val()){
-					alarmId += $(v).val()+",";
-				}
-			});
-			if(!alarmId){
-				layer.msg($.i18n.prop('Business.Notunreadmessage'));
-				return ;
-			}
-		}
-		$.ajax({
-			url:"/alarmInfo/saveAlarmInfoHasRead",
-			data: {"alarmId":alarmId},
-			async: true,
-		    cache: true,
-		    dataType: 'json',
-		    success: function(ret){
-	    		if(ret && ret.code == 0){
-					layer.msg($.i18n.prop("comm.Operationdone"),{icon:1});    			
-			    	getAlarmInfoList(true,1);//刷新列表
-	    		}else{
-	    			layer.msg($.i18n.prop("comm.Failed"),{icon:2});    
-	    		}
-		    },
-		    complete:function(XMLHttpRequest, textStatus){
-				authorityValide(XMLHttpRequest);
-			}
-		});
-	}
-	
-	//处理告警
-	function dealAlarm(alarmId){
-		if(alarmId){
-			$("#alarmDealModal_deal").modal();
-			$("#alarmDealModal_deal_alarmId").val(alarmId);
-			
-			$("#alarmDealModal_deal_alarmDealId").val("");
-			$("#alarmDealModal_deal_alarmDealId").removeClass("error");
-			$("label[for='alarmDealModal_deal_inputDealUserName']").remove();
-			
-			$("#alarmDealModal_deal_inputDealUserName").val("");
-			$("#alarmDealModal_deal_inputDealUserName").removeClass("error");
-			$("label[for='alarmDealModal_deal_inputDealUserName']").remove();
-			
-			$("#alarmDealModal_deal_dealContent").val("");
-			$("#alarmDealModal_deal_dealContent").removeClass("error");
-			$("label[for='alarmDealModal_deal_dealContent']").remove();
-			
-			validateAlarmDealForm();
-		}
-	}
-	
-	//查看处理
-	function showAlarm(dealUserAccount,inputDealUserName,creationDate,dealContent){
-		$("#alarmDealModal_show").modal();
-		$("#alarmDealModal_show_dealAccount").text(dealUserAccount);
-		$("#alarmDealModal_show_dealAccount").attr("title",dealUserAccount);
-		
-		$("#alarmDealModal_show_dealUserName").text(inputDealUserName);
-		$("#alarmDealModal_show_dealUserName").attr("title",inputDealUserName);
-		
-		$("#alarmDealModal_show_dealTime").text(creationDate);
-		$("#alarmDealModal_show_dealTime").attr("title",creationDate);
-
-		$("#alarmDealModal_show_dealContent").text(dealContent);
-		$("#alarmDealModal_show_dealContent").attr("title",dealContent);
-	}
-	
-	$("#saveAlarmDealBtn").click(function(){
-		saveAlarmDeal();
-	});
-	
-	function saveAlarmDeal(){
-		if($("#alarmDealForm").valid()){
-			$.ajax({
-				url:"/alarmInfo/saveAlarmDeal",
-				data: $("#alarmDealForm").serialize(),
-				async: true,
-			    cache: true,
-			    dataType: 'json',
-			    type:"post",
-			    success: function(ret){
-		    		if(ret && ret.code == 0){
-				    	$("#alarmDealModal_deal").modal('hide');
-						layer.msg($.i18n.prop("comm.Operationdone"),{icon:1}); 
-				    	getAlarmInfoList(true,1);//刷新列表
-		    		}else{
-		    			layer.msg($.i18n.prop("comm.Failed"),{icon:2});    
-		    		}
-			    },
-			    complete:function(XMLHttpRequest, textStatus){
-					authorityValide(XMLHttpRequest);
-				}
-			});
-		}
-	}
-	function validateAlarmDealForm(){
-		$("#alarmDealForm").validate({
-			rules:{
-				inputDealUserName:{
-					required: false ,
-					maxlength:50
-				},
-				dealContent:{
-					required: false,
-					maxlength : 500
-				}
-			},
-			messages:{
-				inputDealUserName:{
-					maxlength: $.i18n.prop("Alert.Processing.ProcessingHanderNameLengthValid")
-				},
-				dealContent:{
-					maxlength : $.i18n.prop('Alert.Processing.ProcessingContentLengthValid')
-				}
-			},
-			errorPlacement: function(error, element){
-				error.appendTo(element.parent());
-			}
-		});
-	}
-	
-	function openDeviceInfoModal(imei){
-		var ev = window.event || arguments.callee.caller.arguments[0];
-		if (window.event) {
-			ev.cancelBubble = true;
-		} else {
-			ev.stopPropagation();
-		}
-		complex_buildDeviceInfoForm("alarm",imei,"alarmDeviceInfo");
-	}
 	
 	
 </script> 
@@ -2619,47 +1818,6 @@ function delCookie(name){
 				</span>
 				</div>
 				</div>
-	             <!-- <div class="form-group discount dn">
-	              <label  class="col-md-3 control-label text-ellipsis" title="充值权限">充值权限：</label>
-	              <div class="col-md-4">
-	                <label class="icheck-min text-ellipsis p-tb5" title="授权"><input id="recharge" name="recharge" type="checkbox" />&nbsp;授权</label>
-	              	<div class="show-discount-inp dn">
-	               	 <input id="discount" name="discount"  maxlength="4"  title="请输入折扣(0.01~1)" type="text" class="form-control form-control-sm" placeholder="请输入折扣(0.01~1)"/>
-	             	 </div>
-	              </div>
-	              
-	            </div>
-	            <div class="form-group recharge">
-	              <label  class="col-md-3 control-label" title="登录权限">登录权限：</label>
-	              <div class="col-md-2 p-tb5 p-r0">
-	                <label class="icheck-min text-ellipsis" title="Web登录权限"><input id="webLogin" name="webLogin" type="checkbox" checked="checked"/>&nbsp;Web登录权限</label>
-	              </div>
-	              <div class="col-md-2 p-tb5">
-	              	<label class="icheck-min text-ellipsis" title="APP登录权限"><input id="appLogin" name="appLogin" type="checkbox" checked="checked"/>&nbsp;APP登录权限</label>
-	              </div>
-	            </div>
-	            <div class="form-group recharge">
-	              <label  class="col-md-3 control-label" title="指令权限">指令权限：</label>
-	              <div class="col-md-2 p-tb5 p-r0">
-	                <label class="icheck-min text-ellipsis" title="批量下发指令">
-	                <input id="isBatchSendIns" name="isBatchSendIns" type="checkbox" />&nbsp;批量下发指令
-	               	</label>
-	              </div>
-	              <div class="col-md-2 p-tb5">
-	              	<label class="icheck-min text-ellipsis" title="批量下发工作模式">
-	              	<input id="isBatchSendFM" name="isBatchSendFM" type="checkbox" />&nbsp;批量下发工作模式</label>
-	              </div>
-	            </div>
-	            
-            <div class="form-group" style="display: none;">
-              <label  class="col-md-3 control-label" title="语言" >语言：</label>
-              <div class="col-md-4 easydropdown easydropdown-large">
-               	 <select class="language" name="language">
-					<option value="zh" >中文</option>
-					<option value="en" selected="selected">英文</option>
-				 </select>
-              </div>
-            </div>-->
           </form>
         </div>
       </div>
@@ -2927,62 +2085,6 @@ function delCookie(name){
 	</form>
 </div>
 
-<!-- 批量用户到期提示 -->
-<div class="dn p-15" id="batchSetExpiration">
-  <div>
-    	当前添加成功	<b class="c-72af2d" id="addImeiSuccess">0</b>失败<b class="c-red" id="addImeiFail">0</b>
-  </div>
-  <div class="oy-a mah-200">
-    <table width="100%" class="table table-condensed table-ellipsis table-td-normal">
-      <thead>
-	      <tr title="IMEI">
-	      	<th width="50%">IMEI</th>
-	        <th title="状态" width="20%">状态</th>
-
-	      </tr>
-      </thead>
-      <tbody id="notExistImeis">
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- 批量更新设备提示 -->
-<div class="dn p-15" id="batchUpdate">
-  <div>
-    	当前更新成功<b class="c-72af2d" id="batchUpdateDevSuccess">0</b>失败<b class="c-red" id="batchUpdateDevFail">0</b>
-  </div>
-  <div class="oy-a mah-200">
-    <table width="100%" class="table table-condensed table-ellipsis table-td-normal">
-      <thead>
-	      <tr title="IMEI">
-	      	<th width="50%">IMEI</th>
-	        <th title="状态" width="20%">状态</th>
-	        <th title="原因">原因</th>
-	        <th title="位置">位置</th>
-	      </tr>
-      </thead>
-      <tbody id="batchUpdateDevFailImei">
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<script type="text/html" id="addFail_tmp">
-	{{each data as row i}}
-	<tr>
-		<td title="{{row.imei}}">{{row.imei}}</td>
-		<td title="失败"><span class="c-red">失败</span></td>
-		{{if row.type == "NOTDIGIT"}}<td title="包含非数字">包含非数字</td>{{/if}}
-		{{if row.type == "LENGTHERROR"}}<td title="非15位">非15位</td>{{/if}}
-		{{if row.type == "ISADD"}}<td title="已添加">已添加</td>{{/if}}
-		{{if row.type == "REPEAT"}}<td title="重复">重复</td>{{/if}}
-		{{if row.type == "NOTCHILD"}}<td title="非下级用户设备">非下级用户设备</td>{{/if}}
-		{{if row.type == "NOACTIV"}}<td title="未激活">未激活</td>{{/if}}
-		{{if row.type == "NOTEXIST"}}<td title="不存在">不存在</td>{{/if}}
-	</tr>
-	{{/each}}
-</script>
 
 <script type="text/html" id="addSuccess_tmp">
 	{{each data as row i}}
@@ -2995,34 +2097,6 @@ function delCookie(name){
 	{{/each}}
 </script>
 
-<script type="text/html" id="batchImportFailed_tmp">
-	{{each data as row i}}
-		<tr>
-			{{if row.imei != ""}}<td title="{{row.imei}}">{{row.imei}}</td>{{else}}<td title="无">无{{/if}}
-			<td title="失败">失败</td>
-			{{if row.failReason == "-2"}}<td title="该设备图标类型不存在">该设备图标类型不存在</td>{{/if}}
-			{{if row.failReason == "-1"}}<td title="安装时间不是时间格式">安装时间不是时间格式</td>{{/if}}
-			{{if row.failReason == "-3"}}<td title="手机号码长度不正确">手机号码长度不正确</td>{{/if}}
-			{{if row.failReason == "0"}}<td title="设备不存在">设备不存在</td>{{/if}}
-			{{if row.failReason == "1"}}<td title="设备名称长度超过极限">设备名称长度超过极限</td>{{/if}}
-			{{if row.failReason == "3"}}<td title="SIM卡号长度超过极限">SIM卡号长度超过极限</td>{{/if}}
-			{{if row.failReason == "4"}}<td title="SN号长度超过极限">SN号长度超过极限</td>{{/if}}
-			{{if row.failReason == "5"}}<td title="车牌号长度超过极限">车牌号长度超过极限</td>{{/if}}
-			{{if row.failReason == "6"}}<td title="车架号长度超过极限">车架号长度超过极限</td>{{/if}}
-			{{if row.failReason == "7"}}<td title="司机名称长度超过极限">司机名称长度超过极限</td>{{/if}}
-			{{if row.failReason == "8"}}<td title="电话号码长度超过极限">电话号码长度超过极限</td>{{/if}}
-			{{if row.failReason == "9"}}<td title="身份证号长度超过极限">身份证号长度超过极限</td>{{/if}}
-			{{if row.failReason == "10"}}<td title="电机/发动机号长度超过极限">电机/发动机号长度超过极限</td>{{/if}}
-			{{if row.failReason == "11"}}<td title="备注长度超过极限">备注长度超过极限</td>{{/if}}
-			{{if row.failReason == "12"}}<td title="安装时间长度超过极限">安装时间长度超过极限</td>{{/if}}
-			{{if row.failReason == "13"}}<td title="安装地址长度超过极限">安装地址长度超过极限</td>{{/if}}
-			{{if row.failReason == "14"}}<td title="安装公司长度超过极限">安装公司长度超过极限</td>{{/if}}
-			{{if row.failReason == "15"}}<td title="安装位置长度超过极限">安装位置长度超过极限</td>{{/if}}
-			{{if row.failReason == "16"}}<td title="安装人员长度超过极限">安装人员长度超过极限</td>{{/if}}
-			<td title="{{row.rowNumber}} 行 {{row.columnNumber}} 列">{{row.rowNumber}} 行 {{row.columnNumber}} 列</td>
-		</tr>
-	{{/each}}
-</script>
 
 
 <div class="dn p-15" id="deviceEWM"></div>
@@ -3489,139 +2563,11 @@ function delCookie(name){
 	var command_imei = "";
 	var command_mcType = "";
 	
-	//获取指令类型 
-	function getInstructionType(imei,mcTypes,callback) {
-		command_imei = imei;
-		$.ajax({
-			type : "post",
-			async : true,
-			cache : false,
-			timeout:15000,
-			data : {
-				"imei" : command_imei,
-				"mcTypes":mcTypes
-			},
-			url : _ctx + "/device/getDevInstructionType",
-			success : function(ret) {
-				if (ret.code == 0) {
-					$("#ins_div").show();
-					$("#ins_div_loading").hide();
-					var type_html = '<div class="easydropdown easydropdown-sm easydropdown-full va-t" ><select name="typeId">';
-					if (typeof(ret.data.data) != "undefined" && ret.data.data.length > 0) {
-						$.each(ret.data.data,function(i, v) {
-							type_html+= '<option value="'+v.id+'" title="'+v.typeName+'">'
-									+ v.typeName
-									+ '</option>';
-						});
-					} else {
-						type_html+= '<option value="">请选择</option>';
-						layer.msg('该机型未配置指令', {
-							time:2000,icon : 8
-						}); 
-					}
-					type_html+= '</select></div>';
-					command_mcType = ret.data.mcType;
-					if(typeof(ret.data.deviceName) == "undefined"){
-						$("#instruction_deviceName").text(imei);
-					}else{
-						$("#instruction_deviceName").text(ret.data.deviceName);
-					}
-					$("#instruction_IMEI").text(command_imei);
-					
-					$("#type-div").html(type_html);
-					$("select[name='typeId']").easyDropDown().change(function(){
-						typeChange(callback);
-					});
-					typeChange(callback);
-				} else {
-					$("select[name='typeId']").easyDropDown();
-					layer.msg("获取指令类型失败", {
-						time:2000,icon : 8
-					});
-				}
-			},
-			complete:function(XMLHttpRequest, textStatus){
-				authorityValide(XMLHttpRequest);
-			},
-			error : function(e) {
-				layer.msg("获取指令类型失败", {
-					time:2000,icon : 8
-				});
-				$("#ins_div_loading").hide();
-			}
-		});
-	}
 
 	//指令类型改变
 	var instructionsAndParams = new Array();
 	var commandRecords = new Array();
 	
-	function typeChange(callback) {
-		var typeId = $("select[name='typeId']").val();
-		if (typeId) {
-			startLoadInstructions();
-			$.ajax({
-				type : "post",
-				async : true,
-				cache : true,
-				timeout:15000,
-				data : {
-					"imei":command_imei,
-					"mcType" : command_mcType,
-					"typeId" : typeId
-				}, 
-				url : _ctx + "/device/getInstructionAndParams",
-				success : function(ret) {
-					if (ret.code == 0) {
-						endLoadInstructions();
-						if (ret.data) {
-							instructionsAndParams = ret.data.instructionAndParams;
-							if(instructionsAndParams.length > 0){
-								commandRecords = [];
-								commandRecords = ret.data.commandRecordList;
-								var radio_html = '<div class="instruction-tab-navbar">'
-												+'<ul class="all-customer-list clearfix tab-nav-customer tab-nav" id="instruction_ul">';
-								$.each(ret.data.instructionAndParams,function(i, v) {
-									if (i == 0) {
-										radio_html+= '<li onclick="selectTab(this);" class="cp active" title="'+v.orderName+'"><a name="'+v.id+'">'+v.orderName+'</a>'
-													+'</li>';
-									} else {
-										radio_html+= '<li onclick="selectTab(this);" class="cp" title="'+v.orderName+'"><a name="'+v.id+'">'+v.orderName+'</a>'
-													+'</li>';
-									}
-								});
-								radio_html+= '</ul></div>';
-								$("#instructions-div").html(radio_html);
-								$("input[name='instructionId']").iCheck();
-								showInstructionParams();
-								$("input[name='instructionId']").on("ifChecked", function() {
-									showInstructionParams();
-								});
-								$("#instruction_ul li").click(function(){
-									selectTab(this);
-									if(callback && typeof(callback) == "function"){
-										callback();
-									}
-								});
-							}
-						}
-						if(callback && typeof(callback) == "function"){
-							callback();
-						}
-					}
-				},
-				complete:function(XMLHttpRequest, textStatus){
-					authorityValide(XMLHttpRequest);
-				},
-				error : function(e) {
-					$("#loading_ins").hide();
-					layer.msg("获取指令失败", {
-						time:2000,icon : 8
-					});
-				}
-			});
-		}
-	}
 	
 	function selectTab(obj){
 		$(obj).addClass("active").siblings().removeClass('active');
@@ -3640,469 +2586,8 @@ function delCookie(name){
 		$(".instruction-list").show();
 	}
 	
-	//指令参数展示
-	function showInstructionParams() {
-		var instructinId = $("#instruction_ul .active a").attr("name");
-		if (instructinId) {
-			var param_val_name_index = 1;
-			$("#params-div").empty();
-			$("#instructionPwd-div").remove();
-			$("#orderExplain-div").remove();
-			$.each(instructionsAndParams,function(i, v) {
-				if (v.id == instructinId) {
-					$("#orderContent").val(v.orderContent);
-					$("#isUsePwd").val(v.isUsePwd);
-					if(v.isOffLine){
-						$("#isOffLine").val(v.isOffLine);
-					}else{
-						$("#isOffLine").val(0);
-					}
-					var date_index = 1;
-					$.each(v.paramList,function(m, n) {
-						var param_html = '<div class="form-group"><input type="hidden" name="paramVal_id_'+param_val_name_index+'" value="'+n.id+'" />';
-						param_html += '<label class="col-md-3 control-label" title="'+n.paramName+'">';
-						param_html += n.paramName
-								   +'：</label>';
-						if (typeof (n.defaultVal) == "undefine") {
-							n.defaultVal = "";
-						}
-						var commandRecord = getSingleCommandRecord(n.id, n.updationDate);
-						if (n.paramType == "text"
-								|| n.paramType == "phone"
-								|| n.paramType == "number"
-								|| n.paramType == "email") {
-							param_html += '<div class="col-sm-6">';
-							param_html += '<input style="display:none;">';
-							if(typeof(commandRecord) != "undefined" && commandRecord){
-								param_html += '<input type="text" autocomplete="off" id="text_'+ m +'" name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'" value="'+ commandRecord +'" class="form-control form-control-sm" />';
-							}else{
-								param_html += '<input type="text" autocomplete="off" id="text_'+ m +'" name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'" value="'+ n.defaultVal +'" class="form-control form-control-sm" />';
-							}
-							param_html += '</div>';
-							if(n.paramMsg){
-								param_html += '<div class="col-sm-2"><span id="show-question-'+n.id+'" class="fa fa-question-circle cp p-t7" rel="popover"></span></div>';							
-							}
-							param_html += '</div>';
-						} else if (n.paramType == "textarea") {
-							param_html += '<div class="col-sm-6">';
-							param_html += '<input style="display:none;">';
-							param_html += '<input type="text" autocomplete="off" id="text_'+ m +'" name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'" readonly="readonly" value="'+ n.defaultVal +'" class="form-control form-control-sm" />';
-							param_html += '</div>';
-							param_html += '<div class="col-sm-2"><span id="show-question-'+n.id+'" class="fa fa-question-circle cp p-t7" rel="popover"></span></div>';							
-							param_html += '</div>';
-						} else if (n.paramType == "password") {
-							param_html += '<div class="col-sm-6">';
-							if(typeof(commandRecord) != "undefined" && commandRecord){
-								param_html += '<input type="password" id="text_'+ m +'" name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'" value="'+ commandRecord +'" class="form-control form-control-sm" />';
-							}else{
-								param_html += '<input type="password" id="text_'+ m +'" name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'" value="'+ n.defaultVal +'" class="form-control form-control-sm" />';
-							}
-							param_html += '</div>';
-							if(n.paramMsg){
-								param_html += '<div class="col-sm-2"><span id="show-question-'+n.id+'" class="fa fa-question-circle cp p-t7" rel="popover"></span></div>';							
-							}
-							param_html += '</div>';
-						} else if (n.paramType == "radio") {
-							param_html += '<div class="d-ib clearfix col-md-6">';
-							makeParamValsArry(n.paramVals);
-							if (paramValsArr.length > 0) {
-								$.each(paramValsArr,function(x,y) {
-									if(typeof(commandRecord) == "undefined" || !commandRecord){
-										commandRecord = n.defaultVal;
-									}
-									if(x > 0){
-										param_html += '&emsp;';
-									}
-									param_html += '<label class="icheck-min p-t7">'
-									if (commandRecord == y.pval) {
-										param_html +='<input type="radio" value="'+ y.pval +'" checked name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'"/>&nbsp;'
-													+ y.pkey;
-									} else {
-										param_html +='<input type="radio" value="'+ y.pval +'" name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'"/></label>&nbsp;'
-													+ y.pkey;
-									}
-									param_html += '</label>';
-								})
-							}
-							param_html += '</div>';
-							if(n.paramMsg){
-								param_html += '<div class="col-sm-2"><span id="show-question-'+n.id+'" class="fa fa-question-circle cp p-t7" rel="popover"></span></div>';							
-							}
-							param_html += '</div>';
-						} else if (n.paramType == "checkbox") {
-							param_html += '<div class="d-ib clearfix col-md-6">';
-							makeParamValsArry(n.paramVals);
-							if (paramValsArr.length > 0) {
-								$.each(paramValsArr,function(x,y) {
-									var checkVal = "";
-									if(typeof(commandRecord) == "undefined" || !commandRecord){
-										checkVal = n.defaultVal;
-									}else{
-										if($.inArray(y.pval,commandRecord.split(",")) > -1){
-											checkVal = y.pval;
-										}
-									}
-									if(x > 0){
-										param_html += '&emsp;';
-									}
-									param_html += '<label class="icheck-min p-t7">';
-									if (checkVal == y.pval) {
-										param_html += '<input type="checkbox" value="'+ y.pval +'" checked name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'"/>&nbsp;&nbsp;'
-													+ y.pkey;
-									} else {
-										param_html += '<input type="checkbox" value="'+ y.pval +'" name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'"/>&nbsp;&nbsp;'
-													+ y.pkey;
-									}
-									param_html += '</label>';
-									param_val_name_index++;
-								})
-							}
-							param_html += '</div>'; 
-							if(n.paramMsg){
-								param_html += '<div class="col-sm-2"><span id="show-question-'+n.id+'" class="fa fa-question-circle cp p-t7" rel="popover"></span></div>';							
-							}
-							param_html += '</div>';
-						} else if (n.paramType == "select") {
-							param_html += '<div class="col-sm-4">';
-							param_html += '<div class="easydropdown easydropdown-sm easydropdown-full d-ib va-t">';
-							param_html += '<select  name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'">';
-							makeParamValsArry(n.paramVals);
-							if (paramValsArr.length > 0) {
-								$.each(paramValsArr,function(x,y) {
-									if(typeof(commandRecord) == "undefined" || !commandRecord){
-										commandRecord = n.defaultVal;
-									}
-									if (commandRecord == y.pval) {
-										param_html += '<option value="'+ y.pval +'" selected>'
-												+ y.pkey
-									} else {
-										param_html += '<option value="'+ y.pval +'">'
-												+ y.pkey
-									}
-									param_html += '</option>';
-								})
-							} else {
-								param_html += '<option value="" selected>请选择</option>';
-							}
-							param_html += '</select>';
-							param_html += '</div>';
-							param_html += '</div>';
-							param_html += '<div class="col-sm-2"></div>';
-							if(n.paramMsg){
-								param_html += '<div class="col-sm-2"><span id="show-question-'+n.id+'" class="fa fa-question-circle cp p-t7" rel="popover"></span></div>';							
-							}
-							param_html += '</div>';
-						} else if (n.paramType == "dates"
-								|| n.paramType == "times") {
-							param_html += '<div class="col-sm-3 p-r0">';
-							if(typeof(commandRecord) != "undefined" && commandRecord){
-								var timeArr = commandRecord.split(",");
-								if(null != timeArr && timeArr.length >= 2){
-									param_html += '<input type="text" name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'" value="'+timeArr[0]+'" class="form-control form-control-sm" />';
-									param_html += '</div>'
-									date_index++;
-									param_html += '<div class="col-sm-3 p-r0">';
-									param_html += '<input type="text" name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'" value="'+timeArr[1]+'" class="form-control form-control-sm" />';
-								}
-							}else{
-								param_html += '<input type="text" name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'" value="" class="form-control form-control-sm" />';
-								param_html += '</div>'
-								date_index++;
-								param_html += '<div class="col-sm-3 p-r0">';
-								param_html += '<input type="text" name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'" value="" class="form-control form-control-sm" />';
-							}
-							param_html += '</div>';
-							if(n.paramMsg){
-								param_html += '<div class="col-sm-2"><span id="show-question-'+n.id+'" class="fa fa-question-circle cp p-t7" rel="popover"></span></div>';							
-							}
-						} else if (n.paramType == "date"
-								|| n.paramType == "time") {
-							param_html += '<div class="col-sm-6">';
-							if(typeof(commandRecord) == "undefined" || !commandRecord){
-								commandRecord = n.defaultVal;
-							}
-							param_html += '<input type="text" name="paramVal_'+ n.paramType +'_'+ param_val_name_index +'" value="'+commandRecord+'" class="form-control form-control-sm" />';
-							date_index++;
-							param_html += '</div>';
-							if(n.paramMsg){
-								param_html += '<div class="col-sm-2"><span id="show-question-'+n.id+'" class="fa fa-question-circle cp p-t7" rel="popover"></span></div>';							
-							}
-						}
-						
-						$("#params-div").append(param_html);
-						param_html = "";
-						param_val_name_index++;
 
-						$("input[name^='paramVal_radio_'][type='radio']").iCheck();
-						$("input[name^='paramVal_checkbox_'][type='checkbox']").iCheck();
-						$("select[name^='paramVal_select_']").easyDropDown();
-						$("input[name^='paramVal_date']").datetimepicker({
-							lang : "ch",
-							format : 'Y-m-d',
-							timepicker : false
-						});
-						$("input[name^='paramVal_time']").datetimepicker({
-							lang : "ch",
-							step:5,
-							format : 'H:i',
-							timepicker : true,
-							datepicker:false
-						});
-						$("#show-question-"+n.id).popover({
-							placement: "top",
-							trigger: 'hover',
-							content: n.paramMsg
-						});
-					})
-					var pwd_html = "";
-					if (v.isUsePwd == "1") {
-						pwd_html = '<div class="form-group" id="instructionPwd-div"><label id="instructionPwd-label" title="密码" class="col-md-3 control-label text-ellipsis">密码：</label>';
-						pwd_html += '<div class="col-sm-5"><input type="text" onfocus="this.type='+"'"+'password'+"'"+'" id="instructionPwd" class="form-control form-control-sm" /></div>';
-						pwd_html += '</div>';
-					} else {
-						pwd_html = '<div class="form-group" id="instructionPwd-div" style="display:none;"><label id="instructionPwd-label" title="密码" class="col-md-3 control-label text-ellipsis">密码：</label>';
-						pwd_html += '<div class="col-sm-5"><input type="password" id="instructionPwd" class="form-control form-control-sm" /></div>';
-						pwd_html += '</div>';
-					}
-					$("#params-div").after(pwd_html);
-					$("#instructionPwd").val("");
-					if(v.orderExplain){
-						var orderExplain_html = '<div class="form-group" id="orderExplain-div"><label id="instructionPwd-label" title="指令说明" class="col-md-3 control-label text-ellipsis">指令说明：</label>';
-						orderExplain_html += '<div class="col-sm-8 p-t7">'
-								+ v.orderExplain + '</div>';
-						orderExplain_html += '</div>';
-						$("#instructionPwd-div").after(orderExplain_html);
-					}
-				}
-			});
-		}
-	}
-
-	function getSingleCommandRecord(paramId,paramUpdationDate){
-		var cr = null;
-		if(commandRecords && commandRecords.length > 0){
-			$.each(commandRecords,function(i,v){
-				if(v.paramId == paramId){
-					if(typeof(paramUpdationDate) == "undefined" || !paramUpdationDate){
-						cr = v.paramRecord;
-						return;				
-					}else{
-						var d1 = new Date(paramUpdationDate.replace(/\-/g, "\/")); 
-						var d2 = new Date(v.updateTime.replace(/\-/g, "\/")); 
-						if(d1 <= d2) {
-							cr = v.paramRecord;
-							return;
-						}
-					}
-				}
-			});
-		}
-		return cr;
-	}
 	
-	//设置参数值
-	var paramValsArr = new Array();
-	function makeParamValsArry(paramVals) {
-		if (paramVals) {
-			paramValsArr = [];
-			var paramGroupArr = paramVals.split(";");
-			if (paramGroupArr && paramGroupArr.length > 0) {
-				$.each(paramGroupArr, function(i, v) {
-					var singParamArr = v.split(":");
-					var pv = "";
-					if (singParamArr.length == 2) {
-						pv = {
-							"pkey" : singParamArr[0],
-							"pval" : singParamArr[1]
-						};
-					} else if (singParamArr.length > 2) {
-						//时间段参数
-						pv = {
-							"pkey" : singParamArr[0],
-							"pval" : singParamArr[1] + ":" + singParamArr[2]
-									+ ":" + singParamArr[3]
-						};
-					}
-					if (pv) {
-						paramValsArr.push(pv);
-					}
-				})
-			}
-		}
-	}
-	
-	function getCommandRecord(){
-		$.ajax({
-			type : "post",
-			async : true,
-			cache : false,
-			data : {"userId":"","imei":command_imei},
-			url : _ctx + "/device/getCommandRecord",
-			dataType : "json",
-			success : function(ret) {
-				if(ret.code == 0){
-					commandRecords = ret.data;
-				}
-			},
-			error : function(e) {
-				ajaxError("getCommandRecord()", e);
-			}
-		});
-	}
-
-	//发送指令
-	function sendInstruction() {
-		if(!$("select[name='typeId']").val()){
-			layer.msg("请选择指令类型",{time:2000,icon:8});
-			return false;
-		}
-		if(!$("#instruction_ul li.active a").attr("name")){
-			layer.msg("请选择指令",{time:2000,icon:8});
-			return false;
-		}
-		var paramArray = $("#instruction-form").serializeArray();
-		if (validateParams(paramArray)) {
-			var param = "";
-			var scopeFlag = 1;
-			$("[name^=paramVal_]").each(function(i, v) {
-				var valType = this.name.split("_")[1];
-				var thisVal = v.value;
-				if(valType == "id"){
-					if(param){
-						param+= ";";
-					}
-				}
-				if(valType == "radio"){
-					if(this.checked){
-						param+= thisVal + ",";
-					}
-				}else{
-					if(valType == "checkbox"){
-						if(!this.checked){
-							thisVal = ""; 
-						}
-					}else if(valType == "dates" || valType == "times"){
-						if(thisVal){
-							param+= thisVal + "-";
-							scopeFlag++;
-							return true;
-						}
-					}
-					param+= thisVal + ",";
-				} 
-			});
-			var data = {
-				"imei" : command_imei,
-				"orderContent" : $("#orderContent").val(),
-				"instructionId" : $("#instruction_ul .active a").attr("name"),
-				"instructionName":$("#instruction_ul .active a").text(), 
-				"param" : maintenceParam(param),
-				"instructionPwd" : $("#instructionPwd").val(),
-				"isUsePwd" : $("#isUsePwd").val(),
-				"isOffLine" : $("#isOffLine").val()
-			};
-			if (!data.imei) {
-				layer.msg("imei为空",{time:2000,icon:8});
-				return false;
-			}
-			if (!data.instructionId) {
-				layer.msg("指令ID为空",{time:2000,icon:8});
-				return false;
-			}
-			$("#instruction-sending").show();
-			$("#instruction-send-btn").hide();
-			$.ajax({
-				type : "post",
-				async : true,
-				cache : false,
-				data : data,
-				url : _ctx + "/device/sendIns",
-				dataType : "json",
-				success : function(ret) {
-					$("#instruction-sending").hide();
-					$("#instruction-send-btn").show();
-					var command_imei = "";
-					var command_mcType = "";
-					if(ret.code == 255){
-						getCommandRecord();
-						$("#instruction-_excute_result").text(ret.data);
-						layerIndex = layer.open({
-					      type: 1,
-					      shade: false,
-					      title: false, //不显示标题
-					      content: $("#instruction_excute_result_div"), //捕获的元素
-					    });
-					}else if(ret.code == 10008){
-						//指令提示已设置
-						layer.msg(ret.msg, {
-							time:2000,icon : 8
-						});
-					}else if(ret.code == 10006){
-						layer.confirm('该设备有待发送的离线指令，确定是否替换？(每个设备只能有一条待发送的离线指令)', {
-							title:"信息",
-							btn: ["确定","取消"],
-							shade: false 
-						}, function(){
-							coverOffLineComamnd(ret.data);
-						});
-					}else if(ret.code == 10005){
-						//指令转为离线指令提示时间延长
-						layer.msg($.i18n.prop(ret.msg), {
-							time:5000,icon : 8
-						});
-					}else{ 
-						layer.msg($.i18n.prop(ret.msg), {
-							time:2000,icon : 8
-						});
-					}
-				},
-				error : function(e) {
-					layer.msg("操作失败", {time:2000,icon : 2});
-				},
-				complete:function(XMLHttpRequest, textStatus){
-					authorityValide(XMLHttpRequest);
-					$("#instruction-sending").hide();
-					$("#instruction-send-btn").show();
-				}
-			});
-		}
-	}
-	
-	function coverOffLineComamnd(logJson){
-		if(logJson){
-			$.ajax({
-				type : 'post',
-				url : _ctx + "/device/coverOffLineComamnd",
-				async : false,
-				cache : false,
-				dataType : 'json',
-				data : {
-					"logJson" : JSON.stringify(logJson.log),"mapTemp":JSON.stringify(logJson.mapTemp)
-				},
-				success : function(returnData) {
-					if (returnData.code == 0) {
-						getCommandRecord();
-						layer.msg("操作成功", {time:2000,icon: 1});
-					}else{
-						layer.msg("操作失败", {time:2000,icon: 2});
-					}
-				}
-			});
-		}
-	}
-	
-	function maintenceParam(param){
-		var resultParam = "";
-		var arr = param.split(";");
-		$.each(arr,function(i,v){
-			if(i == arr.length -1){
-				resultParam+= v.substring(0,v.length-1);
-			}else{
-				resultParam+= v.substring(0,v.length-1) + ";";
-			}
-		});	
-		return resultParam;
-	}
 	
 	function validateParams(paramArray) {
 		var flag = true;
@@ -5049,18 +3534,15 @@ function delCookie(name){
 		{{/each}}
 	</select>
 </script>
+<!-- 区域列表-->
+<script type="text/html" id="complex_area_options">
+	<select name="agencyAreaId" class="js-select-mcTypea">
+		{{each data as row index}}
+			<option selected value="{{row.id}}">{{row.areaName}}</option>
+		{{/each}}
+	</select>
+</script>
 
-
-<script type="text/html" id="complex_package_tmp">	
-           {{each data as row i}}
-           <li data="{{row.code}}">
-             <dl class="item">
-               <dt>{{row.name}}</dt>
-               <dd>价格: {{(row.limit*(row.discount*100))/100}}米币{{if row.discount != 1}}({{row.discount*100/10}}折){{/if}}</dd>
-             </dl>
-           </li>
-           {{/each}}
-</script>	
 <script type="text/html" id="allotProlong_table_tmp">
 {{each data as row i}}
 	<tr>
@@ -5122,7 +3604,6 @@ function toIndex(userId,account,parentId,imei){
 
 </script>
 <script type="text/javascript" src="webpage/resource/js/complexQuery/complexQuery.js"></script>
-<script src="webpage/resource/plugins/uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="webpage/resource/plugins/fileUpLoad/ajaxfileupload.js"></script>
 
 
@@ -5152,16 +3633,6 @@ var currUserId = '<%=request.getAttribute("userId")%>';
 </script>
 
 
-<script  type="text/html" id="erweima">
-		<span class="qrcode-pic">
-		<div id="printArea_{{imei}}" style="width: 3cm;height:3cm;margin: -20px auto 0;">
-			<img  style="width: 3cm;height:3cm;" src={{imgsrc}}/>
-		 </div>
-		 <button type="button" onclick="print('{{imei}}');" class="btn btn-default btn-block m-t10"><i class="fa fa-print"></i>&nbsp;打印</button>
-		 </span>
-</script>
-
-<!-- Google 相关 -->
 <!-- jingxiaoshang -->
 <script type="text/javascript"  src="webpage/resource/js/customer/agency.js"></script>
 <script type="text/javascript" src="webpage/resource/js/customer/custom_search.js"></script>	

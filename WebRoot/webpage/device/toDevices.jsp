@@ -161,14 +161,14 @@ setJsLanguage(locale);
 	}
 	
 	function authorityValide(XMLHttpRequest){
-		if(XMLHttpRequest.responseText){
+		/* if(XMLHttpRequest.responseText){
 			var data = eval('('+XMLHttpRequest.responseText+')');
 			if(data.code == 100001){
 				layer.msg($.i18n.prop('cust.VirtualAccountPermissionDenied'),{icon:2});
 			}else if(data.code == 100002){
 				layer.msg("请勿重复操作",{icon:2});
 			}
-		}
+		} */
 	}
 	
 	
@@ -242,7 +242,6 @@ setJsLanguage(locale);
 			<div class="navbar-right p-15 p-b0 ta-r">
 				<div class="user-time">
 					
-						<a  href="/business/ConmmandLogs/toBusinessLog">业务日志</a>&emsp;
 					
 					<!-- <span class="pr theme-switch"><a class="js-theme-switch-btn theme-switch-btn cp c-fff ">切换主题&nbsp;<i class="fa fa-caret-down"></i></a> 
 		            <div class="theme-box pa c-666 p-lr10 p-tb5 ta-l lh-2 b1-ccc bc-fff">
@@ -276,7 +275,8 @@ setJsLanguage(locale);
 				<li id="customerManagement"><a href="meunController.do?search"><i class="fa fa-group"></i>&nbsp;客户管理</a></li>
 				<li id="reportsManagement"><a href="meunController.do?report"><i class="fa fa-table" aria-hidden="true"></i>&nbsp;统计报表</a></li>
 				<li id="devicesManagement"><a href="meunController.do?device"><i class="fa fa-hdd-o" aria-hidden="true"></i>&nbsp;设备管理</a></li>
-				<li id="orderManagement"><a href="meunController.do?order"><i class="fa fa-hdd-o" aria-hidden="true"></i>&nbsp;订单管理</a></li>
+				<li id="orderManagementext"><a href="meunController.do?orderext"><i class="fa fa-hdd-o" ></i>&nbsp;订单管理</a></li>
+				<li id="orderManagement"><a href="meunController.do?order"><i class="fa fa-hdd-o" ></i>&nbsp;订单审核</a></li>
 				</ul>
 		<div id="complexQuery" class="navbar-right  p-10" data-option="{'renderingFlag':false}"></div>
 	</div>
@@ -675,7 +675,7 @@ var pwdForm_advise = $("#editpwd-form_advise").validate({
 						
 					},
 					complete:function(XMLHttpRequest, textStatus){
-						authorityValide(XMLHttpRequest);
+						//authorityValide(XMLHttpRequest);
 					}
 				});
 			},
@@ -730,7 +730,7 @@ var pwdForm_advise = $("#editpwd-form_advise").validate({
 						
 					},
 					complete:function(XMLHttpRequest, textStatus){
-						authorityValide(XMLHttpRequest);
+						//authorityValide(XMLHttpRequest);
 					}
 				});
 			}
@@ -834,7 +834,7 @@ function delCookie(name){
 				}
 			},
 			complete:function(XMLHttpRequest, textStatus){
-				authorityValide(XMLHttpRequest);
+				//authorityValide(XMLHttpRequest);
 			},
 			erorr : function(e){
 				ajaxError("edit-information",e);
@@ -1351,6 +1351,7 @@ function exitSys()
 										<th title="设备名称">设备名称</th>
 										<th title="设备IMEI">设备IMEI</th>
 										<th title="型号">型号</th>
+										<th title="包装方式">包装方式</th>
 										<th title="激活时间">激活时间</th>
 										<th title="用户到期时间">用户到期时间</th>
 										<th title="状态">状态</th>
@@ -1373,6 +1374,7 @@ function exitSys()
 										<col>
 										<col>
 										<col>
+										<col>
 										<col width="100" />
 									</colgroup>
 									<tbody id="markDevTable"><!--  -->
@@ -1384,6 +1386,7 @@ function exitSys()
 			                       				<td title="{{row.deviceName}}">{{ if row.bindUserId != null && row.bindUserId != "" }}<i class="fa fa-mobile"></i>&nbsp;&nbsp;{{/if}}{{row.deviceName}} </td>
 			                       				<td title="{{row.imei}}">{{row.imei}}</td>
                                                 <td title="{{row.mcType}}">{{row.mcType}}</td>
+                                                <td title="{{row.packageType}}">{{if row.packageType == "1" }}散装{{else}}袋装{{/if}}</td>
 			                       				<td title="{{if row.activationTime == "" || row.activationTime == null}}未激活{{else}}{{row.activationTime}}{{/if}}">{{if row.activationTime == "" || row.activationTime == null}}未激活{{else}}{{row.activationTime | dateFormat}}{{/if}}</td>
 												<td title="{{if row.userExpiration == ""|| row.userExpiration     == null}}未设置{{else}}{{row.userExpiration}}{{/if}}">{{if row.userExpiration == ""         || row.userExpiration == null}}未设置&nbsp;<span name="show-question" class="fa fa-question-circle cp" rel="popover"></span>{{else}}{{row.userExpiration | dateFormat}}{{/if}}</td>
 								   				<td title="{{if row.userExpirationStr !='' &&row.userExpirationStr != null }}{{row.userExpirationStr}}{{else}}未激活{{/if}}"><span class="{{row.tdClass}}">{{if row.userExpirationStr !='' &&row.userExpirationStr != null }}{{row.userExpirationStr}}{{else}}未激活{{/if}}</span></td>
@@ -2213,7 +2216,7 @@ function exitSys()
 	    		}
 		    },
 		    complete:function(XMLHttpRequest, textStatus){
-				authorityValide(XMLHttpRequest);
+				//authorityValide(XMLHttpRequest);
 			}
 		});
 	}
@@ -2279,7 +2282,7 @@ function exitSys()
 		    		}
 			    },
 			    complete:function(XMLHttpRequest, textStatus){
-					authorityValide(XMLHttpRequest);
+					//authorityValide(XMLHttpRequest);
 				}
 			});
 		}
@@ -2992,7 +2995,7 @@ function exitSys()
 				}
 			},
 			complete:function(XMLHttpRequest, textStatus){
-				authorityValide(XMLHttpRequest);
+				//authorityValide(XMLHttpRequest);
 			},
 			error : function(e) {
 				layer.msg("获取指令类型失败", {
@@ -3062,7 +3065,7 @@ function exitSys()
 					}
 				},
 				complete:function(XMLHttpRequest, textStatus){
-					authorityValide(XMLHttpRequest);
+					//authorityValide(XMLHttpRequest);
 				},
 				error : function(e) {
 					$("#loading_ins").hide();
@@ -3511,7 +3514,7 @@ function exitSys()
 					layer.msg("操作失败", {time:2000,icon : 2});
 				},
 				complete:function(XMLHttpRequest, textStatus){
-					authorityValide(XMLHttpRequest);
+					//authorityValide(XMLHttpRequest);
 					$("#instruction-sending").hide();
 					$("#instruction-send-btn").show();
 				}
@@ -4071,7 +4074,18 @@ function exitSys()
            		<input type="date" name="platformEndDate" value="{{info.userExpiration}}"  class="form-control form-control-sm" >
          	</div>
 	   </div>
-	  
+	   <div class="form-group">
+			<label class="col-md-2 control-label" title="包装方式">包装方式：</label>
+  			<div class="col-md-3">
+				<span class="easydropdown easydropdown-sm easydropdown-full va-m">
+					<select name="packageType" class="complex-group-package"> 
+						<option value="1" title="默认"  class="selected" >散装 </option>
+                        <option value="2" title="默认" >袋装 </option>
+					</select>
+				</span>
+  			</div>
+			
+	   </div>
 	   <div class="form-group">
 		  <label class="col-md-2 control-label" title="备注">备注：</label>
 		  <div class="col-md-8">
@@ -4531,7 +4545,7 @@ function resetPwd(userId,account){
 				
 			},
 			complete:function(XMLHttpRequest, textStatus){
-				authorityValide(XMLHttpRequest);
+				//authorityValide(XMLHttpRequest);
 				layer.close(l);
 			}
 		});
@@ -4682,7 +4696,7 @@ function toIndex(userId,account,parentId,imei){
 				}
 			},
 			complete:function(XMLHttpRequest, textStatus){
-				authorityValide(XMLHttpRequest);
+				//authorityValide(XMLHttpRequest);
 			},
 			error : function(e) {
 				layer.msg("获取指令类型失败", {
@@ -4752,7 +4766,7 @@ function toIndex(userId,account,parentId,imei){
 					}
 				},
 				complete:function(XMLHttpRequest, textStatus){
-					authorityValide(XMLHttpRequest);
+					//authorityValide(XMLHttpRequest);
 				},
 				error : function(e) {
 					$("#loading_ins").hide();
@@ -5201,7 +5215,7 @@ function toIndex(userId,account,parentId,imei){
 					layer.msg("操作失败", {time:2000,icon : 2});
 				},
 				complete:function(XMLHttpRequest, textStatus){
-					authorityValide(XMLHttpRequest);
+					//authorityValide(XMLHttpRequest);
 					$("#instruction-sending").hide();
 					$("#instruction-send-btn").show();
 				}
@@ -5451,7 +5465,7 @@ function toIndex(userId,account,parentId,imei){
 				ajaxError("complex_initDevMcType()", e);
 			},
 			complete:function(XMLHttpRequest, textStatus){
-				authorityValide(XMLHttpRequest);
+				//authorityValide(XMLHttpRequest);
 			}
 		});
 	}

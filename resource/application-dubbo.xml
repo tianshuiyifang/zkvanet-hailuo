@@ -48,7 +48,9 @@
 	<dubbo:reference protocol="dubbo" 
 		interface="com.carnet.admin.api.OrderService" id="orderService" 
 		registry="elZookeeper" timeout="60000" retries="0" group="interest-soa" version="1.1.0"/>
-		
+	<dubbo:reference protocol="dubbo" 
+	    interface="com.carnet.admin.api.AgencyRailService" id="agencyRailManager" 
+	    registry="elZookeeper" timeout="60000" retries="0" group="interest-soa" version="1.1.0"/>	
 	<dubbo:reference protocol="dubbo" 
 		interface="com.carnet.admin.api.OrderExceptionService" id="orderExceptionService" 
 		registry="elZookeeper" timeout="60000" retries="0" group="interest-soa" version="1.1.0"/>
@@ -58,4 +60,10 @@
 	<dubbo:reference protocol="dubbo" 
 		interface="com.carnet.admin.api.GpsIssusdService" id="gpsIssusdService" 
 		registry="elZookeeper" timeout="60000" retries="0" group="interest-soa" version="1.1.0"/>
+	<dubbo:reference protocol="dubbo" 
+		interface="com.carnet.admin.api.OrderVerifyService" id="orderVerifyService" 
+		registry="elZookeeper" timeout="60000" retries="0" group="interest-soa" version="1.1.0"/>
+	<dubbo:reference protocol="dubbo" interface="com.carnet.admin.api.AgencyAreaService" id="agencyAreaManager" 
+	registry="elZookeeper" timeout="60000" retries="0"
+            group="interest-soa" version="1.1.0"/>
 </beans>

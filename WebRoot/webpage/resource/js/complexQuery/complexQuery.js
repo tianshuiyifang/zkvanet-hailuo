@@ -2074,6 +2074,7 @@ function complex_buildDeviceInfoForm(id,devid,modal){
 		
 		complex_device_validate("device_info_form_"+id);
 		$(".complex-group-select").easyDropDown();
+		$(".complex-group-package").easyDropDown();
 		$(".complex-mcType").easyDropDown();
 		if(!result.data.activationTime){
 			$(".complex-userexpirtion-select-"+id).easyDropDown();

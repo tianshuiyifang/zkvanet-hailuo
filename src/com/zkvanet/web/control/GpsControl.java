@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -46,6 +48,7 @@ import com.carnet.admin.api.GpsMessageService;
 import com.carnet.admin.api.LoginService;
 import com.carnet.admin.api.OrderExceptionService;
 import com.carnet.admin.api.OrderService;
+import com.carnet.admin.api.OrderVerifyService;
 import com.carnet.admin.common.ResultDto;
 import com.carnet.admin.dto.DeviceDto;
 import com.carnet.admin.dto.GpsMessage;
@@ -56,6 +59,7 @@ import com.carnet.admin.dto.query.DeviceQueryParms;
 import com.carnet.admin.dto.query.GpsMessageQueryParms;
 import com.carnet.admin.dto.query.OrderQueryParms;
 import com.carnet.admin.util.DataGridVo;
+import com.zkvanet.core.util.ContextHolderUtils;
 import com.zkvanet.web.model.AjaxResult;
 import com.zkvanet.web.model.DeviceListPojo;
 import com.zkvanet.web.model.GpsInfoVO;
@@ -96,12 +100,17 @@ public class GpsControl {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private OrderVerifyService orderVerifyService;
+	
 	@Autowired
 	OrderExceptionService  orderExceptionService;
 	
 	
 	public static final  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static final  SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	public static final  DecimalFormat    df   = new DecimalFormat("######0.00");   
 	  @RequestMapping(value = "getOrder")
 	   public @ResponseBody  ResultDto<List<OrderDto>> getOrder(Integer id){
 		  OrderQueryParms orderParam=new OrderQueryParms();
@@ -117,14 +126,55 @@ public class GpsControl {
 	
 	  
 	  @RequestMapping(value = "getOrderByPage")
-	   public @ResponseBody  ResultDto<DataGridVo<OrderDto>> getOrderByPage(OrderQueryParms orderParam){
-		  
-		  
+	   public @ResponseBody  ResultDto<DataGridVo<OrderDto>> getOrderByPage(OrderQueryParms orderParam,String start_Time,String end_Time){
+		  if(start_Time!=null){
+			  try {
+				orderParam.setStartTime(sdf.parse(start_Time));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+		  if(end_Time!=null){
+			  try {
+				orderParam.setEndTime(sdf.parse(end_Time));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
 		  ResultDto<DataGridVo<OrderDto>> queryOrder = orderService.queryOrder(orderParam);
-		  
-		  
 		  return queryOrder;
 	    }
+	  @RequestMapping(value = "verifyStatus")
+	   public @ResponseBody  ResultDto verifyStatus(Integer id){
+		  
+		   ResultDto verifyOrder = orderService.verifyOrder(id);
+		  
+		  return verifyOrder;
+	    }
+	  @RequestMapping(value = "salesCheck")
+	   public @ResponseBody  ResultDto<Boolean> salesCheck(Integer id, Integer statusCode, String msg){
+		  
+		  ResultDto<Boolean> verifyOrder = orderVerifyService.salesCheck(id, statusCode, msg);
+		  
+		  return verifyOrder;
+	    }
+	  @RequestMapping(value = "marketCheck")
+	   public @ResponseBody  ResultDto<Boolean> marketCheck(Integer id, Integer statusCode, String msg){
+		  
+		  ResultDto<Boolean> verifyOrder = orderVerifyService.marketCheck(id, statusCode, msg);
+		  
+		  return verifyOrder;
+	    }
+	  @RequestMapping(value = "financialCheck")
+	   public @ResponseBody  ResultDto<Boolean> financialCheck(Integer id, Integer statusCode, String msg){
+		  
+		  ResultDto<Boolean> verifyOrder = orderVerifyService.financialCheck(id, statusCode, msg);
+		  
+		  return verifyOrder;
+	    }
+	 
 	  @RequestMapping(value = "getException")
 	   public @ResponseBody  ResultDto<List<OrderExceptionDto>> getException(Integer id){
 		  
@@ -132,6 +182,50 @@ public class GpsControl {
 		   ResultDto<List<OrderExceptionDto>> listByOrderId = orderExceptionService.listByOrderId(id);
 		  
 		  return listByOrderId;
+	    }
+	  @RequestMapping(value = "handleException")
+	   public @ResponseBody  ResultDto handleException(Integer id,String desc){
+		  
+		   ResultDto handle=null;
+		   handle = orderExceptionService.handle(id, desc);
+		  
+		  return handle;
+	    }
+	  
+	  @RequestMapping(value = "getOrderInfoByUserId")
+	  public @ResponseBody  ResultDto<List<OrderDto>> getOrderInfoByUserId(Integer  userId){
+		  ResultDto<List<OrderDto>> re=new ResultDto<List<OrderDto>>();
+		  List<OrderDto> li=new ArrayList<OrderDto>();
+		  DeviceQueryParms params =new DeviceQueryParms();
+			 // params.setActivStatus(1);
+	      params.setBelongUserId(userId);//暂时以userid查询 后续可添加其他条件
+	      long currentTimeMillis = System.currentTimeMillis();
+		  ResultDto<DataGridVo<DeviceDto>> res = deviceManager.list(params);
+		  
+		  List<DeviceDto> list = res.getData().getList();
+		   for(DeviceDto dd: list){
+				  OrderQueryParms orderParam=new OrderQueryParms();
+				  orderParam.setDeviceId(dd.getId());
+				  ResultDto<DataGridVo<OrderDto>> queryOrder = orderService.queryOrder(orderParam);
+				  List<OrderDto> orderlist=null;
+				  if(queryOrder.getData()!=null){
+					  
+					  orderlist = queryOrder.getData().getList();
+				  }
+				  if(orderlist.size()>0){
+					  li.add(orderlist.get(0));
+				  }else{
+					  OrderDto o=new  OrderDto();
+					  o.setYunshuchehao(dd.getName());
+					  li.add(o);
+				  }
+				  
+				  
+		   }
+		   System.out.println("花费时间："+(System.currentTimeMillis()-currentTimeMillis));
+		  re.setStatusCode(0);
+		  re.setData(li);
+		  return re;
 	    }
 	  
 	 /**
@@ -248,7 +342,7 @@ public class GpsControl {
 	 }
 	  
 	  
-	  
+	 
 	  
 	/**
 	 * 获取gps信息
@@ -328,10 +422,10 @@ public class GpsControl {
 			  
 			  ResultDto<GpsMessage> lastMessage = gpsDeviceManager.getLastMessage(dd.getImei());//;
 			  String stat="0";// 0,离线; 1,在线静止; 2,在线运动.
-			  if(lastMessage.getStatusCode()	==1){  //防止查询结果有错误 直接跳过
+			  if(lastMessage.getStatusCode()==1){  //防止查询结果有错误 直接跳过
 				  continue ;
 			  }
-			  if(lastMessage.getData()!=null&&lastMessage.getData().getSpeed()==null&&!lastMessage.getData().getOnLine()){ //有返回数据 如果速度为空 即未激活
+			  if(lastMessage.getData()!=null&&!lastMessage.getData().getOnLine()){ //有返回数据 如果速度为空 即未激活
 				  stateShow="离线";
 				  noActiveCount++;
 				  offline++;
@@ -379,7 +473,7 @@ public class GpsControl {
 			  v.setShow(stat);
 			  if(lastMessage.getData().getWeight()!=null){
 				  
-				  v.setWeight(lastMessage.getData().getWeight().toString());
+				  v.setWeight(df.format(lastMessage.getData().getWeight()).toString());
 			  }
 			  v.setOrdertype(order);
 			  if(ordershow.getFahuodanhao()!=null){
@@ -391,7 +485,7 @@ public class GpsControl {
 			  }
 			  v.setBaozhuangfangshi(ordershow.getBaozhuangfangshi());
 			  GpsMessage  gpsmsg=lastMessage.getData();
-			  if(gpsmsg!=null&&gpsmsg.getOnLine()){ //有GPS数据时 拼装GPS信息
+			  if(gpsmsg!=null&&gpsmsg.getLat()!=null){ //有GPS数据时 拼装GPS信息
 				  
 				  String lat=gpsmsg.getLat().toString();
 				  String lon=gpsmsg.getLon().toString();
@@ -425,7 +519,7 @@ public class GpsControl {
 			  sm.setOrder(order);
 			  sm.setHb(hb);
 			  sm.setStatus(stat);  //该字段表示车辆是啥状态
-			  if(gpsmsg.getOnLine()||gpsmsg.getLat()!=null){
+			  if(gpsmsg.getOnLine()||gpsmsg.getLat()!=null){  //用于显示最后一次位置
 				  v.setStatusMap(sm);
 			  }
 			  v.setVechleioc("other");
@@ -566,15 +660,22 @@ public class GpsControl {
 				
 				lats.add(gps.getLat().toString());
 				lngs.add(gps.getLon().toString());
-				if(gps.getWeight()==null||gps.getWeight()==0.0){
-					if((i+5)<list.size()){
-						if(list.get(i+1).getWeight()>0&&list.get(i-1).getWeight()>0){
-							weight.add(list.get(i-1).getWeight());
+				if(gps.getWeight()==null||gps.getWeight()<5.0){
+					Boolean flag=false;
+					if((i+5)<list.size()){                                            //最后五个不处理
+					//如果后3个点都<10 则已卸货  否则取前一个weight值
+						if(list.get(i+1).getWeight()<10&&list.get(i+2).getWeight()<10&&list.get(i+3).getWeight()<10&&list.get(i+4).getWeight()<10){  
+							weight.add(gps.getWeight());
+						}else{
+							weight.add(weight.get(weight.size()-1));
 						}
+						
+					}else{
+						weight.add(gps.getWeight());
 					}
-					
+				}else{
+					weight.add(gps.getWeight());
 				}
-				weight.add(gps.getWeight());
 				gpsdata.add(gp);
 				
 			}

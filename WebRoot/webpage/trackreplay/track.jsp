@@ -359,7 +359,7 @@ setJsLanguage(locale);
 											</a></li>
 										</ul>
 									</div>
-									<ul class="stroke-list lh-2">
+									<ul class="stroke-list lh-2" style="font-size:14px">
 										<li id="km" style="display:none">总里程：0km</li>
 										<li>速度：<span id="gpsSpeed">0</span><span id="Km_hr">KM/H</span></li>
 										<li>吨位：<span id="gpsWeight">0</span><span id="Km_hT">T</span></li>
@@ -2740,6 +2740,9 @@ function addGoogleControl(map) {
 		}
 		var gweight=weights[index];
 		var time = gpsTimes[index];
+		var showlabel;
+		var showTite="<div class='map-tooltip tooltip top default' style='width:200px; margin-left:-14px;'><div class='tooltip-arrow'></div><div class='tooltip-inner text-ellipsis'>速度："+speed+"KM/H 载重："+gweight+"T </div></div>"
+		showlabel = new BMap.Label(showTite,{offset:new BMap.Size(-40,-30)});
 		if(allMapType=='googleMap'){
 			cariconImgObj=run_gg_icon(vechleioc,Number(directionArry[index]));
 		}else{
@@ -2781,7 +2784,12 @@ function addGoogleControl(map) {
 			setTrackLine();
 			carsMarker.setIcon(cariconImgObj.icon);
 			carsMarker.setPosition(point);
-
+			
+			if(carsMarker.getLabel()!=null){
+			   carsMarker.getLabel().remove();
+			}
+			carsMarker.setLabel(showlabel);
+			
 			if(isModification==0||isTemporaryPlay==1){
 				$('#playSlider').nstSlider('set_position', parseInt(index/(points.length-1)*1000));
 			}
@@ -3515,11 +3523,11 @@ function addGoogleControl(map) {
 			Array.prototype.push.apply(data,allWeight[i])
 		}
 		var interval=Math.ceil(data.length/5);
-		times=getDateArray(allstartTimes,allendTimes,data.length);
+		times=getDateArray(gpsTimes[0],gpsTimes[gpsTimes.length-1],data.length);
 		$('#weight_container').highcharts({
         chart: {
             alignTicks: false,
-            type: 'line'
+            type: 'spline'
         },
         credits: {
             enabled: false
@@ -3539,7 +3547,8 @@ function addGoogleControl(map) {
         yAxis: {
             title: {
                 text: '吨 (T)'
-            }
+            },
+            min:0
         },
         plotOptions: {
             line: {

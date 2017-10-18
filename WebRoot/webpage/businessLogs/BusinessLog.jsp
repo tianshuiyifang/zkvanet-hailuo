@@ -229,7 +229,6 @@ setJsLanguage(locale);
 			<div class="navbar-right p-15 p-b0 ta-r">
 				<div class="user-time">
 					
-						<a  href="/business/ConmmandLogs/toBusinessLog">业务日志</a>&emsp;
 					
 					<!-- <span class="pr theme-switch"><a class="js-theme-switch-btn theme-switch-btn cp c-fff ">切换主题&nbsp;<i class="fa fa-caret-down"></i></a> 
 		            <div class="theme-box pa c-666 p-lr10 p-tb5 ta-l lh-2 b1-ccc bc-fff">

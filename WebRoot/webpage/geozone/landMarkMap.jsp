@@ -297,7 +297,7 @@ Tracker</title>
 		</div>
 	</form>
 </div>
-<span id="map-pin" class="map-pin dn"><i class="fa fa-info-circle"></i>&nbsp;图形绘制完毕请双击鼠标左键保存</span>
+<span id="map-pin" class="map-pin dn"><i class="fa fa-info-circle"></i>&nbsp;图形绘制完毕请双击鼠标左键保存&nbsp;重新打开后通过双击已有图形进行删除</span>
 <div id="allmap"></div>
 	
 <div style="display: none;">

@@ -33,13 +33,17 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.carnet.admin.api.AgencyAreaService;
+import com.carnet.admin.api.AgencyRailService;
 import com.carnet.admin.api.AgencyService;
 import com.carnet.admin.api.GpsMessageService;
 import com.carnet.admin.api.LoginService;
 import com.carnet.admin.api.OrderStatisService;
 import com.carnet.admin.common.ResultDto;
 import com.carnet.admin.common.WarningCode;
+import com.carnet.admin.dto.AgencyAreaDto;
 import com.carnet.admin.dto.AgencyDto;
+import com.carnet.admin.dto.AgencyRailDto;
 import com.carnet.admin.dto.DeviceStatisDto;
 import com.carnet.admin.dto.DeviceTypeDto;
 import com.carnet.admin.dto.GpsWarningDto;
@@ -50,7 +54,7 @@ import com.carnet.admin.dto.query.StatisQueryParms;
 import com.carnet.admin.util.DataGridVo;
 import com.zkvanet.web.model.AjaxResult;
 import com.zkvanet.web.model.AlertPojo;
-import com.zkvanet.web.model.DeviceStatisExtendDto;
+import com.zkvanet.web.model.StatisDeviceExtendDto;
 import com.zkvanet.web.util.ResourceUtil;
 
 /**
@@ -77,23 +81,58 @@ public class GeozoneControl {
 	@Autowired
 	private AgencyService agencyService;
 	
+	@Autowired
+	private AgencyAreaService agencyAreaService;
+	
+	@Autowired
+	private AgencyRailService agencyRailManager;
+	
 	
 	SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	
 	
 	@RequestMapping(value = "/geozone/addgeozone")
-	public  @ResponseBody ResultDto addgeozone(String agencyId,String geom) throws IOException{
+	public  @ResponseBody ResultDto addgeozone(String agencyId,String... geom) throws IOException{
+		AgencyRailDto  agencyRailDto =new AgencyRailDto();
+		ResultDto<Integer> resultDto =null;
+		for(int i=0;i<geom.length;i++){
+			agencyRailDto.setRailData(geom[i]);
+			resultDto=	agencyRailManager.add(Integer.parseInt(agencyId),agencyRailDto);
+		}
+		return resultDto;
 		
-		
-		ResultDto<AgencyDto> resultDto = agencyService.get(Integer.parseInt(agencyId));
-		
-		resultDto.getData().setAgencyRail(geom);
-		
-		ResultDto update = agencyService.update(Integer.parseInt(agencyId), resultDto.getData());
-		
-		return update;
+	}
+	@RequestMapping(value = "/geozone/delgeozone")
+	public  @ResponseBody ResultDto delgeozone(Integer id) throws IOException{
+		ResultDto<Integer> delete = agencyRailManager.delete(id);
+		return delete;
 		
 	}
 	
+	@RequestMapping(value = "areainsert")
+	public  @ResponseBody ResultDto<Integer> insert(Integer changshagnUserId,AgencyAreaDto agencyDto) throws IOException{
+		ResultDto<Integer> insert = agencyAreaService.insert(changshagnUserId, agencyDto);
+		return insert;
+		
+	}
+	@RequestMapping(value = "areadelete")
+	public  @ResponseBody ResultDto<Integer> delete(Integer areaId) throws IOException{
+		ResultDto<Integer> delete = agencyAreaService.delete(areaId);
+		return delete;
+		
+	}
+	
+	@RequestMapping(value = "arealist")
+	public  @ResponseBody ResultDto<List<AgencyAreaDto>> list(Integer id) throws IOException{
+		ResultDto<List<AgencyAreaDto>> list = agencyAreaService.listByChangshangid(id);
+		return list;
+		
+	}
+	@RequestMapping(value = "areaupdate")
+	public  @ResponseBody ResultDto<Integer> update(Integer areaId, AgencyAreaDto agencyAreaDto) throws IOException{
+		ResultDto<Integer> list = agencyAreaService.update(areaId,agencyAreaDto);
+		return list;
+		
+	}
 }

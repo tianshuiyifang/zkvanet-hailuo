@@ -10,7 +10,7 @@
         <div class="p-tb15 mah-400 oy-a">
           <form id="userForm" class="form-horizontal form-preset form-sm mh-300">
             <input type="hidden" id="parentId"/>
-          	<input type="hidden" id="fullParentId">
+          	<input type="hidden" id="fullParentId"> 	
           	<input type="hidden" id="userId">
             <div class="form-group">
               <label  class="col-md-2 control-label" title="经销商名称"><span class="c-red">*</span>经销商名称：</label>
@@ -72,6 +72,12 @@
 						placeholder="请输入纬度地址" maxlength="50" disabled />
 				</div>
 				</div>
+				  <div class="form-group">
+        		 <label class="col-md-2 control-label" title="区域">区域：</label>
+        			 <div class="col-md-3">
+							<span class="easydropdown easydropdown-sm easydropdown-full va-m js-select-area" id="agencyArea" name="agencyArea"></span>
+					</div>
+       </div>
           </form>
         </div>
       </div>
@@ -83,6 +89,50 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="addAgencyarea">
+  <div class="modal-dialog">
+    <div class="modal-content w800">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="agencyTitle">区域围栏</h4>
+      </div>
+      <div class="modal-body">
+        <div class="p-tb15 mah-200 oy-a">
+          <form id="userForm" class="form-horizontal form-preset form-sm mh-150">
+          	<input type="hidden" id="changshangUid">
+          	<input type="hidden" id="id" name="id">
+            <div class="form-group">
+              <label  class="col-md-2 control-label" title="区域码"><span class="c-red">*</span>区域码：</label>
+              <div class="col-md-3">
+                <input id="areaCode" name="areaCode" maxlength="50" type="text" class="form-control form-control-sm" placeholder="经销商名称"/>
+              </div>
+              <label  class="col-md-2 control-label" title="区域名"><span class="c-red">*</span>区域名：</label>
+              <div class="col-md-3">
+                <input id="areaName" name="areaName"  maxlength="30" type="text" class="form-control form-control-sm" placeholder="请输入经销商代码"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label  class="col-md-2 control-label" title="区域围栏"><span class="c-red">*</span>区域围栏：</label>
+              <div class="col-md-3">
+                <input id="areaRail" name="areaRail"  maxlength="30" type="text" onclick="getAgencyAreaPosition()" class="form-control form-control-sm " placeholder="点击选择经销商地址"  />
+              </div>
+              <label  class="col-md-2 control-label" title="区域负责人" ><span class="c-red">*</span>区域负责人：</label>
+              <div class="col-md-3">
+                <input id="areaManager" name="areaManager"  maxlength="30" type="text" class="form-control form-control-sm" placeholder="请输入经销商邮编"/>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="addAgencyareaBtn" type="button" class="btn btn-primary mw-100" onclick="saveAgencyarea('add');">添加</button>&nbsp;
+        <button id="updateAgencyareaBtn" type="button" class="btn btn-primary mw-100" onclick="saveAgencyarea('update');">更新</button>
+        <button type="button" class="btn btn-default mw-100" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- 创建围栏 -->
 <div  id="createFenceModal" class="modal fade in" aria-hidden="false">
@@ -119,3 +169,4 @@
         </div>
     </div>
 </div>
+

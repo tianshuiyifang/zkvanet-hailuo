@@ -131,6 +131,8 @@ setJsLanguage(locale);
 <script src="../../webpage/resource/js/index/devices.js"></script>
 <!--timePicker-->
 <script src="../../webpage/resource/plugins/timePicker/jquery.timePicker.js"></script>
+<script type="text/javascript" src="../../webpage/resource/js/geozone/geozonebaidumap.js"></script>
+<script src="../../webpage/resource/plugins/uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
 <!--[if lte IE 9]>
 <script src="../../webpage/resource/js/jquery.placeholder.min.js"></script>
 <script>$(function() {$('input[type="text"],input[type="password"], textarea').placeholder();});</script>
@@ -223,16 +225,30 @@ setJsLanguage(locale);
 	}
 	
 	$(function(){
-		synUserConfig();
+		//synUserConfig();
+		 
+        $("#mask").css("height",$(document).height());     
+        $("#mask").css("width",$(document).width());     
+        $("#mask").show();     
+     
 	});
 	
 </script>
+<style type="text/css">     
+    .mask {       
+            position: absolute; top: 0px; filter: alpha(opacity=60); background-color: #777;     
+            z-index: 1002; left: 0px;     
+            opacity:0.5; -moz-opacity:0.5;     
+        }     
+</style>   
 <title>订单轨迹回放 - Tracker</title>
 
 </head>
  
 <input type="hidden" value="zh" id="language">
-		 
+<div style="display: none;">
+	 <input type="hidden" id="agencyId" name="agencyId" value="${ordershow.agencyId}"/> 
+</div>		 
 		
  
 <body class="bc-gray">
@@ -242,13 +258,6 @@ setJsLanguage(locale);
 			<div class="row">
 				
 				<div id="mapview">
-					<div class="map-top-menu bc-fff p-lr10 clearfix b-b1-ddd">
-			            <ul class="list-fl fl location-type">
-			            	<li><i class="marker primary"></i><span class="p-lr5">卫星定位</span></li>
-			            	<li class="p-lr5"><i class="marker idle"></i><span class="p-lr5">基站定位</span></li>
-			            	<li><i class="marker default"></i><span class="p-lr5">WIFI定位</span></li>
-			            </ul>
-					</div>
 					<div class="pr">
 						<div id="gridView" class="grid-view bc-fff fs-12 dn c-666 pr">
 			            	<div class="grid-view-header clearfix">
@@ -293,6 +302,11 @@ setJsLanguage(locale);
 					    </div>
 						<div id="allmap"></div>
 					</div>
+					<div class="map-top-menu bc-fff p-lr10 clearfix b-b1-ddd">
+					<ul class="list-fl fl location-type" style="position:relative;height:200px;width:100%">
+			            <div  id="weight_container"  style="position:relative;height:200px;width:100%"></div>
+			        </ul>
+					</div>
 					<div class="map-left-sidebar">
 						<span class="side-icon"><i class="fa fa-chevron-left"></i></span>
 						<div class="bc-fff">
@@ -305,16 +319,26 @@ setJsLanguage(locale);
 							<div class="map-left-downbox clearfix oy-a">
 								<div class="p-10 time-form">
 									<form class="form-horizontal form-sm">
-										<div class="form-group">
-											<div class="col-sm-12 c-009934 fw-b" id="driverName">
-												
-												
-												
+										<div class="form-group"   style="border-radius: 4px;border: 1px solid #ddd;margin-right:0px;margin-left:0px">
+											<div class="col-sm-12  fw-b" id="driverName">
 											${devicename}&nbsp;<span>(IMEI：<%=request.getParameter("imei") %>)</span>
 											</div>
-										</div>
-										<div class="form-group">
-											<div class="col-sm-12 c-f19b04">温馨提示：可查询最近6个月记录</div>
+											<div class="col-sm-12  fw-b" id="driverName">
+											发货单号：&nbsp;<span>${ordershow.fahuodanhao}</span>
+											</div>
+											<div class="col-sm-12  fw-b" id="driverName">
+											发货数量：&nbsp;<span>${ordershow.fahuoshuliang}(吨)</span>
+											</div>
+											<div class="col-sm-12  fw-b" id="driverName">
+											包装方式：&nbsp;<span>${ordershow.baozhuangfangshi}</span>
+											</div>
+											<div class="col-sm-12  fw-b" id="driverName">
+											客户名称：&nbsp;<span>${ordershow.kehumingcheng}</span>
+											</div>
+											<div class="col-sm-12  fw-b" id="driverName">
+											产品名称：&nbsp;<span>${ordershow.chanpinmingcheng}</span>
+											</div>
+											
 										</div>
 										<div class="form-group">
 										  <label class="col-sm-4 control-label" title="'开始时间'"> <span class="fl"><span class="c-red">*</span>订单开始时间:</span></label>
@@ -323,7 +347,7 @@ setJsLanguage(locale);
 											</div>
 										</div>
 										<div class="form-group">
-										  <label class="col-sm-4 control-label" title="'结束时间'"> <span class="fl"><span class="c-red">*</span>结束时间:</span></label>
+										  <label class="col-sm-4 control-label" title="'结束时间'"> <span class="fl"><span class="c-red">*</span>订单结束时间:</span></label>
 											<div class="col-sm-8 p-l0">
 												<input type="text" class="form-control form-control-sm" id="end_Time" onclick="bindChangeDate()" readOnly="true" onblur="date()" placeholder="结束时间" value="${endtime}">
 											</div>
@@ -361,7 +385,7 @@ setJsLanguage(locale);
 											</a></li>
 										</ul>
 									</div>
-									<ul class="stroke-list lh-2">
+									<ul class="stroke-list lh-2" style="font-size:14px">
 										<li id="km" style="display:none">总里程：0km</li>
 										<li>速度：<span id="gpsSpeed">0</span><span id="Km_hr">KM/H</span></li>
 										<li>吨位：<span id="gpsWeight">0</span><span id="Km_hT">T</span></li>
@@ -455,7 +479,7 @@ setJsLanguage(locale);
 			</div>
 		</div>
 		<!-- main end -->
-		
+		<div id="mask" class="mask"></div>   
 	</div>
 	
 <div id="alarmSidebar" class="alarm-sidebar-box">
@@ -489,7 +513,7 @@ setJsLanguage(locale);
 </div>
 
 <input type="hidden" id="alarmIds" value="" />
-<a class="alarm-toggle-btn pf ta-c oh cp js-alarm-toggle-btn" id="gaojing" title="报警"> <i class="fa fa-bell-o"></i></a>
+<a class="alarm-toggle-btn pf ta-c oh cp js-alarm-toggle-btn" id="gaojing"  title="报警"> <i class="fa fa-bell-o"></i></a>
 <div class="alarm-info" id="alarmMessage">
   <div class="alarm-header clearfix">
     <h5 class="fl m-0 text-ellipsis maw-100 d-ib" title="报警管理"><span class="fs-18 c-df7312"><i class="fa fa-bell-o"></i></span>&nbsp;报警管理</h5>
@@ -783,8 +807,8 @@ setJsLanguage(locale);
       </div>
       <div class="modal-body">
       
-        <div class="p-tb15 mah-450 oy-a" id="weight_container">
-        </div>
+        <!-- <div class="p-tb15 mah-450 oy-a" id="weight_container">
+        </div> -->
       </div>
       <div class="modal-footer">
         <button class="btn btn-sm btn-primary mw-100" type="button" id="btn-submit-vehilebund" >确定</button>&nbsp;
@@ -1148,9 +1172,8 @@ setJsLanguage(locale);
 		requestThread++;  
 		
  		$.ajax({
-			url:"/alarmInfo/getAlarmInfoList",
-			data: {"pageNo":1,"pageSize":50,"statusStr":getStatusStr(),"updateListFlag":updateListFlag,"getAlarmListFlag":getAlarmListFlag,"lowerLevel":lowerLevel,"searchUserId":getSearchUserId(),
-				"requestThread":requestThread,"startTime":$("#alarm_startTime").val(),"endTime":$("#alarm_endTime").val(),},
+			url:"../../rest/customControl/alertInfo",
+			data: {},
 		    cache: false,
 		    dataType: 'json',
 		    beforeSend:function(XHR){
@@ -1613,6 +1636,7 @@ function initBaiDuMap(){
  	allMap.clearOverlays();
  	
  	loadBaiduMap();
+ 	
  	allMap.defaultLatLng = myCenter;
  	addDistanceTool(rangOps(allMap,'baidu'));
     //var cr = new BMap.CopyrightControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT});  
@@ -2549,6 +2573,9 @@ function addGoogleControl(map) {
 			offset : new BMap.Size(-1,-11),
 			imageOffset : new BMap.Size(0,0)
 		});
+		var startTitle="<div class='map-tooltip tooltip top default' style='width:100px; margin-left:-14px;'><div class='tooltip-arrow'></div><div class='tooltip-inner text-ellipsis'>起始点</div></div>"
+		var startlabel = new BMap.Label(startTitle,{offset:new BMap.Size(-30,-30)});
+		startMaker.setLabel(startlabel);
 		allMap.addOverlay(startMaker);
 		var data = {"time":gpsTimes[0],"posType":posTypes[0],"index":0,"point":startPoint,"mapType":"baiduMap"};
 		(function(markerValue,data){
@@ -2564,6 +2591,9 @@ function addGoogleControl(map) {
 			offset : new BMap.Size(-1,-11),
 			imageOffset : new BMap.Size(0, 0)
 		});
+		var endTitle="<div class='map-tooltip tooltip top default' style='width:100px; margin-left:-14px;'><div class='tooltip-arrow'></div><div class='tooltip-inner text-ellipsis'>终止点</div></div>"
+		var endlabel = new BMap.Label(endTitle,{offset:new BMap.Size(-30,-30)});
+		endMaker.setLabel(endlabel);
 		allMap.addOverlay(endMaker);
 		data = {"time":gpsTimes[points.length-1],"posType":posTypes[points.length-1],"index":points.length-1,"point":endPoint,"mapType":"baiduMap"};
 		(function(markerValue,data){
@@ -2656,6 +2686,9 @@ function addGoogleControl(map) {
 				ajaxError("locus_Map.jsp",e);
 			},
 			success : function(returnData) {
+			
+			    $("#mask").hide();
+			    weight();
 				if(returnData!=null&&returnData.data!=null){
 					stopPointDatas = returnData.data;
 					if(!stopPointDatas.length){
@@ -2750,6 +2783,9 @@ function addGoogleControl(map) {
 		}
 		var gweight=weights[index];
 		var time = gpsTimes[index];
+		var showlabel=null;
+		var showTite="<div class='map-tooltip tooltip top default' style='width:200px; margin-left:-14px;'><div class='tooltip-arrow'></div><div class='tooltip-inner text-ellipsis'>速度："+speed+"KM/H 载重："+gweight+"T </div></div>"
+		showlabel = new BMap.Label(showTite,{offset:new BMap.Size(-40,-30)});
 		if(allMapType=='googleMap'){
 			cariconImgObj=run_gg_icon(vechleioc,Number(directionArry[index]));
 		}else{
@@ -2791,7 +2827,10 @@ function addGoogleControl(map) {
 			setTrackLine();
 			carsMarker.setIcon(cariconImgObj.icon);
 			carsMarker.setPosition(point);
-
+			if(carsMarker.getLabel()!=null){
+			   carsMarker.getLabel().remove();
+			}
+	        carsMarker.setLabel(showlabel);
 			if(isModification==0||isTemporaryPlay==1){
 				$('#playSlider').nstSlider('set_position', parseInt(index/(points.length-1)*1000));
 			}
@@ -3519,7 +3558,7 @@ function addGoogleControl(map) {
 		debugger
 		var data=[];
 		var times=[];
-		$("#weightChart").modal();
+		//$("#weightChart").modal();
 		for(var i=0;i<allWeight.length;i++){
 		//	data.push(allWeight[i]);	
 			Array.prototype.push.apply(data,allWeight[i])
@@ -3534,8 +3573,11 @@ function addGoogleControl(map) {
         credits: {
             enabled: false
         },
+        exporting:{  
+        	enabled:false 
+        	}, 
         title: {
-            text: '载重'
+            text: null
         },
          
         xAxis: {
@@ -3723,7 +3765,7 @@ function addGoogleControl(map) {
 	
 	//获取所有轨迹点
 	function getAllPoints(){
-	debugger
+	    debugger
 		var start = $("#start_Time").val()+":00";
 		var end = $("#end_Time").val()+":59";
 		allendTimes=end;
@@ -3742,6 +3784,7 @@ function addGoogleControl(map) {
 // 			}
 		}
 		getPoints(allTimes,analyData);
+ 	    showPolygon();
 // 		}else{
 // 			getPoints(addDay(startTime,0),addDay(endTime,0),analyData);
 // 		}
@@ -3763,6 +3806,7 @@ function addGoogleControl(map) {
 		var startTime = times[0][0];
 		var endTime = times[0][1];
 		var imei = $("#imei").val();
+		
 		if (startTime != "" && startTime != "" && imei != "") {
 			$.ajax({
 				type : "get",
@@ -3809,6 +3853,7 @@ function addGoogleControl(map) {
 				if(allTimes.length>0){
 					getPoints(allTimes,analyData,latLng);
 				}else{
+				    $("#mask").hide();
 					layer.msg($.i18n.prop('comm.Nologsinthisperiod'));
 					toggleButton(true);
 					$("#gridView").hide();

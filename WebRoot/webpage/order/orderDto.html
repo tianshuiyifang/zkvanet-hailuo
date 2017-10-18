@@ -102,6 +102,94 @@
   </div>
 </div>
 
+<div class="modal fade" id="showVerify">
+  <div class="modal-dialog">
+    <div class="modal-content w800">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="verifyTitle">订单审核</h4>
+      </div>
+      <div class="modal-body">
+        <div class="p-tb15 mah-400 oy-a">
+          <form id="userForm" class="form-horizontal form-preset form-sm mh-300">
+            <input type="hidden" id="parentId"/>
+          	<input type="hidden" id="ChangShangRole">
+          	<input type="hidden" id="userId">
+            <div class="panel-group" id="accordion">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion" id="saleAdvisetag"
+				   href="#collapseOne">
+					
+				</a>
+			</h4>
+		</div>
+		<div id="collapseOne" class="panel-collapse collapse in">
+			<div class="panel-body">
+				<label  class="col-md-2 control-label" style="text-align:left" title="审核意见">审核意见：</label>
+				<div class="col-md-7">
+				    <input id="saleAdvise"   class="form-control form-control-sm" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion" id="marketAdvisetag"
+				   href="#collapseTwo">
+					
+				</a>
+			</h4>
+		</div>
+		<div id="collapseTwo" class="panel-collapse collapse in">
+			<div class="panel-body">
+				<label  class="col-md-2 control-label" style="text-align:left" title="审核意见">审核意见：</label>
+				<div class="col-md-7">
+				    <input id="marketAdvise"   class="form-control form-control-sm" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion" id="financeAdvisetag"
+				   href="#collapseThree">
+					
+				</a>
+			</h4>
+		</div>
+		<div id="collapseThree" class="panel-collapse collapse in">
+			<div class="panel-body">
+			<!-- <div class="icheck" style="float:left;width:100%">
+			     <label class="icheck-min" id="labelGroup">
+                    <input type="radio" checked name="roleRadio" value="1">&nbsp;审核通过</label>&emsp;
+                  <label class="icheck-min" id="labelCompany">
+                    <input type="radio" name="roleRadio"  value="3">&nbsp;审核不通过</label>&emsp;
+            </div>   -->      
+				<label  class="col-md-2 control-label" style="text-align:left" title="审核意见">审核意见：</label>
+				<div class="col-md-7">
+				    <input id="financeAdvise"   class="form-control form-control-sm" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+         <button id="verifyStatusBtn" type="button" class="btn btn-primary mw-100" onclick="verifyStatus(1);">通过</button>&nbsp;
+        <button id="nverifyStatusBtn" type="button" class="btn btn-primary mw-100" onclick="verifyStatus(2);">不通过</button>
+        <button type="button" class="btn btn-default mw-100" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div  id="exceptionorder" class="modal fade in" aria-hidden="false">
     <div class="modal-dialog w800 ">
         <div class="modal-content">

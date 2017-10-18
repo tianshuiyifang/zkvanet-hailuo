@@ -243,7 +243,8 @@ setJsLanguage(locale);
 				<li id="customerManagement"><a href="meunController.do?search"><i class="fa fa-group"></i>&nbsp;客户管理</a></li>
 				<li id="reportsManagement"><a href="meunController.do?report"><i class="fa fa-table" aria-hidden="true"></i>&nbsp;统计报表</a></li>
 				<li id="devicesManagement"><a href="meunController.do?device"><i class="fa fa-hdd-o" aria-hidden="true"></i>&nbsp;设备管理</a></li>
-				<li id="orderManagement"><a href="meunController.do?order"><i class="fa fa-hdd-o" aria-hidden="true"></i>&nbsp;订单管理</a></li>
+                <li id="orderManagementext"><a href="meunController.do?orderext"><i class="fa fa-hdd-o" ></i>&nbsp;订单管理</a></li>
+				<li id="orderManagement"><a href="meunController.do?order"><i class="fa fa-hdd-o" ></i>&nbsp;订单审核</a></li>
 				<!-- 如果是体验用户，则不显示设置、业务日志 Tab项 -->
 				
 				<!-- <li id="toSetUp"><a href="meunController.do?setUp"><i class="fa fa-gears" aria-hidden="true"></i>&nbsp;设置</a></li>
@@ -1299,22 +1300,73 @@ function exitSys()
 
 <input type="hidden" id="alarmIds" value="" />
 <a class="alarm-toggle-btn pf ta-c oh cp js-alarm-toggle-btn" id="gaojing" title="报警"> <i class="fa fa-bell-o"></i></a>
+<a style="bottom:120px !important;font-size:20px" class="order-toggle-btn pf ta-c oh cp js-order-toggle-btn" id="orderMan" title="订单"> <i class="fa fa-cart-arrow-down" onclick="getOrderInfoList()"></i></a>
+  
+  	<div class="order-info" id="orderMessage">
+	  <div class="order-header clearfix">
+	    <h5 class="fl m-0"><span class="fs-18 c-df7312"><i class="fa fa-cart-arrow-down"></i></span>&nbsp;订单信息</h5>
+	     <a  class="order-close order-close-e fr fs-18 cp" title="全屏"><i class="fa fa-expand" ></i></a>
+	    <a  class="order-close order-close-c fr fs-18 cp" title="缩小"><i class="fa fa-compress" ></i></a>
+	   
+	  </div>
+	  <div class="alarm-body">
+	    <div class="table-header">
+	      <table class="table table-condensed table-hover table-ellipsis m-b0" id="alarmMessageTableHeader">
+	        <thead>
+	        <tr>
+	          <th title="运输车号">运输车号</th>
+	          <th title="发货单号">发货单号</th>
+	          <th title="客户名称">客户名称</th>
+	          <th title="包装方式">包装方式</th>
+	          <th title="订单状态">订单状态</th>
+	          <th title="操作">操作</th>
+	        </tr>
+	        </thead>
+	      </table>
+	    </div>
+	    <div class="table-scrollbar oy-a h200">
+	      <table class="table table-condensed table-normal-a table-hover table-ellipsis m-b0" id="alarmMessageTableContent">
+	        <colgroup>
+	          <col width="16%">
+	          <col width="16%">
+	          <col width="20%">
+	          <col width="16%">
+	          <col width="16%">
+	          <col width="16%">
+	        </colgroup>
+	        <tbody id="orderInfoTable">
+	        	<script type="text/html" id="orderInfoList">
+				{{each data as row i}}
+					<tr>
+          				<td title="{{row.yunshuchehao}}"><a onclick="showOrderInfoForIndex('{{row.deviceSid}}')">{{row.yunshuchehao}}</a></td>
+          				<td  title="{{row.fahuodanhao}}">{{row.fahuodanhao}}</td>
+          				<td  title="{{row.kehumingcheng}}">{{row.kehumingcheng}}</td>
+          				<td  title="{{row.baozhuangfangshi}}">{{row.baozhuangfangshi}}</td>
+                        <td title="{{row.isWaring}}">
+										{{if row.isWaring==0}}
+											 订单正常
+										 {{else if row.isWaring==1}}
+											<span style="color:red">订单异常</span>
+                                         {{else if row.isWaring==null}}
+                                            <span style="color:red">无订单</span>
+										 {{/if}}
+						 </td>
+                       
+          				<td title=caozuo">暂无</td>
+						
+        			</tr>
+				{{/each}}
+        	</script>
+	        </tbody>
+	      </table>
+	    </div>
+	  </div>
+	</div>
+  
 	<div class="alarm-info" id="alarmMessage">
 	  <div class="alarm-header clearfix">
 	    <h5 class="fl m-0"><span class="fs-18 c-df7312"><i class="fa fa-bell-o"></i></span>&nbsp;报警管理</h5>
 	    <a  class="alarm-close fr fs-18 cp" title="缩小"><i class="fa fa-compress" ></i></a>
-	  <!--   <div class="alarm-tools fr ws-n">
-	      <span>
-	      	告警时间：
-	      <input type="text" id="alarm_startTime" readonly="readonly" class="form-control form-control-xs form-control-inline" size="12" placeholder="开始时间">
-	      <input type="text" id="alarm_endTime" readonly="readonly" class="form-control form-control-xs  form-control-inline" size="12" placeholder="结束时间">
-	      &emsp;
-	      </span>
-	       <a class="cp" onclick="javascript:readAlarm('');">全部标为已读</a>
-	      <a class="cp js-type-filter-btn" onclick="javascript:alarmFilter();">报警内容筛选</a>
-	      <span id="lowerLevelSpan" class="icheck-min"><label class="m-b0"><input type="checkbox" id="lowerLevel" onchange="getAlarmInfoList(true,1)">&nbsp;下级设备告警&nbsp;&nbsp;&nbsp;&nbsp;</label></span>
-	      <span class="icheck-min"><label class="m-b0"><input type="checkbox" id="alarmSound">&nbsp;开启报警声音</label></span>
-	    </div> -->
 	  </div>
 	  <div class="alarm-body">
 	    <div class="table-header">
@@ -1593,7 +1645,7 @@ function exitSys()
 						  $('#alarm_startTime').val(alarm_startTime_history);
 						  return;
 					  }
-					  getAlarmInfoList(true,1);
+					  //getAlarmInfoList(true,1);
 				  }
 				});
 		});
@@ -1611,7 +1663,7 @@ function exitSys()
 						  $('#alarm_endTime').val(alarm_endTime_history);
 						  return;
 					  }
-					  getAlarmInfoList(true,1);
+					  //getAlarmInfoList(true,1);
 				  }
 				});
 		});
@@ -1916,11 +1968,11 @@ function exitSys()
 		    type:"post",
 		    dataType: 'json',
 		    beforeSend:function(XHR){
-				if(flag){
+				/* if(flag){
 					$("#alarm_nodata").hide();
 			    	$('#alarmInfoTable').hide();
 					$("#alarm_logindata").show();
-				}
+				} */
 			},
 		    complete: function(){
 				$("#alarm_logindata").hide();
@@ -1961,6 +2013,64 @@ function exitSys()
 	    			$("#alarmMessage").show();
 		    	}else{//清空列表,ret.code=-1加载列表没有数据返回,updateListFlag非法操作不等于1、2
 		    		$("#alarmMessage").show();
+		    		$('#alarmInfoTable').html(template('alarmInfoList',null));
+		    		$("#alarm_nodata").show();
+		    		return;
+		    	}
+		    }
+		    
+		});
+	}
+	
+	/**订单管理***/
+	function getOrderInfoList(flag,updateListFlag){
+		
+	
+		//从客户树选择时，根据选择的客户刷新告警信息列表
+		var treeObject = $.fn.zTree.getZTreeObj("treeDemo");
+		var searchUserId=0;
+		if(treeObject!=null){
+		   var node = treeObject.getSelectedNodes()[0];
+		   if(node!=null){
+				if(lowerLevel==1){  
+					searchUserId =  node.fullParentId+node.id;
+				}else{
+					searchUserId = node.id;
+				}
+			}
+		}
+		searchUserId=treeObject.getNodes()[0].id;
+		
+		
+ 	$.ajax({
+			url:"rest/Gps/getOrderInfoByUserId",
+			data: {"userId":searchUserId},
+			async: true,
+		    cache: false,
+		    timeout : 10000, 
+		    type:"post",
+		    dataType: 'json',
+		    beforeSend:function(XHR){
+				/* if(flag){
+					$("#alarm_nodata").hide();
+			    	$('#alarmInfoTable').hide();
+					$("#alarm_logindata").show();
+				} */
+			},
+		    complete: function(){
+				$("#alarmMessage").hide();
+		    	if($("#orderMessage").is(":visible")){
+		    		tableHeaderAutoWidth("#orderMessageTableHeader","#orderMessageTableContent");
+		    	}
+		    },
+		    success: function(ret){
+		    	if(ret && ret.statusCode==0  && ret.data.length>0 ){
+		    		//有数据返回并且是同一请求
+	    			$('#orderInfoTable').html(template('orderInfoList',{"data" : ret.data}));//装填数据
+	    			
+	    			$("#orderMessage").show();
+		    	}else{//清空列表,ret.code=-1加载列表没有数据返回,updateListFlag非法操作不等于1、2
+		    		$("#orderMessage").show();
 		    		$('#alarmInfoTable').html(template('alarmInfoList',null));
 		    		$("#alarm_nodata").show();
 		    		return;
@@ -4921,6 +5031,9 @@ function toIndex(userId,account,parentId,imei){
 	$("#toIndexForm").submit();
 }
 
+function showOrderInfoForIndex(imei){
+   vehicleLocationClick(imei);
+}
 </script>
 <script type="text/javascript" src="webpage/resource/js/complexQuery/complexQuery.js"></script>
 <script src="webpage/resource/plugins/uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
@@ -5131,9 +5244,9 @@ function initBaiDuMap(){
  	
  	loadBaiduMap();
  	
-    //var cr = new BMap.CopyrightControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT});  
-    //cr.addCopyright({id: 1, content: "<a href='#' style='font-size:20px;background:yellow'>我是自定义版权控件呀</a>"});  
-    //allMap.addControl(cr); //添加版权控件  
+    var cr = new BMap.CopyrightControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT});  
+    cr.addCopyright({id: 1, content: "<a href='#' style='font-size:12px;color:black'>安徽中凯产业提供技术支持</a>"});  
+    allMap.addControl(cr); //添加版权控件  
 
 }
 
@@ -5484,7 +5597,7 @@ $(document).ready(function(){
 	 });
 	 //控制台过来处理告警信息
 	 searchUserId = "";
-	 getAlarmInfoList(true,1);//刷新列表
+	 //getAlarmInfoList(true,1);//刷新列表
 // 	
 	 //控制台选中某个用户，需要记忆，即刷新界面，还是默认选中之前的用户
 	 var selectHistory= getCookie("selectHistory");
@@ -5752,8 +5865,10 @@ function drivingrecord(imei) {
 			<a class="street"  style="display:none" title="街景" onclick="trackpresetStreet('{{imei}}');">街景</a>
 			<a class="tracking" style="display:none"  title="实时跟踪" onclick="trackpreset('{{imei}}');">实时跟踪</a>
 			<a class="playback"   title="轨迹回放" onclick="replayrecord('{{imei}}');">轨迹回放</a>
-			<a class="orderdetail"   title="订单轨迹" href="rest/meunController/ordertrackreplay?imei={{imei}}&createtime={{createTime}}" target="_blank;">订单轨迹</a>
-			{{if complex_loginUserType!=12}}
+			{{if createTime!=null&&createTime!=""}}
+            <a class="orderdetail"   title="订单轨迹" href="rest/meunController/ordertrackreplay?imei={{imei}}&createtime={{createTime}}" target="_blank";>订单轨迹</a>
+	        {{/if}}			
+            {{if complex_loginUserType!=12}}
 			<a class="command"  style="display:none" title="下发指令" onclick="openInstructionModel('{{imei}}');">下发指令</a>
 	  		{{/if}}
 			

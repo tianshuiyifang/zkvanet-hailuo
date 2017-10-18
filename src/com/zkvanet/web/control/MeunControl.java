@@ -12,12 +12,15 @@ package com.zkvanet.web.control;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 
@@ -34,14 +37,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.carnet.admin.api.DeviceService;
 import com.carnet.admin.api.LoginService;
+import com.carnet.admin.api.OrderService;
 import com.carnet.admin.common.ResultDto;
 import com.carnet.admin.dto.DeviceDto;
+import com.carnet.admin.dto.OrderDto;
 import com.carnet.admin.dto.UserInfoDto;
 import com.carnet.admin.dto.query.DeviceQueryParms;
+import com.carnet.admin.dto.query.OrderQueryParms;
 import com.carnet.admin.util.DataGridVo;
+import com.zkvanet.core.util.ContextHolderUtils;
 import com.zkvanet.web.util.ResourceUtil;
 
 
@@ -64,6 +72,9 @@ public class MeunControl  {
 	
 	@Autowired
 	DeviceService deviceManager;
+	
+	@Autowired
+	private OrderService orderService;
 	/**
 	 * 获取中间部分
 	 * @param request
@@ -106,7 +117,7 @@ public class MeunControl  {
 		modelMap.put("UnActivedCount",user.getUnActivedCount());
 		modelMap.put("ActivedCount",user.getActivedCount());
 		modelMap.put("userTypeKey",user.getRole().getRoleKey());
-		return new ModelAndView("/index");
+		return new ModelAndView("/iShow");
 	}
 	@RequestMapping(params = "index")
 	public ModelAndView maintabs(HttpServletRequest request,ModelMap modelMap) {
@@ -142,10 +153,27 @@ public class MeunControl  {
 		if(user==null){
 			return new ModelAndView("/login");
 		}
+		HttpSession session = ContextHolderUtils.getSession();
+	
 		modelMap.put("userName", user.getLoginName());
 		modelMap.put("userId", user.getId());
+		modelMap.put("ChangShangRole",session.getAttribute("ChangShangRole"));
 		return new ModelAndView("order/toOrders");
 	}
+	
+	@RequestMapping(params = "orderext")
+	public ModelAndView toorderext(HttpServletRequest request,ModelMap modelMap) {
+		UserInfoDto user = ResourceUtil.getSessionUserName();
+		if(user==null){
+			return new ModelAndView("/login");
+		}
+		modelMap.put("userName", user.getLoginName());
+		modelMap.put("userId", user.getId());
+		HttpSession session = ContextHolderUtils.getSession();
+		modelMap.put("ChangShangRole",session.getAttribute("ChangShangRole"));
+		return new ModelAndView("order/toOrdersExtends");
+	}
+	
 	@RequestMapping(params = "setUp")
 	public ModelAndView toSetUp(HttpServletRequest request,ModelMap modelMap) {
 		UserInfoDto user = ResourceUtil.getSessionUserName();
@@ -221,7 +249,8 @@ public class MeunControl  {
 			 devicename=list2.getData().getList().get(0).getName();
 		 }
 		if(user==null){
-			return new ModelAndView("/login");
+			return new ModelAndView(new RedirectView(
+					"../../loginController.do?login"));
 		}
 		modelMap.put("userName", user.getLoginName());
 		modelMap.put("userId", user.getId());
@@ -237,12 +266,15 @@ public class MeunControl  {
 		 params.setImei(imei);
 		 ResultDto<DataGridVo<DeviceDto>> list2 = deviceManager.list(params);
 		 String devicename="";
+		 Integer deviceId=0;
 		 if(list2.getData()!=null&&list2.getData().getList().size()>0){
 			 devicename=list2.getData().getList().get(0).getName();
+			 deviceId=list2.getData().getList().get(0).getId();
 		 }
 		String endtime = request.getParameter("endtime");
 		if(user==null){
-			return new ModelAndView("/login");
+			return new ModelAndView(new RedirectView(
+							"loginController.do?login"));
 		}
 		if(endtime!=null){
 			modelMap.put("createtime", stampToDate(createtime));
@@ -250,6 +282,20 @@ public class MeunControl  {
 		}else{
 			modelMap.put("createtime", createtime);
 		}
+		//订单详情
+		  OrderQueryParms orderParam=new OrderQueryParms();
+		  orderParam.setDeviceId(deviceId);
+		  ResultDto<DataGridVo<OrderDto>> queryOrder = orderService.queryOrder(orderParam);
+		  List<OrderDto> orderlist=new ArrayList<OrderDto>();
+		  if(queryOrder.getData()!=null){
+			  
+			  orderlist = queryOrder.getData().getList();
+		  }
+		  OrderDto ordershow=new OrderDto();
+		  if(orderlist.size()>0){
+			  ordershow=orderlist.get(0);
+		  }
+		modelMap.put("ordershow", ordershow);
 		modelMap.put("devicename", devicename);
 		System.out.println("开始时间"+createtime);
 		modelMap.put("userName", user.getLoginName());

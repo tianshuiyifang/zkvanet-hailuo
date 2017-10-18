@@ -19,17 +19,41 @@
 <link rel="stylesheet" href="webpage/resource/css/bootstrap.min.css">
 <link rel="stylesheet" href="webpage/resource/css/font-awesome.min.css">
 <link rel="stylesheet" href="webpage/resource/css/login.css">
+
+<link rel="stylesheet" href="webpage/resource/plugins/easydropdown/easydropdown.css">
+<!-- Compatible with HTML5 tags -->
+<script src="webpage/resource/js/modernizr-2.8.3.js"></script>
+<script src="webpage/resource/js/jquery-1.8.3.min.js"></script>
+<script src="webpage/resource/js/jquery.cookie.js"></script> 
+<!-- 国际化 -->
+<script src="webpage/resource/plugins/i18n/jquery.i18n.properties.js"></script>
+<script type="text/javascript" src="webpage/resource/js/map.js"></script>
+<!-- 模板渲染 --> 
+<script src="webpage/resource/plugins/artTemplate/template.js"></script> 
+<script src="webpage/resource/plugins/artTemplate/template-plugin.js"></script>
+<!-- page --> 
+<script src="webpage/resource/plugins/simplPagination/jquery.simplePagination.js"></script>
+<script src="webpage/resource/plugins/layer/layer.js"></script>
+<!-- message --> 
+<!-- easydropdown --> 
+<script src="webpage/resource/plugins/easydropdown/jquery.easydropdown.min.js"></script> 
+<!-- modal --> 
+<script src="webpage/resource/js/modal.js"></script>
+<script src="webpage/resource/plugins/autocompleter/jquery.autocompleter.js"></script>
+<script src="webpage/resource/js/tooltip.js"></script>
+<script src="webpage/resource/js/popover.js"></script>
+<script src="webpage/resource/plugins/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
 <!--CSS3 Media Queries (for IE 6-8)-->
 <!--[if lte IE 8]>
 <script src="js/respond.min.js"></script>
 <![endif]-->
 <!-- Compatible with HTML5 tags -->
-<script src="webpage/resource/js/jquery-1.8.3.min.js"></script> 
 <script src="webpage/resource/js/modernizr-2.8.3.js"></script>
+<script type="text/javascript" src="webpage/resource/js/login2.js"></script>
 </head>
 <body class="login-bg login-bg-default">
 <div class="login">
-    <h1 class="logo-login"><img src="webpage/resource/images/timg.jpg" onerror="javascript:this.src='http://statics.jimicloud.com/tracker/domain/logo.png'" width="318" height="81"  alt="Tracker"/></h1>
+    <h1 class="logo-login"><img src="webpage/resource/images/timg.jpg"  width="318" height="81"  /></h1>
   
   <div>
 	<span class="form-tip pa" id="tipsmsg" style="display:none;">验证不通过</span>
@@ -64,6 +88,39 @@
 "><img src="webpage/resource/images/Android-down.jpg" width="115" height="43"></a></p>
 	
 </div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content " style="width:400px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">厂商用户请选择角色及操作码</h4>
+            </div>
+            <div class="modal-body" style="height:150px">
+            <div class="form-group ws-n" style="height:40px">
+            <label class="col-md-4 label-first" title="厂商角色" style="top:7px">厂商角色：</label>
+               <div class="col-md-8 easydropdown easydropdown-xs va-t">
+                  <select name="changshangrole" class="js-select-changshangrole">
+                    <option selected value="changshangadmin">厂商管理员</option>
+                    <option value="changshangsale">销售</option>
+                    <option value="changshangmarket">市场</option>
+                    <option value="changshangfinance">财务</option>
+                  </select>
+              </div>
+		     </div>
+		     <div class="form-group ws-n" style="height:40px">
+              <label  class="col-md-4 control-label" title="密码"><span style="color:red">*</span>操作码：</label>
+              <div class="col-md-7">
+                <input id="password" name="password" type="password" class="form-control form-control-sm" placeholder="请输入操作码" " />
+              </div>
+            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="javascript:showLogin()">关闭</button>
+                <button type="button" class="btn btn-primary" onClick="javascript:saveLogin()">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
  <footer class="footer">
  	<div class="language"  style="display:none;">
@@ -73,35 +130,9 @@
           	<li data-language="es"><a href="/language?locale=es" title="España"><img alt="España" src="webpage/resource/images/lang/es.jpg"></a></li><!-- 西班牙 -->
            <li data-language="pt"><a href="/language?locale=pt" title="Portugal" ><img alt="Portugal" src="webpage/resource/images/lang/pt.jpg"></a></li><!-- 葡萄牙 -->
            <li data-language="pl"><a href="/language?locale=pl"title="Polska"><img alt="Polska" src="webpage/resource/images/lang/pl.jpg"></a></li><!-- 波兰 -->
-
-
-	 	<li data-language="de"><a href="/language?locale=de"title="Deutschland"><img alt="Deutschland" src="webpage/resource/images/lang/de.jpg"></a></li><!-- 德国  -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	 	   <li data-language="de"><a href="/language?locale=de"title="Deutschland"><img alt="Deutschland" src="webpage/resource/images/lang/de.jpg"></a></li><!-- 德国  -->
          </ul>
-
 	</div>
-
-	
-          	
-          	
-          
-	
-
 	<div class="certification ta-c" style="display:none;">
 		
 		 
@@ -113,8 +144,6 @@
 </footer>
           
           
-<script src="webpage/resource/js/jquery-1.8.3.min.js"></script> 
-<script src="webpage/resource/js/jquery.cookie.js"></script>
 <!-- 模板渲染 --> 
 <script src="webpage/resource/plugins/artTemplate/template.js"></script> 
 <script src="webpage/resource/plugins/artTemplate/template-plugin.js"></script>
@@ -132,7 +161,11 @@
 	</div>
 </script>
 <script>
-
+function showLogin(){
+	$('.login').show();
+	$("#load").hide();
+	$("#logins").show();
+}
 //浏览器提示
 if($.browser.msie&&$.browser.version<9.0) {
 	$(function(){
@@ -196,6 +229,6 @@ var NoPermissions = "没有权限登录";
 var accountisNotExist = "账号不存在";
 var passwordIsError = "密码错误";
 </script>
-<script type="text/javascript" src="webpage/resource/js/login2.js"></script>
+
 </body>
 </html>

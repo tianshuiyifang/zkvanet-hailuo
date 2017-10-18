@@ -2,35 +2,22 @@ function send(){
 	$("#logins").hide();
 	$("#load").show();
 	var pass=$("#password").val();
-//	if($("#ispassChang").val() != "0"){
-//		pass=encodeSTR($("#password").val());
-//	}
 	$.ajax({
 		 type:"get",
 		 url:"loginController.do?checkuser",
 		 dataType:'json',
-		// data:{"ver":"1","method":"login","account":$("#account").val(),"password":pass,"language":$('ul.list-line li.active').attr("data-language")},
-		data:{"loginName":$("#account").val(),"passWord":pass},
+		 data:{"loginName":$("#account").val(),"passWord":pass},
 		 success:function(ret){
-			 
-		 	console.log(ret);
-			 if(ret && ret.statusCode == 0){
-				 window.location.href='loginController.do?login';
-//			 }else if(ret.code == 21004){
-//				 $("#tipsmsg").show();
-//				 $("#logins").show();
-//				 $("#load").hide();
-//				 $("#tipsmsg").text(NoPermissions);
-//			 }else if(ret.code == 21001){
-//				 $("#tipsmsg").show();
-//				 $("#logins").show();
-//				 $("#load").hide();
-//				 $("#tipsmsg").text(accountisNotExist);
-//			 }else if(ret.code == 21002){
-//				 $("#tipsmsg").show();
-//				 $("#logins").show();
-//				 $("#load").hide();
-//				 $("#tipsmsg").text(passwordIsError);
+			if(ret && ret.statusCode == 0){
+				 if(ret.data.role.id=='6'){  //厂商用户代码废弃
+					 $(".js-select-changshangrole").easyDropDown();
+					 $('#myModal').modal('show');
+					 $('.login').hide();
+					 userinfo=ret.data;
+				 }else{
+					// saveLogin(ret.data);
+					 window.location.href='loginController.do?login';
+				 }
 			 }else{
 				 $("#tipsmsg").show();
 				 $("#logins").show();
@@ -40,7 +27,28 @@ function send(){
 		 }
 	 });
 }
-
+var userinfo={};
+var changshangrole=null;
+function saveLogin(data){
+	if(data==null||data==undefined){
+		data=userinfo;
+		changshangrole=$('.js-select-changshangrole').val();
+	}
+	 $.ajax({
+		 type:"get",
+		 url:"loginController.do?saveloginInfo",
+		 dataType:'json',
+		 data:{'userinfo': JSON.stringify(data),'ChangShangRole':changshangrole},
+		 success:function(ret){
+			if(ret== 1){
+				 window.location.href='loginController.do?login';
+			 }else{
+				
+			 }
+		 }
+	 });
+	
+}
 var oldAccount = "";
 $(function() {
     $("#password").val("");

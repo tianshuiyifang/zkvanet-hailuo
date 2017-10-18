@@ -47,7 +47,6 @@
 <link rel="stylesheet" href="webpage/resource/plugins/nstSlider/jquery.nstSlider.css">
 <link rel="stylesheet" href="webpage/resource/plugins/datetimepicker/jquery.datetimepicker.css">
 <link rel="stylesheet" href="webpage/resource/plugins/timePicker/jquery.timePicker.css">
-<link rel="stylesheet" href="webpage/resource/plugins/icheck/icheck.css">
 <link rel="stylesheet" href="webpage/resource/plugins/ciTy/css/city.css">
 <link rel="stylesheet" href="webpage/resource/css/site.css">
 <link rel="stylesheet" href="webpage/resource/plugins/fileUpLoad/fileinput.css">
@@ -112,8 +111,6 @@ setJsLanguage(locale);
 
 <!-- tab --> 
 <script src="webpage/resource/js/tab.js"></script>
-<!-- icheck -->
-<script src="webpage/resource/plugins/icheck/icheck.min.js"></script>
 
 <!-- ztree --> 
 <script src="webpage/resource/plugins/zTree/js/jquery.ztree.all-3.5.min.js"></script>
@@ -127,7 +124,7 @@ setJsLanguage(locale);
 <script src="webpage/resource/js/index/devices.js"></script>
 <!--timePicker-->
 <script src="webpage/resource/plugins/timePicker/jquery.timePicker.js"></script>
-
+<script src="webpage/resource/plugins/icheck/icheck.min.js"></script>
 <script src="webpage/resource/plugins/fileUpLoad/fileinput.js"></script>
 <script src="webpage/resource/plugins/fileUpLoad/zh.js"></script>
 <!--[if lte IE 9]>
@@ -241,7 +238,6 @@ setJsLanguage(locale);
 			<div class="navbar-right p-15 p-b0 ta-r">
 				<div class="user-time">
 					
-						<a  href="/business/ConmmandLogs/toBusinessLog">业务日志</a>&emsp;
 					
 					<!-- <span class="pr theme-switch"><a class="js-theme-switch-btn theme-switch-btn cp c-fff ">切换主题&nbsp;<i class="fa fa-caret-down"></i></a> 
 		            <div class="theme-box pa c-666 p-lr10 p-tb5 ta-l lh-2 b1-ccc bc-fff">
@@ -276,7 +272,9 @@ setJsLanguage(locale);
 				<li id="customerManagement"><a href="meunController.do?search"><i class="fa fa-group" aria-hidden="true"></i>&nbsp;客户管理</a></li>
 				<li id="reportsManagement"><a href="meunController.do?report"><i class="fa fa-table" aria-hidden="true"></i>&nbsp;统计报表</a></li>
 				<li id="devicesManagement"><a href="meunController.do?device"><i class="fa fa-hdd-o" aria-hidden="true"></i>&nbsp;设备管理</a></li>
-				<li id="orderManagement"><a href="meunController.do?order"><i class="fa fa-hdd-o" ></i>&nbsp;订单管理</a></li>
+				<li id="orderManagementext"><a href="meunController.do?orderext"><i class="fa fa-hdd-o" ></i>&nbsp;订单管理</a></li>
+				<li id="orderManagement"><a href="meunController.do?order"><i class="fa fa-hdd-o" ></i>&nbsp;订单审核</a></li>
+				
 		</ul>
 		<div id="complexQuery" class="navbar-right  p-10" data-option="{'renderingFlag':false}"></div>
 	</div>
@@ -949,25 +947,28 @@ function delCookie(name){
 	setInterval("document.getElementById('curr_time').innerHTML=new Date().Format('yyyy-MM-dd hh:mm:ss')",1000);
 	/************************当前时间-end**************************/ 
 	
-	/************************退出系统-start**************************/ 
+		/************************退出系统-start**************************/ 
 	
 	
 function exitSys()
 	{
 		/**$.ajax({
-			url : _ctx+"/logout",
+			url : "http://127.0.0.1/json/loginout.json",
 			async : true,
 			cache : false,
-			type : "POST",
-			data : $("#edit-modal-userForm").serialize(),
-			datatype : "json",
+			type : "get",
+			//data : $("#edit-modal-userForm").serialize(),
+			 dataType:'jsonp',
+			 jsonp:"jsonpcall",
+			 jsonpCallback:"jsonpCallback",
 			success : function(ret){
-				window.parent.location.href="http://lbs.tuyouonline.com";
+				window.parent.location.href="file://D:/anhui/login.html";
 			},
 			complete:function(XMLHttpRequest, textStatus){
 				authorityValide(XMLHttpRequest);
 			}
 		});**/
+	window.location.href='loginController.do?logout';
 	}
 	
 	$(".js-exit-system").click(function() {
@@ -975,11 +976,11 @@ function exitSys()
 			title:'信息',
 			btn : [ '确定', '取消' ] 
 		}, function() {
-			delCookie("selectHistory");
 			exitSys();
 
 		});
 	});
+	
 	/************************退出系统-end**************************/ 
 	
 	function stock_ajaxDataFilter(treeId, parentNode, responseData) {
@@ -1212,6 +1213,37 @@ function exitSys()
 								</div>
 								</div>
 								</div>
+								
+								<div class="form-group fl p-r15">
+								<label class="label-first" title="区域名">订单状态:</label>
+								<div class="pr d-ib">
+								<div class="input-group input-group-sm">
+								<span style="top:10px;position:relative;" class="easydropdown easydropdown-sm easydropdown-full va-m">
+								<select id="area" name="area" class="order_status"> 
+								   <option value="-1" title="默认"  class="selected">&nbsp;全部&nbsp;&nbsp;&nbsp;&nbsp;</option>
+								   <option value="0" title="默认"  >订单正常</option>
+						           <option value="1" title="默认"  >订单异常</option>
+					           </select>
+					           	</span>
+								</div>
+								</div>
+								</div>
+							 <div class="form-group fl p-r15">
+								<label class="label-first" title="区域名">开始时间:</label>
+								<div class="pr d-ib">
+								<div class="input-group input-group-sm">
+								<input style="top:10px;position:relative;" type="text" size="17" readonly="readonly"  name="startTime" placeholder="订单开始时间" id="startTime"   class="form-control search-text" >
+								</div>
+								</div>
+								</div>
+							<div class="form-group fl p-r15">
+								<label class="label-first" title="区域名">结束时间:</label>
+								<div class="pr d-ib">
+								<div class="input-group input-group-sm">
+								<input style="top:10px;position:relative;" type="text" size="17" readonly="readonly" name="endTime"  placeholder="订单结束时间" id="endTime"   class="form-control search-text" >
+								</div>
+								</div>
+								</div>
 									<div class="fr search-input-group w150" style="top:10px;position:relative;">
 										<div class="input-group">
 											<span class="input-group-btn">
@@ -1231,13 +1263,14 @@ function exitSys()
 												<th width="9%">发货单号</th>
 												<th width="9%">发货数量</th>
 												<th width="9%">运输车号</th>
-												<th width="9%">出产日期</th>
-												<th width="9%">出产编号</th>
-												<th width="9%">区域名</th>
-												<th width="9%">订单状态</th>
+												<th width="9%">包装方式</th>
+												<th width="8%" title="出厂日期">出产日期</th>
+												<th width="8%" title="产品名称">产品名称</th>
+												<th width="10%" title="区域名">区域名</th>
+												<th width="11%">订单状态</th>
 												<th width="9%">客户名称</th>
-												<th  width="9%">产品名称</th>
-												<th width="10%" title="操作">操作</th>
+												<th  width="9%">订单审核</th>
+												
 											</tr>
 										</thead>
 									</table>
@@ -1250,9 +1283,9 @@ function exitSys()
 								              <col  width="9%"/>
 								              <col width="9%"/>
 								              <col width="9%"/>
-								              <col width="9%"/>
-								              <col width="9%"/>
-								              <col width="9%"/>
+								              <col width="8%"/>
+								              <col width="8%"/>
+								              <col width="11%"/>
 								              <col width="9%"/>
 								              <col width="9%"/>
 								               <col width="10%"/>
@@ -1265,14 +1298,19 @@ function exitSys()
 				                      <td title="{{row.fahuodanhao}}">{{row.fahuodanhao}}</td>
 				                      <td title="{{row.fahuoshuliang}}">{{row.fahuoshuliang}}</td>
 				                      <td title="{{row.yunshuchehao}}">{{row.yunshuchehao}}</td>
+				                      <td title="{{row.baozhuangfangshi}}">{{row.baozhuangfangshi}}</td>
 				                      <td title="{{row.chuchangriqi}}">{{row.chuchangriqi}}</td>
-				                      <td title="{{row.chuchangbianhao}}">{{row.chuchangbianhao}}</td>
-								      <td title="{{row.quyuming}}">{{row.quyuming}}</td>
+								      <td title="{{row.chanpinmingcheng}}">{{row.chanpinmingcheng}}</td>
+                                      <td title="{{row.quyuming}}">{{row.quyuming}}</td>
 									  <td title="{{row.isWaring}}">
 										{{if row.isWaring==0}}
 											 订单正常
 										 {{else }}
-											<span style="color:red">订单异常</span>
+											<span style="color:red">订单异常
+                                          {{if row.unHandledExceptionCount<1}}(已处理)
+                                       {{else }}(未处理)
+                                       {{/if}}
+                                         </span>
 										 {{/if}}
 									   </td>
                                       <td style='display:none'  title="{{row.yunshudanwei}}">{{row.yunshudanwei}}</td>
@@ -1281,13 +1319,9 @@ function exitSys()
  									  <td style='display:none' title="{{row.createTime}}">{{row.createTime}}</td>
 									  <td style='display:none' title="{{row.quyuma}}">{{row.quyuma}}</td>
 									  <td style='display:none' title="{{row.baozhuangfangshi}}">{{row.baozhuangfangshi}}</td>
-									  <td title="{{row.chanpinmingcheng}}">{{row.chanpinmingcheng}}</td>
-				                      <td>
-											<a title="详情" class="cp js-editor-users-btn" onclick="orderinfo('{{row.baozhuangfangshi}}','{{row.createTime}}','{{row.fahuodanhao}}','{{row.beizhu}}','{{row.chanpinmingcheng}}','{{row.yunshuchehao}}','{{row.fahuoshuliang}}','{{row.quyuming}}','{{row.quyuma}}','{{row.chuchangriqi}}','{{row.yunshuchehao}}','{{row.chuchangbianhao}}','{{row.yunshudanwei}}','{{row.kehumingcheng}}');">详情</a>
-											<a title="图片上传" onclick="uploadimage('{{row.id}}','{{row.fahuodanhao}}')"  class="cp js-editor-users-btn" ;">图片列表</a>
-											<a title="异常列表" {{if row.isWaring==0}}style="display:none"{{/if}}  onclick="showException({{row.id}})"  class="cp js-editor-users-btn" ;">异常列表</a>
-											<a  {{if row.deviceSid==""||row.deviceSid==null}}style="display:none"{{/if}}  title="详情" href="rest/meunController/ordertrackreplay?imei={{row.deviceSid}}&createtime={{row.createTime}}&endtime={{row.endTime}}" target="_blank" class="cp js-editor-users-btn" ;">订单轨迹</a>
-									</td>
+									  <td style="text-align:center">
+                                              <a title="审核"  onclick="showVerify('{{row.id}}','{{row.salesCheckStatus}}','{{row.salesCheckMsg}}','{{row.marketCheckStatus}}','{{row.marketCheckMsg}}','{{row.financialCheckStatus}}','{{row.financialCheckMsg}}')"  class="cp js-editor-users-btn" ;">审核</a>
+                                      </td>
 				                    </tr>
 				                    {{/each}}
 													</script>
@@ -1303,681 +1337,18 @@ function exitSys()
 
 </div>
 </div>
-<!--超速统计  START index=2 -->	
-<div class="overspeed-statistical-box dn">
-<div class="rightside-header clearfix">
-<div class="p-tb5">
-<b>超速报表</b>
-</div>
-</div>
-<div class="right-tab-con">
-<div class="funcbar">
-<form action="/overspeed/export" class="form-inline search-criteria clearfix p-tb10" method="post" id="OverspeedFrom"> 
-<div class="m-b10 clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first" title="设备名称">设备名称:</label>
-<div class="pr d-ib">
-<div class="input-group input-group-sm">
-<input type="text" size="37" name="imeis"  id="queryDevice_select_Overspeed" onkeydown="keyDownOverspeed(event)" onclick="showQueryTab({'target':'Overspeed','checkFlag':true,'isQuery':false})" onkeyup="javascript:query_history = $(this).val();" placeholder="请输入设备名称或IMEI" class="form-control search-text js-select-user-sales" >
-<span class="input-group-btn"><button type="button" onclick="showQueryTab({'target':'Overspeed','checkFlag':true,'isQuery':true})" class="btn btn-default queryDevice_btn_Overspeed" title=""><i class="fa fa-caret-down"></i></button></span>
-</div>
-<div id="queryDevice_div_Overspeed" class="js-equipment-items equipment-items b1-ccc dn">
-<div class="list-box auto-scrollbar">
-<ul id="queryDevice_Tree_Overspeed" class="ztree"></ul>
-<div class="ta-c c-666 p-tb10 noDataHide"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div>
-<div class="ta-c m-tb15 TreeLogindataTable" ><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
-</div>
-<div class="p-tb5 p-lr15 b-t1-ccc clearfix hideConfirmClose">						                        		
-<div class="fr">
-<button type="button" onclick="treeCheckboxAllSelect('Overspeed')" class="btn btn-primary btn-xs">&nbsp;确定&nbsp;</button>
-<button type="button" onclick="javascript:$('#queryDevice_div_Overspeed').hide()" class="btn btn-default btn-xs js-btn-close">&nbsp;取消&nbsp;</button>
-</div>
-<label class="icheck-min"><input type="checkbox" class="deviceAllCheckbox">&nbsp;全选</label>
-</div>
-</div>
-</div>
-<label class="m-l50 m-r15" title="速度">速度大于等于：</label>
-<input type="text" name="speed" class="form-control form-control-sm" size="5"/>
-</div>
-</div> 
-<div class="clearfix">
-<div class="form-group fl p-r15"> 
-<label class="label-first" title="快捷时间">快捷时间:</label>
-<div class="btn-group btn-group-sm js-tab " id="qucikTime_overspeed">
-<button type="button" onclick="selectRTimeat('Today','overspeed')" onkeydown="keyDownOverspeed(event)" class="btn btn-default" title="今天">今天</button>
-<button type="button" onclick="selectRTimeat('Yesterday','overspeed')" onkeydown="keyDownOverspeed(event)" class="btn btn-default" title="昨天">昨天</button>
-<button type="button" onclick="selectRTimeat('ThisWeek','overspeed')" onkeydown="keyDownOverspeed(event)" class="btn btn-default" title="本周">本周</button>
-<button type="button" onclick="selectRTimeat('LastWeek','overspeed')" onkeydown="keyDownOverspeed(event)" class="btn btn-default" title="上周">上周</button>
-<button type="button" onclick="selectRTimeat('ThisMonth','overspeed')" onkeydown="keyDownOverspeed(event)" class="btn btn-default" title="本月">本月</button>
-<button type="button" onclick="selectRTimeat('LastMonth','overspeed')" onkeydown="keyDownOverspeed(event)" class="btn btn-default" title="上月">上月</button>
-</div>
-<div class="choose-date">
-<input type="data" id="startTime_overspeed"  onclick="removeActive('overspeed',this)" readonly="readonly"  name="startTime" placeholder="开始时间" class="form-control form-control-sm"/ size="16">&nbsp;
-<input type="text" id="endTime_overspeed"    onclick="removeActive('overspeed',this)" readonly="readonly"  name="endTime" placeholder="结束时间"  class="form-control form-control-sm" size="16"/>
-</div>
-</div>
-<div class="form-group fl">
-<button type="button" onclick="initOverspeedReport('1','10');" class="btn btn-primary btn-sm Overspeed_searchBtn"><i class="fa fa-search"></i>&nbsp;搜索</button>
-</div>
-<div class="form-group fr">
-<button type="button" onclick="exportOverspeedReport()" class="btn btn-default btn-sm">导出</button>
-</div>
-</div>
-<input type="hidden" name="userIdOverspeed" id="userIdOverspeed">
-<input type="hidden" name="startTimeOverspeed" id="startTimeOverspeed">
-<input type="hidden" name="endTimeOverspeed" id="endTimeOverspeed">
-<input type="hidden" name="imeisOverspeed" id="imeisOverspeed">
-<input type="hidden" name="jsonOverspeed" id="jsonOverspeed">
-<input type="hidden" name="pageNoOverspeed" id="pageNoOverspeed">
-<input type="hidden" name="pageSizeOverspeed" id="pageSizeOverspeed">
-</form>
-</div>
-<div class="table-header">
-<table class="table table-hover table-ellipsis m-b0" id="overspeedTableHeader">
-<thead>
-<tr>
-<th title="序号">序号</th>
-<th title="设备名称">设备名称</th>
-<th title="设备IMEI">设备IMEI</th>
-<th title="型号">型号</th>
-<th title="定位时间">定位时间</th>
-<th title="速度">速度(KM/H)</th>
-<th title="地址">地址</th>
-<th title="经度/纬度">经度/纬度</th>
-</tr>
-</thead>
-</table>
-</div>
-<div class="table-scrollbar oy-a">
-<table id="overspeedTableContent" class="table table-hover table-ellipsis table-normal-a">
-<colgroup>
-<col width="60">
-<col width="150"> 
-<col width="150">
-<col width="120">
-<col width="150">
-<col width="120">
-<col>
-<col  width="180">
-</colgroup>
-<tbody id="overspeed-tbody" >
-<script type="text/html" id="overspeed-tbody-json">
-{{each result as row i}}
-<tr>
-<td>{{(pageNo-1)*pageSize+(i+1)}}</td>
-<td title="{{row.deviceName}}">{{row.deviceName}} </td>
-<td title="{{row.imei}}">{{row.imei}}</td>
-<td title="{{row.mcType}}">{{row.mcType}}</td>
-<td title="{{row.time}}">{{row.time}}</td>
-<td title="{{row.speed}}">
-			{{if row.speed != "" || row.speed != null}}{{row.speed}}
-			{{else}}0
-			{{/if}}
-</td>
-<td title="">{{if row.addr == "" || row.addr == null}}
-			<span id="overspeed_end_{{i}}" style="display:none;"><i class="fa fa-spinner fa-pulse fa-fw"></i>正在解析地址</span>
-			<a    id="overspeed_a_end_{{i}}" href="javascript:;" onclick="clickAddres('end_{{i}}','{{row.lng}}','{{row.lat}}','overspeed')">查看地址</a>
-	 {{else}}
-			{{row.addr}}
-	 {{/if}}
-</td>
-<td><a onclick="Mapposition({'lng':{{row.lng}},'lat':{{row.lat}}})" title="{{row.lng}}/{{row.lat}}" >{{row.lng}}&nbsp;/&nbsp;{{row.lat}}</a></td>
-</tr>
-{{/each}}
-</script>
-</tbody>
-</table>
-<div id="paging-overspeed" class="simple-pagination-custom ta-c p-b10"></div>
-<div id="overspeed-noData"><div class="ta-c c-666 p-tb10"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div></div>
-<div id="overspeed-loading" hidden="true" class="ta-c p-tb25"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
-</div>
-</div>
-</div>
-<!--超速统计  END -->	
-<!--停留统计  START index=3 -->	
-<div class="remain-statistical-box dn">
-<div class="rightside-header clearfix">
-<div class="p-tb5">
-<b>停留报表</b>
-</div>
-</div>
-<div class="right-tab-con">
-<div class="funcbar">
-<form action="/stopCar/export?type=0" class="form-inline search-criteria clearfix p-tb10" method="post" id="StopCarFrom"> 
-<div class="m-b10 clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first" title="设备名称">设备名称:</label>
-<div class="pr d-ib">
-<div class="input-group input-group-sm">
-<input type="text" size="37" name="imeis" id="queryDevice_select_stopCar" onkeydown="keyDownParking(event)" onclick="showQueryTab({'target':'stopCar','checkFlag':true,'isQuery':false})" onkeyup="javascript:query_history = $(this).val();" placeholder="请输入设备名称或IMEI" class="form-control search-text js-select-user-sales" >
-<span class="input-group-btn"><button type="button" onclick="showQueryTab({'target':'stopCar','checkFlag':true,'isQuery':true})" class="btn btn-default queryDevice_btn_stopCar" title=""><i class="fa fa-caret-down"></i></button></span>					  
-</div>
-<div id="queryDevice_div_stopCar" class="js-equipment-items equipment-items b1-ccc dn">						                        		
-<div class="list-box auto-scrollbar">
-<ul id="queryDevice_Tree_stopCar" class="ztree">
-</ul>
-<div class="ta-c c-666 p-tb10 noDataHide"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div>
-<div class="ta-c m-tb15 TreeLogindataTable" ><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
-</div>
-<div class="p-tb5 p-lr15 b-t1-ccc clearfix hideConfirmClose">
-<div class="fr">
-<button type="button" onclick="treeCheckboxAllSelect('stopCar')" class="btn btn-primary btn-xs">&nbsp;确定&nbsp;</button>
-<button type="button" onclick="javascript:$('#queryDevice_div_stopCar').hide()" class="btn btn-default btn-xs js-btn-close">&nbsp;取消&nbsp;</button>
-</div>
-<label class="icheck-min"><input type="checkbox" class="deviceAllCheckbox">&nbsp;全选</label>
-</div>
-</div>
-</div>
-</div>
-<div class="form-group" style="display: none;">
-<label>状态:</label>
-<div class="d-ib w120 va-m">
-<span class="easydropdown easydropdown-sm easydropdown-full va-m">
-<select class="js-select" id="acc-statue-stopCar" name="acc"> 
 
-<option value="off">停留</option>
-
-</select>
-</span>
-</div>
-</div>
-</div>									
-<div class="clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first">快捷时间:</label>
-<div class="btn-group btn-group-sm js-tab " id="qucikTime_stopCar">
-<button type="button" onclick="selectRTimeat('Today','stopCar')" onkeydown="keyDownParking(event)" class="btn btn-default" title="今天">今天</button>
-<button type="button" onclick="selectRTimeat('Yesterday','stopCar')" onkeydown="keyDownParking(event)" class="btn btn-default btn-sm" title="昨天">昨天</button>
-<button type="button" onclick="selectRTimeat('ThisWeek','stopCar')" onkeydown="keyDownParking(event)" class="btn btn-default btn-sm" title="本周">本周</button>
-<button type="button" onclick="selectRTimeat('LastWeek','stopCar')" onkeydown="keyDownParking(event)" class="btn btn-default btn-sm" title="上周">上周</button>
-<button type="button" onclick="selectRTimeat('ThisMonth','stopCar')" onkeydown="keyDownParking(event)" class="btn btn-default btn-sm" title="本月">本月</button>
-<button type="button" onclick="selectRTimeat('LastMonth','stopCar')" onkeydown="keyDownParking(event)" class="btn btn-default btn-sm" title="上月">上月</button>
-</div>
-<div class="choose-date">
-<input type="text" id="startTime_stopCar"  onclick="removeActive('stopCar',this)" readonly="readonly"  name="startTime" placeholder="开始时间" class="form-control form-control-sm" size="16"/>&nbsp;
-<input type="text" id="endTime_stopCar"    onclick="removeActive('stopCar',this)" readonly="readonly"  name="endTime" placeholder="结束时间"  class="form-control form-control-sm" size="16"/>
-</div> 
-</div>										
-<div class="form-group fl p-r15">
-<button type="button" onclick="initStopCarReport('stopCar','1','10');" class="btn btn-primary btn-sm  stopCar_searchBtn"><i class="fa fa-search"></i>&nbsp;搜索</button>
-</div>
-<div class="form-group fr">	
-<button type="button" onclick="exportStopCarReport()" class="btn btn-default btn-sm">导出</button>
-</div>
-</div>
-<input type="hidden" name="userIdstopCar" id="userIdstopCar"/>
-<input type="hidden" name="statusCachingstopCar" id="statusCachingstopCar">
-<input type="hidden" name="startTimestopCar" id="startTimestopCar">
-<input type="hidden" name="endTimestopCar" id="endTimestopCar">
-<input type="hidden" name="imeisstopCar" id="imeisstopCar">
-<input type="hidden" name="jsonStopCar" id="jsonStopCar">
-<input type="hidden" name="pageNoStopCar" id="pageNoStopCar">
-<input type="hidden" name="pageSizeStopCar" id="pageSizeStopCar">
-</form>
-</div>
-<div class="table-header">
-<div class="p-tb8 p-lr15 b-b1-ddd fs-14 ta-r bc-fff">
-<b>总计：</b> 
-<span>停留时间&nbsp;<b id="stopCar-alltimes">0</b>&nbsp;</span>
-</div>
-<table class="table table-hover table-ellipsis m-b0" id="remainTableHeader">
-<thead>
-<tr>
-<th title="序号">序号</th>
-<th title="设备名称">设备名称</th>
-<th title="设备IMEI">设备IMEI</th>
-<th title="型号">型号</th>
-<th title="状态">状态</th>
-<th title="开始时间">开始时间</th>
-<th title="结束时间">结束时间</th>
-<th title="地址">地址</th>
-<th title="经度/纬度">经度/纬度</th>
-<th title="停留时间">停留时间</th>
-</tr>
-</thead>
-</table>
-</div>
-<div class="table-scrollbar oy-a">
-<table id="remainTableContent" class="table table-hover table-ellipsis table-normal-a">
-<colgroup>
-<col width="60">
-<col> 
-<col>
-<col width="100">
-<col>
-<col>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody id="stopCar-tbody">
-<script type="text/html" id="stopCar-tbody-json">
-{{each result as row i}}
-<tr>
-<td>{{(pageNo-1)*pageSize+(i+1)}}</td>
-<td title="{{row.deviceName}}">{{row.deviceName}} </td>
-<td title="{{row.imei}}">{{row.imei}}</td>
-<td title="{{row.mcType}}">{{row.mcType}}</td>
-<td title="{{row.acc}}">{{row.acc}}</td>
-<td title="{{row.startTime}}">{{row.startTime}}</td>
-<td title="{{row.endTime}}">{{row.endTime}}</td>
-<td title="">{{if row.addr == "" || row.addr == null}}
-			<span id="stopcar_end_{{i}}" style="display:none;"><i class="fa fa-spinner fa-pulse fa-fw"></i>正在解析地址</span>
-			<a    id="stopcar_a_end_{{i}}" href="javascript:;" onclick="clickAddres('end_{{i}}','{{row.lng}}','{{row.lat}}','stopcar')">查看地址</a>
-	 {{else}}
-			{{row.addr}}
-	 {{/if}}
-</td>
-<td><a onclick="Mapposition({'lng':{{row.lng}},'lat':{{row.lat}}})"  title="{{row.lng}}/{{row.lat}}">{{row.lng}}&nbsp;/&nbsp;{{row.lat}}</a></td>
-<td title="{{row.durSecond}}">{{row.durSecond}}</td>
-</tr>
-{{/each}}
-</script>
-</tbody>
-</table>
-<div id="loading-stopCar" hidden="true" class="ta-c p-tb25"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
-<div id="paging-stopCar" class="simple-pagination-custom ta-c p-b10"></div>
-<div id="noData-stopCar"><div class="ta-c c-666 p-tb10"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div></div>
 
 </div>
 </div>
-</div>
-<!--停留统计   END -->
-<!--停车未熄火统计  START index=4 -->	
-<div class="not-extinguish-box dn">
-<div class="rightside-header clearfix">
-<div class="p-tb5">
-<b>停车未熄火报表</b>
-</div>
-</div>
-<div class="right-tab-con">
-<div class="funcbar">
-<form action="/stopCar/export?type=1" class="form-inline search-criteria clearfix p-tb10" method="post" id="stopNotOffFrom"> 
-<div class="m-b10 clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first" title="设备名称">设备名称:</label>
-<div class="pr d-ib">
-<div class="input-group input-group-sm">
-<input type="text" size="37" name="imeis" id="queryDevice_select_stopNotOff" onkeydown="keyDownStopNotOff(event)" onclick="showQueryTab({'target':'stopNotOff','checkFlag':true,'isQuery':false})" onkeyup="javascript:query_history = $(this).val();" placeholder="请输入设备名称或IMEI" class="form-control search-text js-select-user-sales" >
-<span class="input-group-btn"><button type="button" onclick="showQueryTab({'target':'stopNotOff','checkFlag':true,'isQuery':true})" class="btn btn-default queryDevice_btn_stopNotOff" title=""><i class="fa fa-caret-down"></i></button></span>					  
-</div>
-<div id="queryDevice_div_stopNotOff" class="js-equipment-items equipment-items b1-ccc dn">						                        		
-<div class="list-box auto-scrollbar">
-<ul id="queryDevice_Tree_stopNotOff" class="ztree">
-</ul>
-<div class="ta-c c-666 p-tb10 noDataHide"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div>
-<div class="ta-c m-tb15 TreeLogindataTable" ><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
-</div>
-<div class="p-tb5 p-lr15 b-t1-ccc clearfix hideConfirmClose">
-<div class="fr">
-<button type="button" onclick="treeCheckboxAllSelect('stopNotOff')" class="btn btn-primary btn-xs">&nbsp;确定&nbsp;</button>
-<button type="button" onclick="javascript:$('#queryDevice_div_stopNotOff').hide()" class="btn btn-default btn-xs js-btn-close">&nbsp;取消&nbsp;</button>
-</div>
-<label class="icheck-min"><input type="checkbox" class="deviceAllCheckbox">&nbsp;全选</label>
-</div>
-</div>
-</div>
-</div>
-<div class="form-group" style="display: none;">
-<label>状态:</label>
-<div class="d-ib w120 va-m">
-<span class="easydropdown easydropdown-sm easydropdown-full va-m">
-<select class="js-select" id="acc-statue-stopNotOff" name="acc"> 
-<option value="on">停车未熄火</option> 
-</select>
-</span>
-</div>
-
-</div>
-</div>									
-<div class="clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first">快捷时间:</label>
-<div class="btn-group btn-group-sm js-tab " id="qucikTime_stopNotOff">
-<button type="button" onclick="selectRTimeat('Today','stopNotOff')" onkeydown="keyDownStopNotOff(event)" class="btn btn-default" title="今天">今天</button>
-<button type="button" onclick="selectRTimeat('Yesterday','stopNotOff')" onkeydown="keyDownStopNotOff(event)" class="btn btn-default btn-sm" title="昨天">昨天</button>
-<button type="button" onclick="selectRTimeat('ThisWeek','stopNotOff')" onkeydown="keyDownStopNotOff(event)" class="btn btn-default btn-sm" title="本周">本周</button>
-<button type="button" onclick="selectRTimeat('LastWeek','stopNotOff')" onkeydown="keyDownStopNotOff(event)" class="btn btn-default btn-sm" title="上周">上周</button>
-<button type="button" onclick="selectRTimeat('ThisMonth','stopNotOff')" onkeydown="keyDownStopNotOff(event)" class="btn btn-default btn-sm" title="本月">本月</button>
-<button type="button" onclick="selectRTimeat('LastMonth','stopNotOff')" onkeydown="keyDownStopNotOff(event)" class="btn btn-default btn-sm" title="上月">上月</button>
-</div>
-<div class="choose-date">
-<input type="text" id="startTime_stopNotOff"  onclick="removeActive('stopNotOff',this)" readonly="readonly"  name="startTime" placeholder="开始时间" class="form-control form-control-sm" size="16"/>&nbsp;
-<input type="text" id="endTime_stopNotOff"    onclick="removeActive('stopNotOff',this)" readonly="readonly"  name="endTime" placeholder="结束时间"  class="form-control form-control-sm" size="16"/>
-</div> 
-</div>										
-<div class="form-group fl p-r15">
-<button type="button" onclick="initStopCarReport('stopNotOff','1','10');" class="btn btn-primary btn-sm  stopNotOff_searchBtn"><i class="fa fa-search"></i>&nbsp;搜索</button>
-</div>
-<div class="form-group fr">	
-<button type="button" onclick="exportstopNotOffReport()" class="btn btn-default btn-sm">导出</button>
-</div>
-</div>
-<input type="hidden" name="stopNotOffUserId" id="stopNotOffUserId"/>
-<input type="hidden" name="statusCachingstopNotOff" id="statusCachingstopNotOff">
-<input type="hidden" name="startTimestopNotOff" id="startTimestopNotOff">
-<input type="hidden" name="endTimestopNotOff" id="endTimestopNotOff">
-<input type="hidden" name="imeisstopNotOff" id="imeisstopNotOff">
-<input type="hidden" name="jsonStopNotOff" id="jsonStopNotOff">
-<input type="hidden" name="pageNoStopNotOff" id="pageNoStopNotOff">
-<input type="hidden" name="pageSizeStopNotOff" id="pageSizeStopNotOff">
-</form>
-</div>
-<div class="table-header">
-<div class="p-tb8 p-lr15 b-b1-ddd fs-14 ta-r bc-fff">
-<b>总计：</b> 
-<span>停留时间&nbsp;<b id="stopNotOff-alltimes">0</b>&nbsp;</span>
-</div>
-<table class="table table-hover table-ellipsis m-b0" id="notExtinguishTableHeader">
-<thead>
-<tr>
-<th title="序号">序号</th>
-<th title="设备名称">设备名称</th>
-<th title="设备IMEI">设备IMEI</th>
-<th title="型号">型号</th>
-<th title="状态">状态</th>
-<th title="开始时间">开始时间</th>
-<th title="结束时间">结束时间</th>
-<th title="地址">地址</th>
-<th title="经度/纬度">经度/纬度</th>
-<th title="停留时间">停留时间</th>
-</tr>
-</thead>
-</table>
-</div>
-<div class="table-scrollbar oy-a">
-<table id="notExtinguishTableContent" class="table table-hover table-ellipsis table-normal-a">
-<colgroup>
-<col width="60">
-<col> 
-<col>
-<col width="100">
-<col>
-<col>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody id="stopNotOff-tbody">
-<script type="text/html" id="stopNotOff-tbody-json">
-{{each result as row i}}
-<tr>
-<td>{{(pageNo-1)*pageSize+(i+1)}}</td>
-<td title="{{row.deviceName}}">{{row.deviceName}} </td>
-<td title="{{row.imei}}">{{row.imei}}</td>
-<td title="{{row.mcType}}">{{row.mcType}}</td>
-<td title="{{row.acc}}">{{row.acc}}</td>
-<td title="{{row.startTime}}">{{row.startTime}}</td>
-<td title="{{row.endTime}}">{{row.endTime}}</td>
-<td title="">{{if row.addr == "" || row.addr == null}}
-			<span id="stopNotOff_end_{{i}}" style="display:none;"><i class="fa fa-spinner fa-pulse fa-fw"></i>正在解析地址</span>
-			<a    id="stopNotOff_a_end_{{i}}" href="javascript:;" onclick="clickAddres('end_{{i}}','{{row.lng}}','{{row.lat}}','stopNotOff')">查看地址</a>
-	 {{else}}
-			{{row.addr}}
-	 {{/if}}
-</td>
-<td><a onclick="Mapposition({'lng':{{row.lng}},'lat':{{row.lat}}})"  title="{{row.lng}}/{{row.lat}}">{{row.lng}}&nbsp;/&nbsp;{{row.lat}}</a></td>
-<td title="{{row.durSecond}}">{{row.durSecond}}</td>
-</tr>
-{{/each}}
-</script>
-</tbody>
-</table>
-<div id="loading-stopNotOff" hidden="true" class="ta-c p-tb25"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
-<div id="paging-stopNotOff" class="simple-pagination-custom ta-c p-b10"></div>
-<div id="noData-stopNotOff"><div class="ta-c c-666 p-tb10"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div></div>
-
-</div>
-</div>
-</div>
-<!--停车未熄火统计   END -->
-
-<!--ACC统计   START index=5 -->
-<div class="acc-statistical-box dn">
-<div class="rightside-header clearfix">
-<div class="p-tb5">
-<b>ACC报表</b>
-</div>
-</div>
-
-<div class="right-tab-con">
-<div class="funcbar">
-<form class="form-inline search-criteria clearfix p-tb10">
-<div class="m-b10 clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first" title="设备名称">设备名称:</label>
-<div class="pr d-ib">
-<div class="input-group input-group-sm">
-<input type="text" size="37" id="queryDevice_select_acc" onkeydown="keyDownAcc(event)" onclick="showQueryTab({'target':'acc','checkFlag':true,'isQuery':false})" onkeyup="javascript:query_history = $(this).val();" placeholder="请输入设备名称或IMEI" class="form-control search-text js-select-user-sales" >
-<span class="input-group-btn"><button type="button" onclick="showQueryTab({'target':'acc','checkFlag':true,'isQuery':true})" class="btn btn-default queryDevice_btn_acc" title=""><i class="fa fa-caret-down"></i></button></span>
-</div>
-<div id="queryDevice_div_acc" class="js-equipment-items equipment-items b1-ccc dn">						                        		
-<div class="list-box auto-scrollbar">
-<ul id="queryDevice_Tree_acc" class="ztree">
-</ul>
-<div class="ta-c c-666 p-tb10 noDataHide"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div>
-<div class="ta-c m-tb15 TreeLogindataTable" ><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
-</div>
-<div class="p-tb5 p-lr15 b-t1-ccc clearfix hideConfirmClose">
-<div class="fr">
-<button type="button" onclick="treeCheckboxAllSelect('acc')" class="btn btn-primary btn-xs">&nbsp;确定&nbsp;</button>
-<button type="button" onclick="javascript:$('#queryDevice_div_acc').hide()" class="btn btn-default btn-xs js-btn-close">&nbsp;取消&nbsp;</button>
-</div>
-<label class="icheck-min"><input type="checkbox" class="deviceAllCheckbox">&nbsp;全选</label>
-</div>
-</div>
-</div>
-</div>
-
-<div class="form-group">
-<label>状态:</label>
-<div class="d-ib w120 va-m">
-<span class="easydropdown easydropdown-sm easydropdown-full va-m">
-<select class="js-select" id="accStatu">
-<option value="all" selected="selected">全部</option>
-<option value="on">打开</option>
-<option value="off">关闭</option>
-</select>
-</span>
-</div>												
-</div>
-</div>
-<div class="clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first" title="快捷时间">快捷时间:</label>
-<div class="btn-group btn-group-sm js-tab " id="qucikTime_acc">
-<button type="button" onclick="selectRTimeat('Today','acc')" onkeydown="keyDownAcc(event)" class="btn btn-default" title="今天">今天</button>
-<button type="button" onclick="selectRTimeat('Yesterday','acc')" onkeydown="keyDownAcc(event)" class="btn btn-default btn-sm" title="昨天">昨天</button>
-<button type="button" onclick="selectRTimeat('ThisWeek','acc')" onkeydown="keyDownAcc(event)" class="btn btn-default btn-sm" title="本周">本周</button>
-<button type="button" onclick="selectRTimeat('LastWeek','acc')" onkeydown="keyDownAcc(event)" class="btn btn-default btn-sm" title="上周">上周</button>
-<button type="button" onclick="selectRTimeat('ThisMonth','acc')" onkeydown="keyDownAcc(event)" class="btn btn-default btn-sm" title="本月">本月</button> 
-<button type="button" onclick="selectRTimeat('LastMonth','acc')" onkeydown="keyDownAcc(event)" class="btn btn-default btn-sm" title="上月">上月</button>
-</div>
-<div class="choose-date">
-<input type="text" id="startTime_acc" onclick="removeActive('acc',this)" readonly="readonly" name="startTime"  placeholder="开始时间" class="form-control form-control-sm" size="16"/>&nbsp;
-<input type="text" id="endTime_acc"   onclick="removeActive('acc',this)" readonly="readonly" name="endTime" placeholder="结束时间"  class="form-control form-control-sm" size="16"/>
-</div>
-</div>
-<div class="form-group fl">
-<button type="button" class="btn btn-primary btn-sm acc_searchBtn"  onclick="getAccInfo();"><i class="fa fa-search"></i>&nbsp;搜索</button>
-</div>
-<div class="form-group fr">
-<button type="button" class="btn btn-default btn-sm" onclick="accNewExport();">导出</button>
-</div>
-
-</div>
-</form>
-</div>
-<div class="table-header">
-<div class="p-tb8 p-lr15 b-b1-ddd fs-14 ta-r bc-fff">
-<b>总计：</b> 
-<span>打开&nbsp;<b id="aCCOn">0</b>&nbsp;次</span>,
-<span>关闭&nbsp;<b id="aCCOff">0</b>&nbsp;次</span>,
-<span>总用时&nbsp;<b id="aCCTotalTime">0</b>&nbsp;</span>
-</div>
-<table class="table table-hover table-ellipsis m-b0" id="accTableHeader">										
-<thead>
-<tr>
-<th title="序号">序号</th>
-<th title="设备名称">设备名称</th>
-<th title="设备IMEI">设备IMEI</th>
-<th title="型号">型号</th>
-<th title="状态">状态</th>
-<th title="开始时间">开始时间</th>
-<th title="结束时间">结束时间</th>
-<th title="总用时">总用时</th>
-</tr>
-</thead>
-</table>
-</div>
-<div class="table-scrollbar oy-a">
-<table id="accTableContent" class="table table-hover table-ellipsis">
-<colgroup>
-<col> <col> <col> <col> <col> <col> <col> <col>
-</colgroup>
-<tbody id="accTable">
-<script type="text/html" id="acc-info">
-{{each result as row i}}
-<tr>
-<td>{{i+1}}</td>
-<td title="{{row.vechleName}}">{{row.vechleName}}</td>
-<td title="{{row.imei}}">{{row.imei}}</td>
-<td title="{{row.vehicleMcType}}">{{row.vehicleMcType}}</td>
-<td title="{{row.acc}}">{{row.acc}}</td>
-<td title="{{row.start}}">{{row.start}}</td>
-<td title="{{row.end}}">{{row.end}}</td>
-<td title="{{row.durSecond}}">{{row.durSecond}}</td>
-</tr>
-{{/each}}
-</script>	
-</tbody>
-</table>
-<div id="acc_info_nodata"><div class="ta-c c-666 p-tb10"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div></div>
-<div id="acc_info-loading" hidden="true" class="ta-c p-tb25"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
-</div>
-</div>
-<form action="/accReport/newExport" method="post" id="accFrom">
-<input type="hidden" id="statuTable" name="statuTable"/>
-<input type="hidden" name="userIdTable" id="userIdTable"/>
-<input type="hidden" id="startTimeTable" name="startTimeTable"/>
-<input type="hidden" id="endTimeTable" name="endTimeTable">
-<input type="hidden" id="accImeisTable" name="accImeisTable">
-</form>	
-</div>	
-</div>
-<div class="tab-con-alarm b1-ccc bc-fff dn">
-<div class="alarm-statistical-box">
-<div class="rightside-header clearfix">
-<div class="p-tb5">
-<b>告警总览</b>
-</div>
-</div>
-<div class="right-tab-con">
-<div class="funcbar">
-<form  action="/alarmInfo/alarmsexport"  class="form-inline search-criteria clearfix  p-tb10"  id="alarmForm" method="post">
-<div class="clearfix m-b10">
-<div class="form-group">
-<label class="label-first" title="设备名称">设备名称:</label>
-<div class="pr d-ib z-i9">
-<div class="input-group input-group-sm">
-<input type="text" size="100"  id="queryDevice_select_alarmReport" onkeydown="keyDownAlarmReport(event)" name="imei" onclick="showQueryTab({'target':'alarmReport','checkFlag':true,'isQuery':false})" onkeyup="javascript:query_history = $(this).val();" placeholder="请输入设备名称或IMEI" class="form-control search-text js-select-user-sales" >
-<span class="input-group-btn"><button type="button" onclick="showQueryTab({'target':'alarmReport','checkFlag':true,'isQuery':true})" class="btn btn-default queryDevice_btn_alarmReport" title=""><i class="fa fa-caret-down"></i></button></span>
-</div>
-<div id="queryDevice_div_alarmReport" class="js-equipment-items equipment-items b1-ccc dn">									                        
-<div class="list-box auto-scrollbar">
-<ul id="queryDevice_Tree_alarmReport" class="ztree">
-</ul>
-<div class="ta-c c-666 p-tb10 noDataHide"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div>
-<div class="ta-c m-tb15 TreeLogindataTable" ><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
-</div>
-<div class="p-tb5 p-lr15 b-t1-ccc clearfix hideConfirmClose">
-<div class="fr">
-<button type="button" onclick="treeCheckboxAllSelect('alarmReport')" class="btn btn-primary btn-xs">&nbsp;确定&nbsp;</button>
-<button type="button" onclick="javascript:$('#queryDevice_div_alarmReport').hide()" class="btn btn-default btn-xs js-btn-close">&nbsp;取消&nbsp;</button>
-</div>
-<label class="icheck-min"><input type="checkbox" class="deviceAllCheckbox">&nbsp;全选</label>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first" title="快捷时间">快捷时间:</label>
-<div class="btn-group btn-group-sm js-tab " id="qucikTime_alarmReport">
-<button type="button" onclick="selectRTimeat('Today','alarmReport')" onkeydown="keyDownAlarmReport(event)" class="btn btn-default  alarmReport-date" title="今天">今天</button>
-<button type="button" onclick="selectRTimeat('Yesterday','alarmReport')" onkeydown="keyDownAlarmReport(event)" class="btn btn-default alarmReport-date" title="昨天">昨天</button>
-<button type="button" onclick="selectRTimeat('ThisWeek','alarmReport')" onkeydown="keyDownAlarmReport(event)" class="btn btn-default alarmReport-date" title="本周">本周</button>
-<button type="button" onclick="selectRTimeat('LastWeek','alarmReport')" onkeydown="keyDownAlarmReport(event)" class="btn btn-default alarmReport-date" title="上周">上周</button>
-<button type="button" onclick="selectRTimeat('ThisMonth','alarmReport')" onkeydown="keyDownAlarmReport(event)" class="btn btn-default alarmReport-date" title="本月">本月</button>
-<button type="button" onclick="selectRTimeat('LastMonth','alarmReport')" onkeydown="keyDownAlarmReport(event)" class="btn btn-default alarmReport-date" title="上月">上月</button>
-</div>
-<div class="choose-date">
-<input type="text" name="startTime" onclick="removeActive('alarmReport',this)" id="startTime_alarmReport" readonly="readonly" placeholder="开始时间" name="startTime" class="form-control form-control-sm" size="16" />&nbsp;
-<input type="text" name="endTime"   onclick="removeActive('alarmReport',this)" id="endTime_alarmReport" readonly="readonly" placeholder="结束时间" name="endTime" class="form-control form-control-sm" size="16"/>
-</div>
-</div>
-<div class="form-group fl">
-<button class="btn btn-primary btn-sm alarmReport_searchBtn" type="button" onclick="getAlarmReport()"><i class="fa fa-search"></i>&nbsp;搜索</button>
-</div>
-<div class="form-group fr">	
-<!-- 告警总览导出    START-->    
-<button type="button" onclick="exportAlarmsReport()"  class="btn btn-default btn-sm">导出</button> 
-<!-- 告警总览导出    END-->
-
-</div>
-</div>
+<input type="hidden" name="csrole" class="csrole" value='${ChangShangRole}'>
 <input type="hidden" name="startTimeAlarmReport" id="startTimeAlarmReport">
 <input type="hidden" name="endTimeAlarmReport" id="endTimeAlarmReport">
 <input type="hidden" name="imeisAlarmReport" id="imeisAlarmReport">
 <input type="hidden" name="userIdAlarmReport" id="userIdAlarmReport">
 </form>
 </div>
-<div class="table-header" >
-<div class="p-tb8 p-lr15 b-b1-ddd fs-14 ta-r bc-fff">
-<b>总计：</b> 
-<span>震动告警&nbsp;<b id="vibrationAlert">0</b>&nbsp;次</span>,
-<span>断电告警&nbsp;<b id="powerCutOffAlert">0</b>&nbsp;次</span>,
-<span>低电告警&nbsp;<b id="lowBatteryAlert">0</b>&nbsp;次</span>,
-<span>SOS告警&nbsp;<b id="sosAlert">0</b>&nbsp;次</span>
-</div>
-<table class="table table-hover table-ellipsis m-b0" id="alarmTableHeader">
-<thead>
-<tr>
-<th title="序号">序号</th>
-<th title="设备名称">设备名称</th>
-<th title="IMEI">IMEI</th>
-<th title="设备类型">设备类型</th>
-<th title="震动告警(次)">震动告警(次)</th>
-<th title="断电告警(次)">断电告警(次)</th>
-<th title="低电告警(次)">低电告警(次)</th>
-<th title="SOS告警(次)">SOS告警(次)</th>
-</tr>
-</thead>
-</table>
-</div>
-<div class="table-scrollbar oy-a">
-<table class="table table-hover table-ellipsis" id="alarmTableContent">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody id="alarm_report_tbody">
 
-</tbody>
-</table>
-<div id="alarm_report_nodata"><div class="ta-c c-666 p-tb10"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div></div>
-<div id="alarm_report_paging" class="simple-pagination-custom ta-c"></div>
-<div id="alarm_report-loading" hidden="true" class="ta-c p-tb25"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
-</div>
 </div>
 </div>
 <div class="alarm-detail-box dn">
@@ -4262,6 +3633,8 @@ function toIndex(userId,account,parentId,imei){
 <!-- custom --> 
 <script src="webpage/resource/js/custom.js"></script> 
 <script style="text/javascript">
+
+
 	//定时查询未读告警时间（单位：毫秒）
 	var searchTime = 20000;
 	var intervalUnRead_id;

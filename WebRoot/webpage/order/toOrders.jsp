@@ -191,6 +191,8 @@ setJsLanguage(locale);
 	
 	$(function(){
 		//synUserConfig();
+		$('.aaaaaa').click();
+		$(".order_status").easyDropDown();
 	});
 	
 </script>
@@ -643,11 +645,11 @@ var pwdForm_advise = $("#editpwd-form_advise").validate({
 				
 				$.ajax({
 					type:'POST',
-					url:'/useradmin/editPwd',
+					url:'rest/loginController/chagPwd',
 					dataType:'json',
 					data:{'oldPwd':oldPwd,'newPwd':newPwd},
 					success:function(ret){
-						if(ret.code==0){
+						if(ret.statusCode==0){
 							/* var log="";
 							var home="";
 							
@@ -1158,7 +1160,19 @@ function exitSys()
 <b id="account">${userName}</b>
 </div>
 <div class="p-tb10 js-side-tree-box show-userlist" style="height: 350px !important;"> 
-<ul id="treeDemo" class="ztree">
+<ul id="treeDemo111" class="ztree">
+      <li class="side-subtitle side-full-subtitle row" style=" cursor: pointer;  height: 40px;
+    text-align: center;
+    border: 1px solid #e7eae6;
+    margin-bottom: 10px" onClick="showorder(${userId},'sale')">销售部审核 </li>
+       <li class="side-subtitle side-full-subtitle row" style=" cursor: pointer;   height: 40px;
+    text-align: center;
+    border: 1px solid #e7eae6;
+    margin-bottom: 10px" onClick="showorder(${userId},'market')">市场部审核 </li>
+        <li class="side-subtitle side-full-subtitle row" style="  cursor: pointer;  height: 40px;
+    text-align: center;
+    border: 1px solid #e7eae6;
+    margin-bottom: 10px" onClick="showorder(${userId},'financial')">财务部审核</li>
 </ul>
 </div>
 </div>
@@ -1247,7 +1261,7 @@ function exitSys()
 									<div class="fr search-input-group w150" style="top:10px;position:relative;">
 										<div class="input-group">
 											<span class="input-group-btn">
-												<button class="btn btn-primary btn-sm" type="button" onclick="showorder();" ><i class="fa fa-search"></i>&nbsp;搜索
+												<button class="btn btn-primary btn-sm aaaaaa" type="button" onclick="showorder(${userId});" ><i class="fa fa-search"></i>&nbsp;搜索
 												</button>
 											</span>
 										</div>
@@ -1259,17 +1273,18 @@ function exitSys()
 									<table id="sportTableHeader" class="table table-hover table-ellipsis m-b0">
 										<thead>
 											<tr>
-												<th width="9%">序号</th>
-												<th width="9%">发货单号</th>
-												<th width="9%">发货数量</th>
-												<th width="9%">运输车号</th>
-												<th width="9%">包装方式</th>
+												<th width="8%">发货单号</th>
+												<th width="8%">发货数量</th>
+												<th width="8%">运输车号</th>
+												<th width="8%">包装方式</th>
 												<th width="8%" title="出厂日期">出产日期</th>
 												<th width="8%" title="产品名称">产品名称</th>
-												<th width="10%" title="区域名">区域名</th>
-												<th width="11%">订单状态</th>
-												<th width="9%">客户名称</th>
-												<th  width="9%">订单审核</th>
+												<th width="8%" title="销售部审核">销售部审核</th>
+												<th width="8%" title="市场部审核">市场部审核</th>
+												<th width="8%" title="市场部审核">财务部审核</th>
+												<th width="8%">订单状态</th>
+												<th width="10%">客户名称</th>
+												<th  width="8%">订单审核</th>
 												
 											</tr>
 										</thead>
@@ -1278,30 +1293,48 @@ function exitSys()
 								<div class="table-scrollbar oy-a" >
 									<table id="sportTableContent" class="table table-hover table-ellipsis">
 										<colgroup>
-											 <col width="9%" />
-								              <col width="9%"/>
-								              <col  width="9%"/>
-								              <col width="9%"/>
-								              <col width="9%"/>
+											 <col width="8%" />
+								              <col width="8%"/>
+								              <col  width="8%"/>
 								              <col width="8%"/>
 								              <col width="8%"/>
-								              <col width="11%"/>
-								              <col width="9%"/>
-								              <col width="9%"/>
+								              <col width="8%"/>
+								              <col width="8%"/>
+								              <col width="8%"/>
+								              <col width="8%"/>
+								              <col width="8%"/>
 								               <col width="10%"/>
+								                <col width="8%"/>
 										</colgroup>
 										<tbody id="run-tbody">
 											<script type="text/html" id="run-tbody-json">
 														{{each result as row i}}
 				                    <tr>
-				                      <td><span style="display:none" value="{{row.id}}"/>{{row.id}}</td>
+				                      
 				                      <td title="{{row.fahuodanhao}}">{{row.fahuodanhao}}</td>
 				                      <td title="{{row.fahuoshuliang}}">{{row.fahuoshuliang}}</td>
 				                      <td title="{{row.yunshuchehao}}">{{row.yunshuchehao}}</td>
 				                      <td title="{{row.baozhuangfangshi}}">{{row.baozhuangfangshi}}</td>
 				                      <td title="{{row.chuchangriqi}}">{{row.chuchangriqi}}</td>
 								      <td title="{{row.chanpinmingcheng}}">{{row.chanpinmingcheng}}</td>
-                                      <td title="{{row.quyuming}}">{{row.quyuming}}</td>
+                                       <td title="{{row.salesCheckStatus}}" style="text-align:center">
+                                      {{if row.salesCheckStatus==0||row.salesCheckStatus==null}}
+											 未审核
+										 {{else if row.salesCheckStatus==1}}审核通过
+                                         {{else if row.salesCheckStatus==2}}审核不通过
+                                         {{/if}}</td>
+								      <td title="{{row.marketCheckStatus}}" style="text-align:center">
+                                      {{if row.marketCheckStatus==0||row.marketCheckStatus==null}}
+											 未审核
+										 {{else if row.marketCheckStatus==1}}审核通过
+                                         {{else if row.marketCheckStatus==2}}审核不通过
+                                         {{/if}}</td>
+                                      <td title="{{row.financialCheckStatus}}" style="text-align:center">
+                                       {{if row.financialCheckStatus==0||row.financialCheckStatus==null}}
+											 未审核
+										 {{else if row.financialCheckStatus==1}}审核通过
+                                         {{else if row.financialCheckStatus==2}}审核不通过
+                                         {{/if}}</td>
 									  <td title="{{row.isWaring}}">
 										{{if row.isWaring==0}}
 											 订单正常
@@ -1314,13 +1347,14 @@ function exitSys()
 										 {{/if}}
 									   </td>
                                       <td style='display:none'  title="{{row.yunshudanwei}}">{{row.yunshudanwei}}</td>
-                                      <td title="{{row.kehumingcheng}}">{{row.kehumingcheng}}</td>
+                                      <td style='text-overflow:ellipsis;overflow:hidden;' title="{{row.kehumingcheng}}">{{row.kehumingcheng}}</td>
 									  <td style='display:none' title="{{row.beizhu}}">{{row.beizhu}}</td>
  									  <td style='display:none' title="{{row.createTime}}">{{row.createTime}}</td>
 									  <td style='display:none' title="{{row.quyuma}}">{{row.quyuma}}</td>
 									  <td style='display:none' title="{{row.baozhuangfangshi}}">{{row.baozhuangfangshi}}</td>
 									  <td style="text-align:center">
                                               <a title="审核"  onclick="showVerify('{{row.id}}','{{row.salesCheckStatus}}','{{row.salesCheckMsg}}','{{row.marketCheckStatus}}','{{row.marketCheckMsg}}','{{row.financialCheckStatus}}','{{row.financialCheckMsg}}')"  class="cp js-editor-users-btn" ;">审核</a>
+                                              <a title="详情" class="cp js-editor-users-btn" onclick="orderinfo('{{row.baozhuangfangshi}}','{{row.createTime}}','{{row.fahuodanhao}}','{{row.beizhu}}','{{row.chanpinmingcheng}}','{{row.yunshuchehao}}','{{row.fahuoshuliang}}','{{row.quyuming}}','{{row.quyuma}}','{{row.chuchangriqi}}','{{row.yunshuchehao}}','{{row.chuchangbianhao}}','{{row.yunshudanwei}}','{{row.kehumingcheng}}');">详情</a>
                                       </td>
 				                    </tr>
 				                    {{/each}}

@@ -285,7 +285,7 @@ setJsLanguage(locale);
 						<div class="form-group">
 							<label class="col-md-3 control-label" title="电话">电话：</label>
 							<div class="col-md-6">
-								<input type="text" name="phone" value="" maxlength="20" placeholder="请输入电话号码"
+								<input type="text" name="mobile" value="" maxlength="20" placeholder="请输入电话号码"
 									class="form-control" id="edit-modal-phone">
 							</div>
 						</div>
@@ -296,8 +296,7 @@ setJsLanguage(locale);
 									class="form-control" id="edit-modal-email" maxlength="50">
 							</div>
 						</div>
-						<input type="hidden" name="userId" id="edit-modal-userId" value="">
-						<input type="hidden" name="flag" value="2">
+						<input type="hidden" name="id" id="edit-modal-userId" value="">
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -620,11 +619,11 @@ var pwdForm_advise = $("#editpwd-form_advise").validate({
 				
 				$.ajax({
 					type:'POST',
-					url:'/useradmin/editPwd',
+					url:'rest/loginController/chagPwd',
 					dataType:'json',
 					data:{'oldPwd':oldPwd,'newPwd':newPwd},
 					success:function(ret){
-						if(ret.code==0){
+						if(ret.statusCode==0){
 							/* var log="";
 							var home="";
 							
@@ -789,14 +788,14 @@ function delCookie(name){
 			return false;
 		}
 		$.ajax({
-			url : "/useradmin/updateUser",
+			url : "rest/loginController/register",
 			async : true,
 			cache : false,
 			type : "POST",
 			data : $("#edit-modal-userForm").serialize(),
 			datatype : "json",
 			success : function(ret){
-				if(ret.code == 0){
+				if(ret.statusCode == 0){
 					layer.msg("操作成功",{time:2000,icon:1});
 					$("#userName").text($("#edit-modal-nickName").val());
 					$("#userPhone").text($("#edit-modal-phone").val());
@@ -904,7 +903,7 @@ function delCookie(name){
 					maxlength: "用户名称不超过50位",
 					nickNameValid:$.i18n.prop("cust.nickNameValid")
 				},
-				phone:{
+				mobile:{
 					required :"请输入电话号码"
 				},
 				email:{
@@ -1062,6 +1061,10 @@ function exitSys()
 		    $("#reportsManagement").show();
 		    $("#devicesManagement").show();
 		    $("#orderManagement").show();
+		}
+		
+		if('${userName}'=='Admin'){
+		   $('#orderManagement').hide();
 		}
 	});
 

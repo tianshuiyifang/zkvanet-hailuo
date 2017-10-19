@@ -238,6 +238,7 @@ $(document).ready(function(){
 	 });
 	
 	 var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+	 if(treeObj==null)return;
 	 ztreeOnClick(null,"treeDemo",treeObj.getNodes()[0]);
 	 
 	 initTime();
@@ -275,7 +276,7 @@ function initTime(){
 }
 
 var userId;
-function showorder(id){
+function showorder(id,role){
 	if(id==null||id==undefined){
 		id=userId;
 	}
@@ -303,6 +304,15 @@ function showorder(id){
 	}
 	if($(".order_status").val()!="-1"){
 		param.hasWaring=$(".order_status").val();
+	}
+	if(role=='sale'){
+		param.salesCheckStatus=1;
+	}
+	if(role=='market'){
+		param.marketCheckStatus=1;
+	}
+	if(role=='financial'){
+		param.financialCheckStatus=1;
 	}
 	$.ajax({
 		type:"post",

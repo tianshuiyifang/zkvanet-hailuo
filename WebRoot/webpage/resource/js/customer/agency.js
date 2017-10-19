@@ -343,7 +343,7 @@ function getAgencyarea(pageCurrent,param){
 		},
 		complete:function(XMLHttpRequest, textStatus){
 			authorityValide(XMLHttpRequest);
-			tableHeaderAutoWidth("#clientTableHeader","#clientTableContent");//设备表格头部自动宽度
+			tableHeaderAutoWidth("#aclientTableHeader","#aclientTableContent");//设备表格头部自动宽度
 		},
 	    data:param,
 	    url:_ctx+"rest/geozoneControl/arealist",

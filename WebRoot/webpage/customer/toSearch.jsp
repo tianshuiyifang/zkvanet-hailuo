@@ -288,7 +288,7 @@ setJsLanguage(locale);
 						<div class="form-group">
 							<label class="col-md-3 control-label" title="电话">电话：</label>
 							<div class="col-md-6">
-								<input type="text" name="phone" maxlength="20" value="" placeholder="请输入电话号码"
+								<input type="text" name="mobile" maxlength="20" value="" placeholder="请输入电话号码"
 									class="form-control" id="edit-modal-phone">
 							</div>
 						</div>
@@ -299,7 +299,7 @@ setJsLanguage(locale);
 									class="form-control" id="edit-modal-email" maxlength="50">
 							</div>
 						</div>
-						<input type="hidden" name="userId" id="edit-modal-userId" value="">
+						<input type="hidden" name="id" id="edit-modal-userId" value="">
 						<input type="hidden" name="flag" value="2">
 					</form>
 				</div>
@@ -623,11 +623,11 @@ var pwdForm_advise = $("#editpwd-form_advise").validate({
 				
 				$.ajax({
 					type:'POST',
-					url:'/useradmin/editPwd',
+					url:'rest/loginController/chagPwd',
 					dataType:'json',
 					data:{'oldPwd':oldPwd,'newPwd':newPwd},
 					success:function(ret){
-						if(ret.code==0){
+						if(ret.statusCode==0){
 							/* var log="";
 							var home="";
 							
@@ -790,20 +790,20 @@ function delCookie(name){
 			return false;
 		}
 		$.ajax({
-			url : "/useradmin/updateUser",
+			url : "rest/loginController/register",
 			async : true,
 			cache : false,
 			type : "POST",
 			data : $("#edit-modal-userForm").serialize(),
 			datatype : "json",
 			success : function(ret){
-				if(ret.code == 0){
+				if(ret.statusCode == 0){
 					layer.msg("操作成功",{time:2000,icon:1});
 					$("#userName").text($("#edit-modal-nickName").val());
 					$("#userPhone").text($("#edit-modal-phone").val());
 					$("#editInformationModal").modal("hide");
 
-					updateCurrJspTreeNode();
+					//updateCurrJspTreeNode();
 					
 				}else{
 					layer.msg("操作失败",{time:2000,icon:2});
@@ -1049,6 +1049,10 @@ function delCookie(name){
 		$(".js-update").show();
 		}else{
 		$(".js-update").hide();
+		}
+		
+		if('${userName}'=='Admin'){
+		   $('#orderManagement').hide();
 		}
 	});
 
@@ -1470,15 +1474,15 @@ function delCookie(name){
 				              </div>
 				              
 				           </div>
-				           <div class="area-con-box">
-			                <div class="func clearfix p-10">
+				           <div class="area-con-box" style="height:100%">
+			                <div class="func clearfix  p-tb10 p-lr1">
 			                  <div class="fl" style="padding-top: 5px;padding-left: 10px;">
 			                    <button class="btn btn-primary btn-sm js-add-agency-area" type="button" title="新增区域围栏"><i class="fa fa-plus"></i>&nbsp;新增区域围栏</button>
 			                   </div>
 			                </div>
 			                 
 			                <div class="table-header">
-			                	<table class="table table-hover table-ellipsis m-b0" id="clientTableHeader">
+			                	<table class="table table-hover table-ellipsis m-b0" id="aclientTableHeader">
 				                  <thead>
 				                    <tr>
 				                      <th  title="序号">序号</th> 
@@ -1490,8 +1494,8 @@ function delCookie(name){
 				                  </thead>
 				            </table>
 			                </div>
-			                <div class="table-scrollbar oy-a">       
-				                <table class="table table-hover table-ellipsis" id="clientTableContent">
+			                <div class="table-scrollbar oy-a" >       
+				                <table class="table table-hover table-ellipsis" id="aclientTableContent">
 				                  <colgroup>
 						              <col width="10%" />
 						              <col width="20%"/>
@@ -1518,7 +1522,7 @@ function delCookie(name){
 					                  </tbody>
 									   
 				                </table>
-				                <div id="paging-agency-area" class="simple-pagination-custom ta-c p-b10"></div>
+				             <!--    <div id="paging-agency-area" class="simple-pagination-custom ta-c p-b10"></div> -->
 				              </div>
 				              
 				           </div>

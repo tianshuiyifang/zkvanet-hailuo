@@ -645,11 +645,11 @@ var pwdForm_advise = $("#editpwd-form_advise").validate({
 				
 				$.ajax({
 					type:'POST',
-					url:'/useradmin/editPwd',
+					url:'rest/loginController/chagPwd',
 					dataType:'json',
 					data:{'oldPwd':oldPwd,'newPwd':newPwd},
 					success:function(ret){
-						if(ret.code==0){
+						if(ret.statusCode==0){
 							/* var log="";
 							var home="";
 							
@@ -1073,6 +1073,9 @@ function exitSys()
 	
 	$(function(){
 		document.getElementById('curr_time').innerHTML=new Date().Format("yyyy-MM-dd hh:mm:ss"); 
+		if('${userName}'=='Admin'){
+		   $('#orderManagement').hide();
+		}
 	});
 
 	function passwordStrength(obj){

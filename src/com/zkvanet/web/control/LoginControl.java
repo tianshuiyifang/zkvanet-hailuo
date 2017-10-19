@@ -224,7 +224,9 @@ public class LoginControl {
 	    public @ResponseBody  ResultDto<UserInfoDto> chagPwd(HttpServletRequest request,String oldPwd,String newPwd){
 	    	  
 	    	  UserInfoDto user = ResourceUtil.getSessionUserName();
-	    	  
+	    	  if(user.getChildAccount()!=null){
+	    		  user=user.getChildAccount();
+	    	  }
 	    	  ResultDto<UserInfoDto> result=loginManager.login(user.getLoginName(), oldPwd);
 	    	  if(result.getStatusCode()!=0){
 	    		  result.setMessage("初始密码不正确");

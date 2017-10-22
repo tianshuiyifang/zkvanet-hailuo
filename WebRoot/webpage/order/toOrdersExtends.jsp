@@ -1192,7 +1192,7 @@ function exitSys()
 								</div>
 								</div>
 								<div class="form-group fl p-r15">
-								<label class="label-first" title="车牌号">车牌号:</label>
+								<label class="label-first" title="车牌号">车辆牌号:</label>
 								<div class="pr d-ib">
 								<div class="input-group input-group-sm">
 								<input style="top:10px;position:relative;" type="text" size="17" name="carNo" id="carNo"  placeholder="请输入车牌号" class="form-control search-text" >
@@ -1258,44 +1258,41 @@ function exitSys()
 						      </div>
 								<div class="table-header">
 									
-									<table id="sportTableHeader" class="table table-hover table-ellipsis m-b0">
+									<table id="orderTableHeader" class="table table-hover table-ellipsis m-b0">
 										<thead>
 											<tr>
-												<th width="9%">序号</th>
-												<th width="9%">发货单号</th>
-												<th width="9%">发货数量</th>
-												<th width="9%">运输车号</th>
-												<th width="9%">包装方式</th>
-												<th width="8%" title="销售部审核">销售部审核</th>
-												<th width="8%" title="市场部审核">市场部审核</th>
-												<th width="8%" title="市场部审核">财务部审核</th>
-												<th width="11%">订单状态</th>
-												<th width="9%">客户名称</th>
-												<th width="10%" title="操作">操作</th>
+												<th >发货单号</th>
+												<th >发货数量</th>
+												<th >运输车号</th>
+												<th >包装方式</th>
+												<th  title="销售部审核">销售部审核</th>
+												<th  title="市场部审核">市场部审核</th>
+												<th  title="市场部审核">财务部审核</th>
+												<th >订单状态</th>
+												<th >客户名称</th>
+												<th  title="操作">操作</th>
 											</tr>
 										</thead>
 									</table>
 								</div>
 								<div class="table-scrollbar oy-a" >
-									<table id="sportTableContent" class="table table-hover table-ellipsis">
+									<table id="orderTableContent" class="table table-hover table-ellipsis">
 										<colgroup>
-											  <col width="9%"/>	
-											  <col width="9%"/>
-								              <col width="9%"/>
-								              <col width="9%"/>
-								              <col width="9%"/>
-								              <col width="8%"/>
-								              <col width="8%"/>
-								              <col width="8%"/>
-								              <col width="11%"/>
-								              <col width="9%"/>
-								              <col width="10%"/>
+											  <col />
+								              <col width="5%" />
+								              <col />
+								              <col />
+								              <col />
+								              <col />
+								              <col />
+								              <col width="12%"/>
+								              <col />
+								              <col width="22%" />
 										</colgroup>
 										<tbody id="run-tbody">
 											<script type="text/html" id="run-tbody-json">
 														{{each result as row i}}
 				                    <tr>
-				                      <td><span style="display:none" value="{{row.id}}"/>{{row.id}}</td>
 				                      <td title="{{row.fahuodanhao}}">{{row.fahuodanhao}}</td>
 				                      <td title="{{row.fahuoshuliang}}">{{row.fahuoshuliang}}</td>
 				                      <td title="{{row.yunshuchehao}}">{{row.yunshuchehao}}</td>
@@ -1329,16 +1326,12 @@ function exitSys()
                                          </span>
 										 {{/if}}
 									   </td>                                   
-                                      <td title="{{row.kehumingcheng}}">{{row.kehumingcheng}}</td>
-									  <td style='display:none' title="{{row.beizhu}}">{{row.beizhu}}</td>
- 									  <td style='display:none' title="{{row.createTime}}">{{row.createTime}}</td>
-									  <td style='display:none' title="{{row.quyuma}}">{{row.quyuma}}</td>
-									  <td style='display:none' title="{{row.baozhuangfangshi}}">{{row.baozhuangfangshi}}</td>
+                                      <td style="text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap" title="{{row.kehumingcheng}}">{{row.kehumingcheng}}</td>
 				                      <td>
 											<a title="详情" class="cp js-editor-users-btn" onclick="orderinfo('{{row.baozhuangfangshi}}','{{row.createTime}}','{{row.fahuodanhao}}','{{row.beizhu}}','{{row.chanpinmingcheng}}','{{row.yunshuchehao}}','{{row.fahuoshuliang}}','{{row.quyuming}}','{{row.quyuma}}','{{row.chuchangriqi}}','{{row.yunshuchehao}}','{{row.chuchangbianhao}}','{{row.yunshudanwei}}','{{row.kehumingcheng}}');">详情</a>
-											<a title="图片上传" onclick="uploadimage('{{row.id}}','{{row.fahuodanhao}}')"  class="cp js-editor-users-btn" ;">图片列表<span {{if row.baozhuangfangshi.indexOf("袋装")>-1&&row.totalP<8}}style="color:red"{{/if}}>({{row.totalP}})</span></a>
+											<a title="图片" onclick="uploadimage('{{row.id}}','{{row.fahuodanhao}}')"  class="cp js-editor-users-btn" ;">图片<span {{if row.baozhuangfangshi.indexOf("袋装")>-1&&row.totalP<8}}style="color:red"{{/if}}>({{row.totalP}})</span></a>
 											<a title="异常列表" {{if row.isWaring==0}}style="display:none"{{/if}}  onclick="showException({{row.id}})"  class="cp js-editor-users-btn" ;">异常列表</a>
-											<a  {{if row.deviceSid==""||row.deviceSid==null}}style="display:none"{{/if}}  title="详情" href="rest/meunController/ordertrackreplay?imei={{row.deviceSid}}&createtime={{row.createTime}}&endtime={{row.endTime}}" target="_blank" class="cp js-editor-users-btn" ;">订单轨迹</a>
+											<a  {{if row.deviceSid==""||row.deviceSid==null}}style="display:none"{{/if}}  title="详情" href="rest/meunController/ordertrackreplay?imei={{row.deviceSid}}&createtime={{row.createTime}}&endtime={{row.endTime}}" target="_blank" class="cp js-editor-users-btn" ;">轨迹</a>
 									</td>
 				                    </tr>
 				                    {{/each}}

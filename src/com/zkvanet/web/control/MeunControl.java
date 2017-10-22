@@ -158,6 +158,21 @@ public class MeunControl  {
 		modelMap.put("userName", user.getLoginName());
 		modelMap.put("userId", user.getId());
 		modelMap.put("ChangShangRole",session.getAttribute("ChangShangRole"));
+		if(session.getAttribute("ChangShangRole")!=null){
+			if("2".equals(session.getAttribute("ChangShangRole").toString())){
+				modelMap.put("ChangShangRoleName","-销售部");
+			}
+			if("3".equals(session.getAttribute("ChangShangRole").toString())){
+				modelMap.put("ChangShangRoleName","-市场部");
+			}
+			if("4".equals(session.getAttribute("ChangShangRole").toString())){
+				modelMap.put("ChangShangRoleName","-财务部");
+			}
+			if("1".equals(session.getAttribute("ChangShangRole").toString())){
+				modelMap.put("ChangShangRoleName","-管理员");
+			}
+		}
+		
 		return new ModelAndView("order/toOrders");
 	}
 	

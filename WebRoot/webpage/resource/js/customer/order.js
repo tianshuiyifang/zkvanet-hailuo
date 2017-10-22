@@ -84,9 +84,9 @@ function showVerify(orderid,salesCheckStatus,salesCheckMsg,
 	$('#financeAdvisetag').html("财务部审核");
 	$('#saleAdvisetag').html("销售部审核");
 	
-	var htmlpass="<i class='fa  fa-check-square' style='color:#29de29;left:15px;position:relative'>&nbsp&nbsp审核通过</i>";
-	var htmlnopass="<i class='fa  fa-exclamation' style='color:#efa22c;left:15px;position:relative'>&nbsp&nbsp审核不通过</i>"
-	var htmlno="<i class='fa  fa-circle' style='color:#96a296;left:15px;position:relative'>&nbsp&nbsp未审核</i>";
+	var htmlpass="<i class='fa  fa-check-square' style='color:#29de29;left:15px;position:relative'></i>";
+	var htmlnopass="<i class='fa  fa-exclamation' style='color:#efa22c;left:15px;position:relative'></i>"
+	var htmlno="<i class='fa  fa-circle' style='color:#96a296;left:15px;position:relative'></i>";
 	
 	
 	if(salesCheckStatus==1){
@@ -164,7 +164,7 @@ function  verifyStatus(statusCode){
 					if(data.statusCode==0){
 						layer.msg('审核成功');
 						$("#showVerify").modal('hide');
-						showorder();
+						showorder(extId,extrole);
 				}
 			},
 			error: function(err){
@@ -242,8 +242,8 @@ $(document).ready(function(){
 	 ztreeOnClick(null,"treeDemo",treeObj.getNodes()[0]);
 	 
 	 initTime();
-	 $(".order_status").easyDropDown();
-	 
+	$(".order_status").easyDropDown();
+	
 });
 
 function initTime(){
@@ -276,9 +276,15 @@ function initTime(){
 }
 
 var userId;
+var extId=null;
+var extrole=null;//订单审核菜单用 搜索时ID
 function showorder(id,role){
 	if(id==null||id==undefined){
-		id=userId;
+		id=userId; 
+	}
+	if(role=='2'||role=='3'||role=='4'){
+		extId=id;
+		extrole=role;
 	}
 	
 	var param ={"userId":id};
@@ -305,14 +311,23 @@ function showorder(id,role){
 	if($(".order_status").val()!="-1"){
 		param.hasWaring=$(".order_status").val();
 	}
-	if(role=='sale'){
-		param.salesCheckStatus=1;
+	if(role=='1'){
+		param.salesCheckStatus=$(".salesCheckStatus").val();
+		param.marketCheckStatus=$(".marketCheckStatus").val();
+		param.financialCheckStatus=$(".financialCheckStatus").val();
+		
 	}
-	if(role=='market'){
-		param.marketCheckStatus=1;
+	if(role=='3'){
+		param.marketCheckStatus=0;
 	}
-	if(role=='financial'){
-		param.financialCheckStatus=1;
+	if(role=='2'){
+		param.marketCheckStatus=$(".marketCheckStatus").val();
+		param.salesCheckStatus=0;
+	}
+	if(role=='4'){
+		param.salesCheckStatus=$(".salesCheckStatus").val();
+		param.marketCheckStatus=$(".marketCheckStatus").val();
+		param.financialCheckStatus=0;
 	}
 	$.ajax({
 		type:"post",
@@ -323,6 +338,7 @@ function showorder(id,role){
 		},
 		complete:function(XMLHttpRequest, textStatus){
 			authorityValide(XMLHttpRequest);
+			tableHeaderAutoWidth("#orderTableHeader","#orderTableContent")
 		},
 	    data:param,
 	    url:_ctx+"rest/Gps/getOrderByPage",
@@ -402,11 +418,11 @@ function initRunPage(param){
      	onPageClick: function(cpageNumber,cpageSize,param, event){
      		if(event && event.type=="click"){
      			pageCurrent = cpageNumber;
-     			showorder();
+     			showorder(extId,extrole);
      		}
      		if(event && event.type=="change"){
      			pageSize = cpageSize;
-     			showorder();
+     			showorder(extId,extrole);
      		}
      		
      	},

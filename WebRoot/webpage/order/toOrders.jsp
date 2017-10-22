@@ -193,6 +193,40 @@ setJsLanguage(locale);
 		//synUserConfig();
 		$('.aaaaaa').click();
 		$(".order_status").easyDropDown();
+	    $(".marketCheckStatus").easyDropDown();
+	    $(".salesCheckStatus").easyDropDown();
+	    $(".financialCheckStatus").easyDropDown();
+	    
+	    
+	    if($('.csrole').val()=='2'){
+		$('.marketT').hide();
+		$('.saleT').show();
+		$('.financialT').hide();
+		
+		$(".salesCheckStatusf").hide();
+		$(".marketCheckStatusf").show();
+		$(".financialCheckStatusf").hide();
+		
+	   }else if($('.csrole').val()=='3'){
+		$('.marketT').show();
+		$('.saleT').hide();
+		$('.financialT').hide();
+		
+		
+		$(".salesCheckStatusf").hide();
+		$(".marketCheckStatusf").hide();
+		$(".financialCheckStatusf").hide();
+		
+	  }else if($('.csrole').val()=='4'){
+		$('.marketT').hide();
+		$('.saleT').hide();
+		$('.financialT').show();
+		
+		
+		$(".salesCheckStatusf").show();
+		$(".marketCheckStatusf").show();
+		$(".financialCheckStatusf").hide();
+	  }
 	});
 	
 </script>
@@ -1157,22 +1191,22 @@ function exitSys()
 <!-- 用户树管理   START -->
 <div class="user-list">
 <div class="side-subtitle side-full-subtitle row" title="yanshi">
-<b id="account">${userName}</b>
+<b id="account">${userName} ${ChangShangRoleName}</b>
 </div>
 <div class="p-tb10 js-side-tree-box show-userlist" style="height: 350px !important;"> 
 <ul id="treeDemo111" class="ztree">
-      <li class="side-subtitle side-full-subtitle row" style=" cursor: pointer;  height: 40px;
+      <li class="side-subtitle side-full-subtitle row marketT" style=" cursor: pointer;  height: 40px;
     text-align: center;
     border: 1px solid #e7eae6;
-    margin-bottom: 10px" onClick="showorder(${userId},'sale')">销售部审核 </li>
-       <li class="side-subtitle side-full-subtitle row" style=" cursor: pointer;   height: 40px;
+    margin-bottom: 10px" onClick="showorder(${userId},'3')">市场部审核 </li>
+       <li class="side-subtitle side-full-subtitle row saleT" style=" cursor: pointer;   height: 40px;
     text-align: center;
     border: 1px solid #e7eae6;
-    margin-bottom: 10px" onClick="showorder(${userId},'market')">市场部审核 </li>
-        <li class="side-subtitle side-full-subtitle row" style="  cursor: pointer;  height: 40px;
+    margin-bottom: 10px" onClick="showorder(${userId},'2')">销售部审核 </li>
+        <li class="side-subtitle side-full-subtitle row financialT" style="  cursor: pointer;  height: 40px;
     text-align: center;
     border: 1px solid #e7eae6;
-    margin-bottom: 10px" onClick="showorder(${userId},'financial')">财务部审核</li>
+    margin-bottom: 10px" onClick="showorder(${userId},'4')">财务部审核</li>
 </ul>
 </div>
 </div>
@@ -1204,7 +1238,7 @@ function exitSys()
 								</div>
 								</div>
 								<div class="form-group fl p-r15">
-								<label class="label-first" title="车牌号">车牌号:</label>
+								<label class="label-first" title="车牌号">车辆牌号:</label>
 								<div class="pr d-ib">
 								<div class="input-group input-group-sm">
 								<input style="top:10px;position:relative;" type="text" size="17" name="carNo" id="carNo"  placeholder="请输入车牌号" class="form-control search-text" >
@@ -1258,10 +1292,55 @@ function exitSys()
 								</div>
 								</div>
 								</div>
+								<div class="form-group fl p-r15 marketCheckStatusf">
+								<label class="label-first" title="区域名">市场审核:</label>
+								<div class="pr d-ib">
+								<div class="input-group input-group-sm">
+								<span style="top:10px;position:relative;" class="easydropdown easydropdown-sm easydropdown-full va-m">
+								<select id="marketCheckStatus" name="marketCheckStatus" class="marketCheckStatus"> 
+								   <option value="1" class="selected" title="默认"  >审核通过</option>
+						           <option value="2" title="默认"  >审核不通过</option>
+						           <option value="0" title="默认"  >未审核</option>
+						           <option value="" title="默认"  >全部</option>
+					           </select>
+					           	</span>
+								</div>
+								</div>
+								</div>
+								<div class="form-group fl p-r15 salesCheckStatusf">
+								<label class="label-first" title="区域名">销售审核:</label>
+								<div class="pr d-ib">
+								<div class="input-group input-group-sm ">
+								<span style="top:10px;position:relative;" class="easydropdown easydropdown-sm easydropdown-full va-m">
+								<select id="salesCheckStatus" name="salesCheckStatus" class="salesCheckStatus"> 
+								   <option value="1" title="默认" class="selected" >审核通过</option>
+						           <option value="2" title="默认"  >审核不通过</option>
+						           <option value="0" title="默认"  >未审核</option>
+						           <option value="" title="默认"  >全部</option>
+					           </select>
+					           	</span>
+								</div>
+								</div>
+								</div>
+								<div class="form-group fl p-r15 financialCheckStatusf">
+								<label class="label-first" title="区域名">财务审核:</label>
+								<div class="pr d-ib">
+								<div class="input-group input-group-sm ">
+								<span style="top:10px;position:relative;" class="easydropdown easydropdown-sm easydropdown-full va-m">
+								<select id="financialCheckStatus" name="financialCheckStatus" class="financialCheckStatus"> 
+								   <option value="1" title="默认" class="selected" >审核通过</option>
+						           <option value="2" title="默认"  >审核不通过</option>
+						           <option value="0" title="默认"  >未审核</option>
+						           <option value="" title="默认"  >全部</option>
+					           </select>
+					           	</span>
+								</div>
+								</div>
+								</div>
 									<div class="fr search-input-group w150" style="top:10px;position:relative;">
 										<div class="input-group">
 											<span class="input-group-btn">
-												<button class="btn btn-primary btn-sm aaaaaa" type="button" onclick="showorder(${userId});" ><i class="fa fa-search"></i>&nbsp;搜索
+												<button class="btn btn-primary btn-sm aaaaaa" type="button" onclick="showorder(${userId},${ChangShangRole});" ><i class="fa fa-search"></i>&nbsp;搜索
 												</button>
 											</span>
 										</div>
@@ -1269,65 +1348,61 @@ function exitSys()
 									</div>
 						      </div>
 								<div class="table-header">
-									
-									<table id="sportTableHeader" class="table table-hover table-ellipsis m-b0">
+									<table id="orderTableHeader" class="table table-hover table-ellipsis m-b0">
 										<thead>
 											<tr>
-												<th width="8%">发货单号</th>
-												<th width="8%">发货数量</th>
-												<th width="8%">运输车号</th>
-												<th width="8%">包装方式</th>
-												<th width="8%" title="出厂日期">出产日期</th>
-												<th width="8%" title="产品名称">产品名称</th>
-												<th width="8%" title="销售部审核">销售部审核</th>
-												<th width="8%" title="市场部审核">市场部审核</th>
-												<th width="8%" title="市场部审核">财务部审核</th>
-												<th width="8%">订单状态</th>
-												<th width="10%">客户名称</th>
-												<th  width="8%">订单审核</th>
+												<th style="text-align:center" >发货单号</th>
+												<th style="text-align:center" >运输车号</th>
+												<th style="text-align:center" >包装方式</th>
+												<th style="text-align:center" title="出厂日期">出产日期</th>
+												<th style="text-align:center" title="产品名称">产品名称</th>
+												<th style="text-align:center"  title="市场部审核">市场部审核</th>
+												<th style="text-align:center"  title="销售部审核">销售部审核</th>
+												<th style="text-align:center"  title="市场部审核">财务部审核</th>
+												<th style="text-align:center" >订单状态</th>
+												<th style="text-align:center" >客户名称</th>
+												<th style="text-align:center" width="18%" >订单审核</th>
 												
 											</tr>
 										</thead>
 									</table>
 								</div>
 								<div class="table-scrollbar oy-a" >
-									<table id="sportTableContent" class="table table-hover table-ellipsis">
+									<table id="orderTableContent" class="table table-hover table-ellipsis">
 										<colgroup>
-											 <col width="8%" />
-								              <col width="8%"/>
-								              <col  width="8%"/>
-								              <col width="8%"/>
-								              <col width="8%"/>
-								              <col width="8%"/>
-								              <col width="8%"/>
-								              <col width="8%"/>
-								              <col width="8%"/>
-								              <col width="8%"/>
-								               <col width="10%"/>
-								                <col width="8%"/>
+											  <col  />
+								              <col />
+								              <col/>
+								              <col />
+								              <col />
+								              <col />
+								              <col />
+								              <col />
+								              <col />
+								              <col />
+								              <col width="18%" />
 										</colgroup>
 										<tbody id="run-tbody">
 											<script type="text/html" id="run-tbody-json">
 														{{each result as row i}}
 				                    <tr>
 				                      
-				                      <td title="{{row.fahuodanhao}}">{{row.fahuodanhao}}</td>
-				                      <td title="{{row.fahuoshuliang}}">{{row.fahuoshuliang}}</td>
-				                      <td title="{{row.yunshuchehao}}">{{row.yunshuchehao}}</td>
-				                      <td title="{{row.baozhuangfangshi}}">{{row.baozhuangfangshi}}</td>
-				                      <td title="{{row.chuchangriqi}}">{{row.chuchangriqi}}</td>
-								      <td title="{{row.chanpinmingcheng}}">{{row.chanpinmingcheng}}</td>
-                                       <td title="{{row.salesCheckStatus}}" style="text-align:center">
-                                      {{if row.salesCheckStatus==0||row.salesCheckStatus==null}}
-											 未审核
-										 {{else if row.salesCheckStatus==1}}审核通过
-                                         {{else if row.salesCheckStatus==2}}审核不通过
-                                         {{/if}}</td>
+				                      <td style="text-align:center" title="{{row.fahuodanhao}}">{{row.fahuodanhao}}</td>
+				                      <td style="text-align:center" title="{{row.yunshuchehao}}">{{row.yunshuchehao}}</td>
+				                      <td style="text-align:center" title="{{row.baozhuangfangshi}}">{{row.baozhuangfangshi}}</td>
+				                      <td style="text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap" title="{{row.chuchangriqi}}">{{row.chuchangriqi}}</td>
+								      <td style="text-align:center" title="{{row.chanpinmingcheng}}">{{row.chanpinmingcheng}}</td>
 								      <td title="{{row.marketCheckStatus}}" style="text-align:center">
                                       {{if row.marketCheckStatus==0||row.marketCheckStatus==null}}
 											 未审核
 										 {{else if row.marketCheckStatus==1}}审核通过
                                          {{else if row.marketCheckStatus==2}}审核不通过
+                                         {{/if}}</td>
+                                       <td title="{{row.salesCheckStatus}}" style="text-align:center">
+                                      {{if row.salesCheckStatus==0||row.salesCheckStatus==null}}
+											 未审核
+										 {{else if row.salesCheckStatus==1}}审核通过
+                                         {{else if row.salesCheckStatus==2}}审核不通过
                                          {{/if}}</td>
                                       <td title="{{row.financialCheckStatus}}" style="text-align:center">
                                        {{if row.financialCheckStatus==0||row.financialCheckStatus==null}}
@@ -1335,7 +1410,9 @@ function exitSys()
 										 {{else if row.financialCheckStatus==1}}审核通过
                                          {{else if row.financialCheckStatus==2}}审核不通过
                                          {{/if}}</td>
-									  <td title="{{row.isWaring}}">
+									  <td title="{{if row.isWaring==0}} 订单正常
+										 {{else }}订单异常{{if row.unHandledExceptionCount<1}}(已处理){{else }}(未处理){{/if}}
+										 {{/if}}" style="text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">
 										{{if row.isWaring==0}}
 											 订单正常
 										 {{else }}
@@ -1346,15 +1423,12 @@ function exitSys()
                                          </span>
 										 {{/if}}
 									   </td>
-                                      <td style='display:none'  title="{{row.yunshudanwei}}">{{row.yunshudanwei}}</td>
-                                      <td style='text-overflow:ellipsis;overflow:hidden;' title="{{row.kehumingcheng}}">{{row.kehumingcheng}}</td>
-									  <td style='display:none' title="{{row.beizhu}}">{{row.beizhu}}</td>
- 									  <td style='display:none' title="{{row.createTime}}">{{row.createTime}}</td>
-									  <td style='display:none' title="{{row.quyuma}}">{{row.quyuma}}</td>
-									  <td style='display:none' title="{{row.baozhuangfangshi}}">{{row.baozhuangfangshi}}</td>
+                                      <td style="text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap" title="{{row.kehumingcheng}}">{{row.kehumingcheng}}</td>
 									  <td style="text-align:center">
                                               <a title="审核"  onclick="showVerify('{{row.id}}','{{row.salesCheckStatus}}','{{row.salesCheckMsg}}','{{row.marketCheckStatus}}','{{row.marketCheckMsg}}','{{row.financialCheckStatus}}','{{row.financialCheckMsg}}')"  class="cp js-editor-users-btn" ;">审核</a>
+                                              <a title="图片" onclick="uploadimage('{{row.id}}','{{row.fahuodanhao}}')"  class="cp js-editor-users-btn" ;">图片<span {{if row.baozhuangfangshi.indexOf("袋装")>-1&&row.totalP<8}}style="color:red"{{/if}}>({{row.totalP}})</span></a>
                                               <a title="详情" class="cp js-editor-users-btn" onclick="orderinfo('{{row.baozhuangfangshi}}','{{row.createTime}}','{{row.fahuodanhao}}','{{row.beizhu}}','{{row.chanpinmingcheng}}','{{row.yunshuchehao}}','{{row.fahuoshuliang}}','{{row.quyuming}}','{{row.quyuma}}','{{row.chuchangriqi}}','{{row.yunshuchehao}}','{{row.chuchangbianhao}}','{{row.yunshudanwei}}','{{row.kehumingcheng}}');">详情</a>
+                                              <a  {{if row.deviceSid==""||row.deviceSid==null}}style="display:none"{{/if}}  title="轨迹" href="rest/meunController/ordertrackreplay?imei={{row.deviceSid}}&createtime={{row.createTime}}&endtime={{row.endTime}}" target="_blank" class="cp js-editor-users-btn" ;">轨迹</a>
                                       </td>
 				                    </tr>
 				                    {{/each}}

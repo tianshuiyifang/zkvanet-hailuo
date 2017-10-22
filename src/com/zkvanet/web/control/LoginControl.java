@@ -169,6 +169,9 @@ public class LoginControl {
 	        if(user.getChildAccount()!=null){
 	        	session.setAttribute("ChangShangRole",user.getChildAccount().getUserType());
 	        }
+	        if(user.getChildAccount()==null&&user.getUserType()==1){
+	        	session.setAttribute("ChangShangRole",1);
+	        }
 	       //【基础权限】切换用户，用户分拥有不同的权限，切换用户权限错误问题
 	        //当前session为空 或者 当前session的用户信息与刚输入的用户信息一致时，则更新Client信息
 	        Client clientOld = ClientManager.getInstance().getClient(session.getId());

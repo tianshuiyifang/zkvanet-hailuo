@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="zkvanet-hailuo"
+  id="myeclipse.1508774766391"
+  j2ee-spec="1.4"
+  archive="zkvanet-hailuo.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

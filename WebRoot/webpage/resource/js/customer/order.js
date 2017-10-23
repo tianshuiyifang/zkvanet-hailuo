@@ -399,6 +399,8 @@ function ztreeOnClick(event,treeId, treeNode){
 	pageCurrent = 1;
 	pageSize =10;
 	showorder(treeNode.id);
+	$(".js-select-quyu-div").show();
+	complex_initquyuType(treeNode.id);
 
 }
 /**分页**/
@@ -432,3 +434,27 @@ function initRunPage(param){
 	});
 }
 
+function complex_initquyuType(uid){
+	$.ajax({
+		type:"post",
+		async: false,
+	    cache: false,
+	    data:{"id":uid},
+		url : _ctx + "rest/Gps/getquyuming",
+		success : function(ret) {
+			if (ret.code == 0) {
+				if(ret.data){
+					$("#quyumingw").html(template("complex_quyu_options",ret));
+					$("select[name='quyuType']").easyDropDown();
+					$("select[name='quyuType']").easyDropDown("select",0);
+				}
+					
+			} else {
+				layer.msg($.i18n.prop("comm.Failed"), {icon : 2});
+			}
+		},
+		error : function(e) {
+			ajaxError("complex_initDevMcType()", e);
+		}
+	});
+}

@@ -146,6 +146,20 @@ public class GpsControl {
 		  ResultDto<DataGridVo<OrderDto>> queryOrder = orderService.queryOrder(orderParam);
 		  return queryOrder;
 	    }
+	  @RequestMapping(value = "getquyuming")
+	   public @ResponseBody  AjaxResult<List<Map<String,String>>> getquyuming(Integer id){
+	      AjaxResult<List<Map<String,String>>>  result=new  AjaxResult<List<Map<String,String>>>();
+		   List<Map<String,String>> list=new ArrayList<Map<String,String>>();
+		   ResultDto<List<String>> getquyuming = orderService.quyumingGroup(id);
+		   for(String name:getquyuming.getData()){
+			   Map<String,String> map=new HashMap<String, String>();
+			   if(name==null)continue;
+			   map.put("name", name);
+			   list.add(map);
+		   }
+		   result.setData(list);
+		  return result;
+	    }
 	  @RequestMapping(value = "verifyStatus")
 	   public @ResponseBody  ResultDto verifyStatus(Integer id){
 		  

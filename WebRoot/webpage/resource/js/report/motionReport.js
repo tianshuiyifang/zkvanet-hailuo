@@ -1025,6 +1025,38 @@ function initRunPage(param){
      	}
 	});
 }
+function initOrderCheckReport(param){
+	
+	param = {"paramInteger":userId};
+	
+	
+	$.ajax({
+		type:'POST',
+		url:_ctx+"rest/reportControl/runReport/checkStatis",  
+		async:true, 
+		cache:false,
+		data:param,
+		complete:function(XMLHttpRequest, textStatus){
+			authorityValide(XMLHttpRequest);
+		},
+		error:function(e){
+			ajaxError("initRunReport() ",e);
+		},  
+		success:function(returnData){
+			if(returnData.statusCode==0 && returnData.data){
+			
+				$('#ordercheck-tbody').html(template('orderCheck-tbody-json',returnData.data));
+			
+			}else{
+				
+			}
+			tableHeaderAutoWidth("#orderCheckTableHeader","#orderCheckTableContent");//运动总览表头自动宽度
+			
+
+		}
+	});
+}
+
 function initRunReport(param){
 	isExportRun = false;
 	$('#run-tbody').html(template('run-tbody-json',null));
@@ -1484,6 +1516,7 @@ function cleanStopCarData(type){
 	$("#"+type+"-alltimes").html(0);
 	$("#loading-"+type).hide();
 }
+
 function initStopCarReport(type,pageNo,intPageSize,param){
 	$("#noData-"+type).hide();
 	$("#loading-"+type).show();

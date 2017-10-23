@@ -1187,6 +1187,7 @@ function exitSys()
 <li data="Overspeed" ><a class="cp" onclick="showOverspeedTab()">经销商订单统计</a></li> 
 <li data="stopCar"><a class="cp" onclick="showStopCarTab()">经销商订单报警统计</a></li>
 <li data="stopNotOff"><a class="cp" onclick="showStopNotOffTab()">订单异常统计</a></li>
+<li data="ordercheck"><a class="cp" onclick="initOrderCheckReport()">订单审核统计</a></li>
 <!--<li data="acc"><a class="cp" onclick="showAccTab()">ACC报表</a></li> -->
 </ul>
 </div>
@@ -1706,139 +1707,83 @@ function exitSys()
 </div>
 <!--停车未熄火统计   END -->
 
-<!--ACC统计   START index=5 -->
-<div class="acc-statistical-box dn">
+<!--订单审核统计   START index=5 -->
+<div class="not-extinguish-box dn">
 <div class="rightside-header clearfix">
 <div class="p-tb5">
-<b>ACC报表</b>
+<b>订单审核统计</b>
 </div>
 </div>
-
 <div class="right-tab-con">
 <div class="funcbar">
-<form class="form-inline search-criteria clearfix p-tb10">
-<div class="m-b10 clearfix">
-<div class="form-group fl p-r15">
-<label class="label-first" title="设备名称">设备名称:</label>
-<div class="pr d-ib">
-<div class="input-group input-group-sm">
-<input type="text" size="37" id="queryDevice_select_acc" onkeydown="keyDownAcc(event)" onclick="showQueryTab({'target':'acc','checkFlag':true,'isQuery':false})" onkeyup="javascript:query_history = $(this).val();" placeholder="请输入设备名称或IMEI" class="form-control search-text js-select-user-sales" >
-<span class="input-group-btn"><button type="button" onclick="showQueryTab({'target':'acc','checkFlag':true,'isQuery':true})" class="btn btn-default queryDevice_btn_acc" title=""><i class="fa fa-caret-down"></i></button></span>
-</div>
-<div id="queryDevice_div_acc" class="js-equipment-items equipment-items b1-ccc dn">						                        		
-<div class="list-box auto-scrollbar">
-<ul id="queryDevice_Tree_acc" class="ztree">
-</ul>
-<div class="ta-c c-666 p-tb10 noDataHide"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div>
-<div class="ta-c m-tb15 TreeLogindataTable" ><i class="fa fa-spinner fa-pulse fa-fw"></i>正在加载数据...</div>
-</div>
-<div class="p-tb5 p-lr15 b-t1-ccc clearfix hideConfirmClose">
-<div class="fr">
-<button type="button" onclick="treeCheckboxAllSelect('acc')" class="btn btn-primary btn-xs">&nbsp;确定&nbsp;</button>
-<button type="button" onclick="javascript:$('#queryDevice_div_acc').hide()" class="btn btn-default btn-xs js-btn-close">&nbsp;取消&nbsp;</button>
-</div>
-<label class="icheck-min"><input type="checkbox" class="deviceAllCheckbox">&nbsp;全选</label>
-</div>
-</div>
-</div>
-</div>
-
-<div class="form-group">
-<label>状态:</label>
-<div class="d-ib w120 va-m">
-<span class="easydropdown easydropdown-sm easydropdown-full va-m">
-<select class="js-select" id="accStatu">
-<option value="all" selected="selected">全部</option>
-<option value="on">打开</option>
-<option value="off">关闭</option>
-</select>
-</span>
-</div>												
-</div>
-</div>
+<form action="rest/reportControl/runReport/" class="form-inline search-criteria clearfix p-tb10" method="post" id="ordercheck"> 
 <div class="clearfix">
 <div class="form-group fl p-r15">
-<label class="label-first" title="快捷时间">快捷时间:</label>
-<div class="btn-group btn-group-sm js-tab " id="qucikTime_acc">
-<button type="button" onclick="selectRTimeat('Today','acc')" onkeydown="keyDownAcc(event)" class="btn btn-default" title="今天">今天</button>
-<button type="button" onclick="selectRTimeat('Yesterday','acc')" onkeydown="keyDownAcc(event)" class="btn btn-default btn-sm" title="昨天">昨天</button>
-<button type="button" onclick="selectRTimeat('ThisWeek','acc')" onkeydown="keyDownAcc(event)" class="btn btn-default btn-sm" title="本周">本周</button>
-<button type="button" onclick="selectRTimeat('LastWeek','acc')" onkeydown="keyDownAcc(event)" class="btn btn-default btn-sm" title="上周">上周</button>
-<button type="button" onclick="selectRTimeat('ThisMonth','acc')" onkeydown="keyDownAcc(event)" class="btn btn-default btn-sm" title="本月">本月</button> 
-<button type="button" onclick="selectRTimeat('LastMonth','acc')" onkeydown="keyDownAcc(event)" class="btn btn-default btn-sm" title="上月">上月</button>
-</div>
-<div class="choose-date">
-<input type="text" id="startTime_acc" onclick="removeActive('acc',this)" readonly="readonly" name="startTime"  placeholder="开始时间" class="form-control form-control-sm" size="16"/>&nbsp;
-<input type="text" id="endTime_acc"   onclick="removeActive('acc',this)" readonly="readonly" name="endTime" placeholder="结束时间"  class="form-control form-control-sm" size="16"/>
-</div>
-</div>
-<div class="form-group fl">
-<button type="button" class="btn btn-primary btn-sm acc_searchBtn"  onclick="getAccInfo();"><i class="fa fa-search"></i>&nbsp;搜索</button>
-</div>
-<div class="form-group fr">
-<button type="button" class="btn btn-default btn-sm" onclick="accNewExport();">导出</button>
+<button type="button" onclick="initOrderCheckReport()" class="btn btn-primary btn-sm  stopNotOff_searchBtn"><i class="fa fa-search"></i>&nbsp;搜索</button>
 </div>
 
 </div>
+<input type="hidden" name="changshangId" id="orderchangshangId">
+
 </form>
 </div>
 <div class="table-header">
-<div class="p-tb8 p-lr15 b-b1-ddd fs-14 ta-r bc-fff">
-<b>总计：</b> 
-<span>打开&nbsp;<b id="aCCOn">0</b>&nbsp;次</span>,
-<span>关闭&nbsp;<b id="aCCOff">0</b>&nbsp;次</span>,
-<span>总用时&nbsp;<b id="aCCTotalTime">0</b>&nbsp;</span>
-</div>
-<table class="table table-hover table-ellipsis m-b0" id="accTableHeader">										
+<table class="table table-hover table-ellipsis m-b0" id="orderCheckTableHeader">
 <thead>
 <tr>
-<th title="序号">序号</th>
-<th title="设备名称">设备名称</th>
-<th title="设备IMEI">设备IMEI</th>
-<th title="型号">型号</th>
-<th title="状态">状态</th>
-<th title="开始时间">开始时间</th>
-<th title="结束时间">结束时间</th>
-<th title="总用时">总用时</th>
+<th title="订单总数">订单总数</th>
+<th title="销售未审核订单数">销售未审核订单数</th>
+<th title="销售审核未通过数">销售审核未通过数</th>
+<th title="销售审核通过数">销售审核通过数</th>
+<th title="市场未审核数">市场未审核数</th>
+<th title="市场审核未通过数">市场审核未通过数</th>
+<th title="市场审核通过数">市场审核通过数</th>
+<th title="财务未审核数">财务未审核数</th>
+<th title="财务审核未通过数">财务审核未通过数</th>
+<th title="财务审核通过数">财务审核通过数</th>
 </tr>
 </thead>
 </table>
 </div>
 <div class="table-scrollbar oy-a">
-<table id="accTableContent" class="table table-hover table-ellipsis">
+<table id="orderCheckTableContent" class="table table-hover table-ellipsis table-normal-a">
 <colgroup>
-<col> <col> <col> <col> <col> <col> <col> <col>
+<col width="10%">
+<col width="10%"> 
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
 </colgroup>
-<tbody id="accTable">
-<script type="text/html" id="acc-info">
-{{each result as row i}}
+<tbody id="ordercheck-tbody">
+<script type="text/html" id="orderCheck-tbody-json">
 <tr>
-<td>{{i+1}}</td>
-<td title="{{row.vechleName}}">{{row.vechleName}}</td>
-<td title="{{row.imei}}">{{row.imei}}</td>
-<td title="{{row.vehicleMcType}}">{{row.vehicleMcType}}</td>
-<td title="{{row.acc}}">{{row.acc}}</td>
-<td title="{{row.start}}">{{row.start}}</td>
-<td title="{{row.end}}">{{row.end}}</td>
-<td title="{{row.durSecond}}">{{row.durSecond}}</td>
+<td title="{{order_sum}}">{{order_sum}} </td>
+<td title="{{sale_no_check}}">{{sale_no_check}} </td>
+<td title="{{sale_no_approved}}">{{sale_no_approved}}</td>
+<td title="{{sale_approved}}">{{sale_approved}}</td>
+<td title="{{market_no_check}}">{{market_no_check}}</td>
+<td title="{{market_no_approved}}">{{market_no_approved}}</td>
+<td title="{{market_approved}}">{{market_approved}}</td>
+<td title="{{financial_no_check}}">{{financial_no_check}}</td>
+<td title="{{financial_no_approved}}">{{financial_no_approved}}</td>
+<td title="{{financial_approved}}">{{financial_approved}}</td>
 </tr>
-{{/each}}
-</script>	
+</script>
 </tbody>
 </table>
-<div id="acc_info_nodata"><div class="ta-c c-666 p-tb10"><span class="p-5 d-ib">&nbsp;<i class="fa fa-bell-o"></i> 暂无数据&nbsp;</span></div></div>
-<div id="acc_info-loading" hidden="true" class="ta-c p-tb25"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
+
 </div>
 </div>
-<form action="/accReport/newExport" method="post" id="accFrom">
-<input type="hidden" id="statuTable" name="statuTable"/>
-<input type="hidden" name="userIdTable" id="userIdTable"/>
-<input type="hidden" id="startTimeTable" name="startTimeTable"/>
-<input type="hidden" id="endTimeTable" name="endTimeTable">
-<input type="hidden" id="accImeisTable" name="accImeisTable">
-</form>	
-</div>	
 </div>
+
+
+
+
 <div class="tab-con-alarm b1-ccc bc-fff dn">
 <div class="alarm-statistical-box">
 <div class="rightside-header clearfix">

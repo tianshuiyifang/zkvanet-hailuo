@@ -77,7 +77,7 @@ function setJsLanguage(locale){
 		    }
 		};
 	}
-	jQuery.i18n.properties(propertiesObj);
+//	jQuery.i18n.properties(propertiesObj);
 }
 
 //日期拓展
@@ -134,10 +134,12 @@ setJsLanguage(locale);
 <title>控制台 - Tracker</title>
 <script type="text/javascript" src="webpage/resource/js/customer/customTree.js"></script>
 <script type="text/javascript" src="webpage/resource/js/assets/device.js"></script>
+
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
 
     <!--引入JavaScript-->
     <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="webpage/resource/js/jquery.nicescroll.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 <style type="text/css">
  .container {
@@ -173,7 +175,27 @@ setJsLanguage(locale);
  .order-header h5{font-size: 16px;color: #fff}
  .wrapper{height: 100%}
  .alarm-body{height: 80%}
- .table-scrollbar{height: 100%}
+ .table-scrollbar{height: 80%;border: none}
+ .table > tbody > tr > td {
+     height: 30px;
+     line-height: 30px;
+     border-color: rgba(0,0,0,0);
+     color: #53748d;
+     text-align: center;
+ }
+ .order-header, .grid-view-header{border-bottom: none}
+ .table-hover>tbody>tr {
+     height: 30px;
+     line-height: 30px;
+ }
+ .table tr:last-child td{border-bottom: none}
+ .table-hover>tbody>tr:hover {
+     background-color: #2c414f;
+ }
+    .table-header{background-color: #47799d;}
+    .table-header th{color: #fff;height: 30px;line-height: 30px !important;text-align: center}
+    .alarm-body{border: 1px solid rgb(84, 89, 94);border-top: none}
+ .table-normal-a a {  color:rgb(82, 91, 205);  }
 </style>
 </head>
 <body class="body bc-gray ">
@@ -336,7 +358,7 @@ $(function(){
                                 <col width="16%">
                                 <col width="16%">
                             </colgroup>
-                        <%--    <tbody id="orderInfoTable">
+                            <tbody id="orderInfoTable">
                             <script type="text/html" id="orderInfoList">
                                 {{each data as row i}}
                                 <tr>
@@ -359,458 +381,8 @@ $(function(){
                                 </tr>
                                 {{/each}}
                             </script>
-                            </tbody>--%>
-                            <tbody id="orderInfoTable">
-                            <tr>
-                                <td title="皖1012070"><a onclick="showOrderInfoForIndex('23017655')">皖1012070</a></td>
-                                <td title="2430583">2430583</td>
-                                <td title="上海亚陈建材有限公司">上海亚陈建材有限公司</td>
-                                <td title="袋装">袋装</td>
-                                <td title="0">
-
-                                    订单正常
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖Q07772"><a onclick="showOrderInfoForIndex('23017661')">皖Q07772</a></td>
-                                <td title="2430865">2430865</td>
-                                <td title="马钢集团康诚建筑安装有限责任公司">马钢集团康诚建筑安装有限责任公司</td>
-                                <td title="散装">散装</td>
-                                <td title="0">
-
-                                    订单正常
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖E07570"><a onclick="showOrderInfoForIndex('23017662')">皖E07570</a></td>
-                                <td title="2430435">2430435</td>
-                                <td title="马鞍山市铁远贸易有限公司">马鞍山市铁远贸易有限公司</td>
-                                <td title="散装">散装</td>
-                                <td title="0">
-
-                                    订单正常
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖E01752"><a onclick="showOrderInfoForIndex('23024516')">皖E01752</a></td>
-                                <td title="2430919">2430919</td>
-                                <td title="南京益夫新材料科技有限公司江宁分公司">南京益夫新材料科技有限公司江宁分公司</td>
-                                <td title="散装">散装</td>
-                                <td title="0">
-
-                                    订单正常
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖E18230"><a onclick="showOrderInfoForIndex('23024624')">皖E18230</a></td>
-                                <td title="2430914">2430914</td>
-                                <td title="马钢集团康诚建筑安装有限责任公司">马钢集团康诚建筑安装有限责任公司</td>
-                                <td title="散装">散装</td>
-                                <td title="0">
-
-                                    订单正常
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖0201138"><a onclick="showOrderInfoForIndex('23017656')">皖0201138</a></td>
-                                <td title="2266710">2266710</td>
-                                <td title="王存兵">王存兵</td>
-                                <td title="光塑袋装">光塑袋装</td>
-                                <td title="1">
-
-                                    <span style="color:red">订单异常</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖E37465"><a onclick="showOrderInfoForIndex('23017657')">皖E37465</a></td>
-                                <td title="2266607">2266607</td>
-                                <td title="芜湖润卓贸易有限责任公司">芜湖润卓贸易有限责任公司</td>
-                                <td title="汽车散装">汽车散装</td>
-                                <td title="1">
-
-                                    <span style="color:red">订单异常</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖B25582"><a onclick="showOrderInfoForIndex('23017667')">皖B25582</a></td>
-                                <td title="2266682">2266682</td>
-                                <td title="芜湖润卓贸易有限责任公司">芜湖润卓贸易有限责任公司</td>
-                                <td title="汽车散装">汽车散装</td>
-                                <td title="1">
-
-                                    <span style="color:red">订单异常</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖M74276"><a onclick="showOrderInfoForIndex('23017654')">皖M74276</a></td>
-                                <td title="1833711">1833711</td>
-                                <td title="安徽岩宇商贸有限公司">安徽岩宇商贸有限公司</td>
-                                <td title="袋装">袋装</td>
-                                <td title="0">
-
-                                    订单正常
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖M96435"><a onclick="showOrderInfoForIndex('23017658')">皖M96435</a></td>
-                                <td title="1834219">1834219</td>
-                                <td title="明光市君腾商贸有限公司">明光市君腾商贸有限公司</td>
-                                <td title="袋装">袋装</td>
-                                <td title="1">
-
-                                    <span style="color:red">订单异常</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖M49748"><a onclick="showOrderInfoForIndex('23017663')">皖M49748</a></td>
-                                <td title="1833573">1833573</td>
-                                <td title="天长市百生建材商贸有限公司">天长市百生建材商贸有限公司</td>
-                                <td title="散装">散装</td>
-                                <td title="1">
-
-                                    <span style="color:red">订单异常</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖M94408"><a onclick="showOrderInfoForIndex('23017664')">皖M94408</a></td>
-                                <td title="1834161">1834161</td>
-                                <td title="安徽璐棠商贸有限公司">安徽璐棠商贸有限公司</td>
-                                <td title="散装">散装</td>
-                                <td title="1">
-
-                                    <span style="color:red">订单异常</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖AB5658"><a onclick="showOrderInfoForIndex('23017665')">皖AB5658</a></td>
-                                <td title="1824425">1824425</td>
-                                <td title="安徽江驰建筑材料有限公司">安徽江驰建筑材料有限公司</td>
-                                <td title="散装">散装</td>
-                                <td title="1">
-
-                                    <span style="color:red">订单异常</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖1238614"><a onclick="showOrderInfoForIndex('')">皖1238614</a></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title="">
-
-                                    <span style="color:red">无订单</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖1253113"><a onclick="showOrderInfoForIndex('')">皖1253113</a></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title="">
-
-                                    <span style="color:red">无订单</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖0472397"><a onclick="showOrderInfoForIndex('23024909')">皖0472397</a></td>
-                                <td title="1833834">1833834</td>
-                                <td title="安徽泓瑾建材有限公司">安徽泓瑾建材有限公司</td>
-                                <td title="袋装">袋装</td>
-                                <td title="0">
-
-                                    订单正常
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖1265527"><a onclick="showOrderInfoForIndex('')">皖1265527</a></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title="">
-
-                                    <span style="color:red">无订单</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖1633996"><a onclick="showOrderInfoForIndex('')">皖1633996</a></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title="">
-
-                                    <span style="color:red">无订单</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="桂1027108"><a onclick="showOrderInfoForIndex('')">桂1027108</a></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title="">
-
-                                    <span style="color:red">无订单</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖1253178"><a onclick="showOrderInfoForIndex('')">皖1253178</a></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title="">
-
-                                    <span style="color:red">无订单</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖0156736"><a onclick="showOrderInfoForIndex('')">皖0156736</a></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title="">
-
-                                    <span style="color:red">无订单</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖1213423"><a onclick="showOrderInfoForIndex('')">皖1213423</a></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title="">
-
-                                    <span style="color:red">无订单</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖1252817"><a onclick="showOrderInfoForIndex('')">皖1252817</a></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title="">
-
-                                    <span style="color:red">无订单</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖1253340"><a onclick="showOrderInfoForIndex('')">皖1253340</a></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title=""></td>
-                                <td title="">
-
-                                    <span style="color:red">无订单</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖P39049"><a onclick="showOrderInfoForIndex('23017651')">皖P39049</a></td>
-                                <td title="2506679">2506679</td>
-                                <td title="杭州宏图建材有限公司">杭州宏图建材有限公司</td>
-                                <td title="散装">散装</td>
-                                <td title="1">
-
-                                    <span style="color:red">订单异常</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖P3D203"><a onclick="showOrderInfoForIndex('23017653')">皖P3D203</a></td>
-                                <td title="2507640">2507640</td>
-                                <td title="杭州励晖贸易有限公司">杭州励晖贸易有限公司</td>
-                                <td title="散装">散装</td>
-                                <td title="1">
-
-                                    <span style="color:red">订单异常</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖P3C747"><a onclick="showOrderInfoForIndex('23017659')">皖P3C747</a></td>
-                                <td title="2499477">2499477</td>
-                                <td title="宁国市文卓商贸有限公司">宁国市文卓商贸有限公司</td>
-                                <td title="散装">散装</td>
-                                <td title="1">
-
-                                    <span style="color:red">订单异常</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="鄂AZZ315"><a onclick="showOrderInfoForIndex('23017660')">鄂AZZ315</a></td>
-                                <td title="2505742">2505742</td>
-                                <td title="安徽省交通物资有限责任公司">安徽省交通物资有限责任公司</td>
-                                <td title="散装">散装</td>
-                                <td title="1">
-
-                                    <span style="color:red">订单异常</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖PA5270"><a onclick="showOrderInfoForIndex('23024517')">皖PA5270</a></td>
-                                <td title="2486159">2486159</td>
-                                <td title="南京坤泰混凝土有限公司">南京坤泰混凝土有限公司</td>
-                                <td title="散装">散装</td>
-                                <td title="1">
-
-                                    <span style="color:red">订单异常</span>
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
-
-                            <tr>
-                                <td title="皖B52439"><a onclick="showOrderInfoForIndex('23017650')">皖B52439</a></td>
-                                <td title="2266578">2266578</td>
-                                <td title="芜湖隆瑞建材销售有限公司">芜湖隆瑞建材销售有限公司</td>
-                                <td title="汽车散装">汽车散装</td>
-                                <td title="0">
-
-                                    订单正常
-
-                                </td>
-
-                                <td title="caozuo&quot;">暂无</td>
-
-                            </tr>
                             </tbody>
+
                         </table>
                     </div>
                 </div>
@@ -847,479 +419,54 @@ $(function(){
                     <div class="alarm-body">
                         <div class="table-header">
                             <table class="table table-condensed table-hover table-ellipsis m-b0" id="alarmMessageTableHeader">
+                                <colgroup>
+                                    <col width="22%">
+                                    <col width="10%">
+                                    <col width="20%">
+                                    <col width="16%">
+                                    <col width="16%">
+                                    <col width="16%">
                                 <thead>
                                 <tr>
-                                    <th title="运输车号">运输车号</th>
-                                    <th title="发货单号">发货单号</th>
-                                    <th title="客户名称">客户名称</th>
-                                    <th title="包装方式">包装方式</th>
-                                    <th title="订单状态">订单状态</th>
+                                    <th title="经销商名称">经销商名称</th>
+                                    <th title="订单总数">订单总数</th>
+                                    <th title="订单总里程（公里）">订单总里程（公里）</th>
+                                    <th title="运输总时长（小时）">运输总时长（小时）</th>
+                                    <th title="平均里程数（公里）">平均里程数（公里）</th>
                                     <th title="操作">操作</th>
                                 </tr>
                                 </thead>
                             </table>
                         </div>
                         <div class="table-scrollbar oy-a ">
-                            <table class="table table-condensed table-normal-a table-hover table-ellipsis m-b0" id="alarmMessageTableContent">
+                            <table class="table table-condensed table-normal-a table-hover table-ellipsis m-b0" id="alarmMessageTableContent1">
                                 <colgroup>
-                                    <col width="16%">
-                                    <col width="16%">
+                                    <col width="22%">
+                                    <col width="10%">
                                     <col width="20%">
                                     <col width="16%">
                                     <col width="16%">
                                     <col width="16%">
                                 </colgroup>
-                                <tbody id="orderInfoTable">
-                                <tr>
-                                    <td title="皖1012070"><a onclick="showOrderInfoForIndex('23017655')">皖1012070</a></td>
-                                    <td title="2430583">2430583</td>
-                                    <td title="上海亚陈建材有限公司">上海亚陈建材有限公司</td>
-                                    <td title="袋装">袋装</td>
-                                    <td title="0">
-
-                                        订单正常
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖Q07772"><a onclick="showOrderInfoForIndex('23017661')">皖Q07772</a></td>
-                                    <td title="2430865">2430865</td>
-                                    <td title="马钢集团康诚建筑安装有限责任公司">马钢集团康诚建筑安装有限责任公司</td>
-                                    <td title="散装">散装</td>
-                                    <td title="0">
-
-                                        订单正常
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖E07570"><a onclick="showOrderInfoForIndex('23017662')">皖E07570</a></td>
-                                    <td title="2430435">2430435</td>
-                                    <td title="马鞍山市铁远贸易有限公司">马鞍山市铁远贸易有限公司</td>
-                                    <td title="散装">散装</td>
-                                    <td title="0">
-
-                                        订单正常
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖E01752"><a onclick="showOrderInfoForIndex('23024516')">皖E01752</a></td>
-                                    <td title="2430919">2430919</td>
-                                    <td title="南京益夫新材料科技有限公司江宁分公司">南京益夫新材料科技有限公司江宁分公司</td>
-                                    <td title="散装">散装</td>
-                                    <td title="0">
-
-                                        订单正常
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖E18230"><a onclick="showOrderInfoForIndex('23024624')">皖E18230</a></td>
-                                    <td title="2430914">2430914</td>
-                                    <td title="马钢集团康诚建筑安装有限责任公司">马钢集团康诚建筑安装有限责任公司</td>
-                                    <td title="散装">散装</td>
-                                    <td title="0">
-
-                                        订单正常
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖0201138"><a onclick="showOrderInfoForIndex('23017656')">皖0201138</a></td>
-                                    <td title="2266710">2266710</td>
-                                    <td title="王存兵">王存兵</td>
-                                    <td title="光塑袋装">光塑袋装</td>
-                                    <td title="1">
-
-                                        <span style="color:red">订单异常</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖E37465"><a onclick="showOrderInfoForIndex('23017657')">皖E37465</a></td>
-                                    <td title="2266607">2266607</td>
-                                    <td title="芜湖润卓贸易有限责任公司">芜湖润卓贸易有限责任公司</td>
-                                    <td title="汽车散装">汽车散装</td>
-                                    <td title="1">
-
-                                        <span style="color:red">订单异常</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖B25582"><a onclick="showOrderInfoForIndex('23017667')">皖B25582</a></td>
-                                    <td title="2266682">2266682</td>
-                                    <td title="芜湖润卓贸易有限责任公司">芜湖润卓贸易有限责任公司</td>
-                                    <td title="汽车散装">汽车散装</td>
-                                    <td title="1">
-
-                                        <span style="color:red">订单异常</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖M74276"><a onclick="showOrderInfoForIndex('23017654')">皖M74276</a></td>
-                                    <td title="1833711">1833711</td>
-                                    <td title="安徽岩宇商贸有限公司">安徽岩宇商贸有限公司</td>
-                                    <td title="袋装">袋装</td>
-                                    <td title="0">
-
-                                        订单正常
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖M96435"><a onclick="showOrderInfoForIndex('23017658')">皖M96435</a></td>
-                                    <td title="1834219">1834219</td>
-                                    <td title="明光市君腾商贸有限公司">明光市君腾商贸有限公司</td>
-                                    <td title="袋装">袋装</td>
-                                    <td title="1">
-
-                                        <span style="color:red">订单异常</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖M49748"><a onclick="showOrderInfoForIndex('23017663')">皖M49748</a></td>
-                                    <td title="1833573">1833573</td>
-                                    <td title="天长市百生建材商贸有限公司">天长市百生建材商贸有限公司</td>
-                                    <td title="散装">散装</td>
-                                    <td title="1">
-
-                                        <span style="color:red">订单异常</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖M94408"><a onclick="showOrderInfoForIndex('23017664')">皖M94408</a></td>
-                                    <td title="1834161">1834161</td>
-                                    <td title="安徽璐棠商贸有限公司">安徽璐棠商贸有限公司</td>
-                                    <td title="散装">散装</td>
-                                    <td title="1">
-
-                                        <span style="color:red">订单异常</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖AB5658"><a onclick="showOrderInfoForIndex('23017665')">皖AB5658</a></td>
-                                    <td title="1824425">1824425</td>
-                                    <td title="安徽江驰建筑材料有限公司">安徽江驰建筑材料有限公司</td>
-                                    <td title="散装">散装</td>
-                                    <td title="1">
-
-                                        <span style="color:red">订单异常</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖1238614"><a onclick="showOrderInfoForIndex('')">皖1238614</a></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title="">
-
-                                        <span style="color:red">无订单</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖1253113"><a onclick="showOrderInfoForIndex('')">皖1253113</a></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title="">
-
-                                        <span style="color:red">无订单</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖0472397"><a onclick="showOrderInfoForIndex('23024909')">皖0472397</a></td>
-                                    <td title="1833834">1833834</td>
-                                    <td title="安徽泓瑾建材有限公司">安徽泓瑾建材有限公司</td>
-                                    <td title="袋装">袋装</td>
-                                    <td title="0">
-
-                                        订单正常
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖1265527"><a onclick="showOrderInfoForIndex('')">皖1265527</a></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title="">
-
-                                        <span style="color:red">无订单</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖1633996"><a onclick="showOrderInfoForIndex('')">皖1633996</a></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title="">
-
-                                        <span style="color:red">无订单</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="桂1027108"><a onclick="showOrderInfoForIndex('')">桂1027108</a></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title="">
-
-                                        <span style="color:red">无订单</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖1253178"><a onclick="showOrderInfoForIndex('')">皖1253178</a></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title="">
-
-                                        <span style="color:red">无订单</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖0156736"><a onclick="showOrderInfoForIndex('')">皖0156736</a></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title="">
-
-                                        <span style="color:red">无订单</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖1213423"><a onclick="showOrderInfoForIndex('')">皖1213423</a></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title="">
-
-                                        <span style="color:red">无订单</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖1252817"><a onclick="showOrderInfoForIndex('')">皖1252817</a></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title="">
-
-                                        <span style="color:red">无订单</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖1253340"><a onclick="showOrderInfoForIndex('')">皖1253340</a></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title=""></td>
-                                    <td title="">
-
-                                        <span style="color:red">无订单</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖P39049"><a onclick="showOrderInfoForIndex('23017651')">皖P39049</a></td>
-                                    <td title="2506679">2506679</td>
-                                    <td title="杭州宏图建材有限公司">杭州宏图建材有限公司</td>
-                                    <td title="散装">散装</td>
-                                    <td title="1">
-
-                                        <span style="color:red">订单异常</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖P3D203"><a onclick="showOrderInfoForIndex('23017653')">皖P3D203</a></td>
-                                    <td title="2507640">2507640</td>
-                                    <td title="杭州励晖贸易有限公司">杭州励晖贸易有限公司</td>
-                                    <td title="散装">散装</td>
-                                    <td title="1">
-
-                                        <span style="color:red">订单异常</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖P3C747"><a onclick="showOrderInfoForIndex('23017659')">皖P3C747</a></td>
-                                    <td title="2499477">2499477</td>
-                                    <td title="宁国市文卓商贸有限公司">宁国市文卓商贸有限公司</td>
-                                    <td title="散装">散装</td>
-                                    <td title="1">
-
-                                        <span style="color:red">订单异常</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="鄂AZZ315"><a onclick="showOrderInfoForIndex('23017660')">鄂AZZ315</a></td>
-                                    <td title="2505742">2505742</td>
-                                    <td title="安徽省交通物资有限责任公司">安徽省交通物资有限责任公司</td>
-                                    <td title="散装">散装</td>
-                                    <td title="1">
-
-                                        <span style="color:red">订单异常</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖PA5270"><a onclick="showOrderInfoForIndex('23024517')">皖PA5270</a></td>
-                                    <td title="2486159">2486159</td>
-                                    <td title="南京坤泰混凝土有限公司">南京坤泰混凝土有限公司</td>
-                                    <td title="散装">散装</td>
-                                    <td title="1">
-
-                                        <span style="color:red">订单异常</span>
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td title="皖B52439"><a onclick="showOrderInfoForIndex('23017650')">皖B52439</a></td>
-                                    <td title="2266578">2266578</td>
-                                    <td title="芜湖隆瑞建材销售有限公司">芜湖隆瑞建材销售有限公司</td>
-                                    <td title="汽车散装">汽车散装</td>
-                                    <td title="0">
-
-                                        订单正常
-
-                                    </td>
-
-                                    <td title="caozuo&quot;">暂无</td>
-
-                                </tr>
+                                <tbody id="orderInfoTable1">
+                                <script type="text/html" id="orderInfoList1">
+                                    {{each data as row i}}
+                                    <tr>
+                                        <td title="{{row.agencyName}}"><a onclick="">{{row.agencyName}}</a></td>
+                                        <td  title="{{row.orderCount}}">{{row.orderCount}}</td>
+                                        <td  title="{{row.orderMileage}}">{{row.orderMileage}}</td>
+                                        <td  title="{{row.timeoutExcepCount}}">{{row.timeoutExcepCount}}</td>
+                                        <td title="{{row.avgMileage}}">
+                                            {{row.avgMileage}}
+                                        </td>
+
+                                        <td title=caozuo">暂无</td>
+
+                                    </tr>
+                                    {{/each}}
+                                </script>
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
@@ -1333,6 +480,7 @@ $(function(){
         </div>
     </div>
 </div>
+<input type="hidden" id="factoryId" value="${userId}">
 <script>
 /*订单趋势*/
 var orderTrendOpt={
@@ -1462,7 +610,7 @@ var deviceState=echarts.init(document.getElementById('deviceState'),'chalk');
 /*在线数量*/
 var onlineNumOpt= {
     title : {
-        text: '在线车辆',
+        text: '在线比例',
         textStyle:{
             fontSize:16,
             fontWeight:'normal',
@@ -1499,6 +647,7 @@ var orderNumOpt= {
     tooltip : {
         formatter: "{a} <br/>{b} : {c}%"
     },
+
     series: [
         {
 //            name: '业务指标',
@@ -1506,7 +655,8 @@ var orderNumOpt= {
             detail: {formatter:'{value}%'},
             data: [{value: 50, name: ''}],
             center: ['50%', '50%'],
-            radius : '95%'
+            radius : '95%',
+            max:10000
         }
     ]
 };
@@ -1576,16 +726,168 @@ var orderNum=echarts.init(document.getElementById('orderNum'),'chalk');
     };
 })(jQuery);
 
-var sum = 1300000;
-var sum2 = 1200000;
-var sum3 = 1100000;
+function getListData() {
+    var userIdd=$('#factoryId').val();
+    var dd = new Date();
+    var y = dd.getFullYear();
+    var m = dd.getMonth()+1;//获取当前月份的日期
+    var d = dd.getDate();
+    var startTime=y+"-"+m+"-"+d+" 00:00";
+    var endTime=y+"-"+m+"-"+d+" 00:53";
+    $.ajax({
+        url:"rest/reportControl/runReport/getListagency",
+        data:{"changshangId":userIdd,"startTime":startTime,"endTime":endTime},
+        success:function (ret) {
+            if(ret && ret.statusCode==0  && ret.data.list.length>0 ){
+                $('#orderInfoTable1').html(template('orderInfoList1',{"data" : ret.data.list}));//装填数据
+
+
+            }else{//清空列表,ret.code=-1加载列表没有数据返回,updateListFlag非法操作不等于1、2
+                return;
+            }
+        }
+    });
+}
+
+var sum = '0000000';
+var sum2 = '0000000';
+var sum3 = '0000000';
 $(function() {
-        show_num1('.t_num1',sum);
-        show_num1('.t_num2',sum2);
-        show_num1('.t_num3',sum3);
+    getListData();
+    getShowData();
+    function pad(num,n) {
+        var len = num.toString().length;
+        while(len < n) {
+            num = "0" + num;
+            len++;
+        }
+        return num;
+    };
+    function getShowData() {
+        $.ajax({
+            url:"rest/ishow/show",
+            success:function (rsp) {
+                var olDevice,offlDevice;
+                olDevice=rsp.data.rdto.data.onlineCount;
+                offlDevice=rsp.data.rdto.data.offlineCount;
+                sum=pad(olDevice+offlDevice,7);
+                sum2=pad(rsp.data.resultDto.weight_sum,7);
+                sum3=pad(rsp.data.resultDto.order_sum,7);
+                show_num1('.t_num1',sum);
+                show_num1('.t_num2',sum2);
+                show_num1('.t_num3',sum3);
+                var orderSum=[];
+                var month_sum=[];
+                var yunshushuliang_sum=[];
+                var onlineWeight=rsp.data.resultDto.online_weight_sum;
+                rsp.data.map2.data.forEach(function (resOrderData) {
+                    var date=resOrderData.month_sum.toString().slice(4);
+                    var dateobj=date.substr(0,2)+'-'+date.slice(2);
+                    orderSum.push(resOrderData.order_sum);
+                    month_sum.push(dateobj);
+                    yunshushuliang_sum.push(resOrderData.yunshushuliang_sum);
+                });
+
+
+                //订单趋势
+                orderTrend.setOption({
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: month_sum,
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name:'吨位',
+                            type:'bar',
+                            data:yunshushuliang_sum
+                        },
+                        {
+                            name:'订单数',
+                            type:'line',
+                            yAxisIndex: 1,
+                            data:orderSum
+                        }
+                    ]
+                })
+                //在线设备
+                deviceState.setOption({
+                    series : [
+                        {
+                            name: '在线情况',
+                            type: 'pie',
+                            data:[
+                                {value:olDevice, name:'在线设备'},
+                                {value:offlDevice, name:'离线设备'}
+                            ]
+                        }
+                    ]
+                });
+                //在线车辆
+                onlineNum.setOption({
+                    tooltip : {
+                        formatter: "{a} <br/>{b} : {c}%"
+                    },
+                    series: [
+                        {
+//            name: '业务指标',
+                            type: 'gauge',
+                            detail: {formatter:'{value}%'},
+                            data: [{value: parseInt(olDevice*100/(olDevice+offlDevice)), name: ''}],
+                            center: ['50%', '50%'],
+                            radius : '95%'
+                        }
+                    ]
+                });
+                //在线总吨位
+                orderNum.setOption({
+                    title : {
+                        text: '在途运输吨位',
+                        textStyle:{
+                            fontSize:16,
+                            fontWeight:'normal'
+                        },
+                        x:'center'
+                    },
+                    tooltip : {
+                        formatter: "{a} <br/>{b} : {c}%"
+                    },
+                    series: [
+                        {
+//            name: '业务指标',
+                            type: 'gauge',
+                            detail: {formatter:'{value}吨'},
+                            data: [{value: onlineWeight, name: ''}],
+                            center: ['50%', '50%'],
+                            radius : '95%'
+                        }
+                    ]
+                });
+
+
+            }
+        });
+        getOrderInfoList();
+    };
+    getShowData();
+    var timerX='';
+        timerx=setInterval(getShowData(),10000);
+
 
 });
-
+$('.table-scrollbar').niceScroll({
+    cursorcolor: "#ccc",//#CC0071 光标颜色
+    cursoropacitymax: 1, //改变不透明度非常光标处于活动状态（scrollabar“可见”状态），范围从1到0
+    touchbehavior: false, //使光标拖动滚动像在台式电脑触摸设备
+    cursorwidth: "5px", //像素光标的宽度
+    cursorborder: "0", // 游标边框css定义
+    cursorborderradius: "5px",//以像素为光标边界半径
+    autohidemode: false //是否隐藏滚动条
+});
 function show_num1(ele,n) {
     var it = $(ele).find('i');
     var len = String(n).length;
@@ -1697,7 +999,637 @@ function exitSys()
 	/************************退出系统-end**************************/ 
 		
 </script>
+<script style="text/javascript">
+    //定时查询未读告警时间（单位：毫秒）
+    var searchTime = 20000;
+    var intervalUnRead_id;
 
+    var alarmFilterHistory = [];
+
+    var filterModalFlag = true;
+
+    var lowerLevel= 0; //是否查询下级设备
+
+    var alarm_startTime_history = laydate.now(-30,'YYYY-MM-DD');
+    var alarm_endTime_history = laydate.now(new Date().getTime(),'YYYY-MM-DD');
+
+    $(document).ready(function(){
+
+    var locale='zh';
+
+    setJsLanguage(locale);
+
+
+
+
+    $("#alarm_startTime").focus(function(){
+    laydate({
+    elem: '#alarm_startTime',
+    format: 'YYYY-MM-DD', //日期格式
+    min:laydate.now(-90,'YYYY-MM-DD'),
+    max:laydate.now(new Date().getTime(),'YYYY-MM-DD'),
+    event: 'focus', //响应事件。
+    choose: function(dates){
+    var time =  new Date(dates.replace('-',"/").replace('-',"/")).getTime();
+    if($("#alarm_endTime").val() && new Date($("#alarm_endTime").val().replace('-',"/").replace('-',"/")).getTime() < time){
+    layer.msg($.i18n.prop("comm.StarttimegtEndtime"));
+    $('#alarm_startTime').val(alarm_startTime_history);
+    return;
+    }
+    //getAlarmInfoList(true,1);
+    }
+    });
+    });
+    $("#alarm_endTime").focus(function(){
+    laydate({
+    elem: '#alarm_endTime',
+    format: 'YYYY-MM-DD', //日期格式
+    min:laydate.now(-90,'YYYY-MM-DD'),
+    max:laydate.now(new Date().getTime(),'YYYY-MM-DD'),
+    event: 'focus', //响应事件。
+    choose: function(dates){
+    var time =  new Date(dates.replace('-',"/").replace('-',"/")).getTime();
+    if($("#alarm_startTime").val() && new Date($("#alarm_startTime").val().replace('-',"/").replace('-',"/")).getTime() > time){
+    layer.msg($.i18n.prop("comm.StarttimegtEndtime"));
+    $('#alarm_endTime').val(alarm_endTime_history);
+    return;
+    }
+    //getAlarmInfoList(true,1);
+    }
+    });
+    });
+
+    $("#alarm_startTime").val(alarm_startTime_history);
+    $("#alarm_endTime").val(alarm_endTime_history);
+
+    var alarmSoundFlag = getCookie("alarmSoundFlag");
+    if(alarmSoundFlag && alarmSoundFlag == 0){
+    <%--$("#alarmSound").iCheck('uncheck');--%>
+    }else{
+    <%--$("#alarmSound").iCheck("check");--%>
+    }
+    //alarmFilter();
+
+    //getAlarmInfoList(true,1);
+
+    // setInterval(function(){
+    // getAlarmInfoList(false,2);
+    // },5000);
+    //
+    $('#alarmFilterModal').on('hidden.bs.modal', function (e) {
+    if(filterModalFlag){
+    cancleSelect();
+    }
+    });
+    //app用户隐藏下级告警选项
+    if("8"=="3"){
+    $("#lowerLevelSpan").remove();
+    }
+    });
+
+    var header='index';
+    $("#"+header).addClass("active");
+
+  <%--  $('.js-select').easyDropDown(); //easydropdown--%>
+
+
+    function setLanguage(locale){
+    $.post("/setLanguage?locale="+locale,function(Ret){
+    window.location.reload();
+    });
+    }
+
+    //退出登录
+
+
+    function getCookie (cookieName) {
+    var cookieValue = '';
+    var posName = document.cookie.indexOf(escape(cookieName) + '=');
+    if (posName != -1) {
+    var posValue = posName + (escape(cookieName) + '=').length;
+    var endPos = document.cookie.indexOf(';', posValue);
+    if (endPos != -1) cookieValue = unescape(document.cookie.substring(posValue, endPos));
+    else cookieValue = unescape(document.cookie.substring(posValue));
+    }
+    if(cookieValue=='')return null;
+    return (cookieValue);
+    }
+
+    //设置Cookie
+    function SetCookie (cookieName, cookieValue) {
+    var Days = 14;
+    var exp = new Date();
+    exp.setTime(exp.getTime() + Days*24*60*60*1000);
+    document.cookie = cookieName + "="+ escape (cookieValue) + ";expires=" + exp.toGMTString()+";path=/";
+    }
+    //删除cookie
+    function delCookie(name)
+    {
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null) document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
+    }
+
+
+    function AlarmInfofilter(){
+    var check = $("input[name='alarm_item']");
+    var flag = false;
+    var statusStr = "";
+    $.each(check,function(i,v){
+    if($(v).attr("checked")){
+    flag = true;
+    statusStr += $(v).val()+",";
+    }
+    });
+    if(flag){
+    if(statusStr){  //处理记忆
+    statusStr = statusStr.substring(0, statusStr.length-1);
+    $.ajax({
+    url:"/alarmInfo/saveAlarmType",
+    data: {"statusStr":statusStr},
+    dataType: 'json',
+    success: function(ret){
+    filterModalFlag = false;
+    getAlarmInfoList(true,1);
+    $("#alarmFilterModal").modal('hide');
+    },
+    complete:function(XMLHttpRequest, textStatus){
+    // 						authorityValide(XMLHttpRequest);
+    if(XMLHttpRequest.responseText){
+    var data = eval('('+XMLHttpRequest.responseText+')');
+    if(data.code == -1000){
+    layer.msg($.i18n.prop('cust.VirtualAccountPermissionDenied'),{icon:2});
+    cancleSelect();
+    }
+    }
+
+    }
+    });
+    }
+    }else{
+    layer.msg($.i18n.prop('Business.Pleaseselectthetypeofalarm'));
+    }
+    }
+
+
+
+
+
+    //当前告警覆盖物
+    var currentAlarmMaker;
+    function bindAlarmInfo(bdlat,bdlng,gglat,gglng,alarmInfoIndex){
+    if($("#index").hasClass("active")){
+    if($("#selectMap").val()=="baiduMap"){
+    var stopFlagIcon=_ctx+"webpage/resource/images/36x43/alarm.png";
+    var stopFlagLable = new BMap.Label("", {
+    offset : new BMap.Size(-27, -27)
+    });
+    var stopFlagPoint =new BMap.Point(bdlng, bdlat);
+    var stopFlagMaker = new BMap.Marker(stopFlagPoint, {
+    icon : new BMap.Icon(stopFlagIcon, new BMap.Size(23, 27)),
+    offset : new BMap.Size(6,-12),
+    imageOffset : new BMap.Size(0,0)
+    });
+    if(currentAlarmMaker&&currentAlarmMaker.position==null){
+    allMap.removeOverlay(currentAlarmMaker);
+    }
+    allMap.addOverlay(stopFlagMaker);
+    currentAlarmMaker=stopFlagMaker;
+    (function(stopFlagMaker,alarmInfoIndex){
+    stopFlagMaker.addEventListener("click",function(e){
+    showBaiduStopAlarmInfo(stopFlagMaker,alarmInfoIndex);
+    });
+    })(stopFlagMaker,alarmInfoIndex);
+    showBaiduStopAlarmInfo(stopFlagMaker,alarmInfoIndex);
+    }else{
+    var stopFlagIcon = {url:_ctx+"webpage/resource/images/36x43/alarm.png" ,size:new google.maps.Size(23, 27),origin:new google.maps.Point(0,0),anchor:new google.maps.Point(3,26)};
+    googleMarker=new google.maps.Marker({
+    position :new google.maps.LatLng(gglat,gglng),
+    icon : stopFlagIcon,
+    map : allMap
+    });
+    if(currentAlarmMaker&&currentAlarmMaker.position!=null){
+    currentAlarmMaker.setMap(null);
+    }
+    currentAlarmMaker=googleMarker;
+    (function(googleMarker,alarmInfoIndex){
+    google.maps.event.addListener(googleMarker, 'click', function() {
+    showGoogleStopFlag(googleMarker,alarmInfoIndex);
+    });
+    })(googleMarker,alarmInfoIndex);
+    showGoogleStopFlag(googleMarker,alarmInfoIndex);
+    };
+    }
+    }
+
+    var prev_infowindow = null;
+    var prev_maker = null;//告警信息图标
+    //百度地图点击告警信息事件
+    function showBaiduStopAlarmInfo(stopFlagMaker,alarmInfoIndex){
+    // 		if($("#addr"+alarmInfoIndex).text()==""||$("#addr"+alarmInfoIndex).text()==null){
+    // 			getPointBaiDuLocation(stopFlagMaker.point,"addr"+alarmInfoIndex);
+    // 			if($("#addr"+alarmInfoIndex).text()==""||$("#addr"+alarmInfoIndex).text()==null){
+    // 				$("#addr"+alarmInfoIndex).text("获取地址失败！");
+    // 			}
+    // 		}
+    var datas={devName:$('#devName'+alarmInfoIndex).html(),alertType:$('#alertType'+alarmInfoIndex).html(),speed:$('#speed'+alarmInfoIndex).html(),alertTime:$('#alertTime'+alarmInfoIndex).html(),positionTime:$('#positionTime'+alarmInfoIndex).html(),alarmInfoIndex:alarmInfoIndex};
+    getPointBaiDuLocation(stopFlagMaker.point,"addr"+alarmInfoIndex);
+
+    var tpl = template('alarmInfoTpl',datas);
+
+    var portrait=276;//加上减下
+
+    var _gDialog = new BMapLib.InfoBox(allMap, tpl, {
+    boxStyle : {
+    width : "508px",
+    height : "0px"
+    },
+    offset : new BMap.Size(0 ,portrait),
+    // 直接隐藏官方关闭按钮
+    closeIconMargin : "2px;display:none;",
+    closeIconUrl : _ctx + "webpage/resource/images/close.png",
+    enableAutoPan : true,
+    align : INFOBOX_AT_TOP
+    });
+
+    allMap.addOverlay(_gDialog);
+    _gDialog.open(stopFlagMaker);
+    $(_gDialog._div).find(".popover-close").click(function() {
+    _gDialog.hide();
+    });
+
+    if (prev_infowindow) {
+    prev_infowindow.close();
+    }
+    prev_infowindow=_gDialog;
+    prev_maker=stopFlagMaker;
+    prev_maker.setZIndex(10000);
+    }
+
+    //谷歌地图点击告警信息事件
+    function showGoogleStopFlag(googleMarker,alarmInfoIndex){
+    // 		$("#addr"+alarmInfoIndex).text("");
+    // 		getGoogleLocation(googleMarker.position,"addr"+alarmInfoIndex);
+    // 		if($("#addr"+alarmInfoIndex).text()==""||$("#addr"+alarmInfoIndex).text()==null){
+    // 			$("#addr"+alarmInfoIndex).text("获取地址失败！");
+    // 		}
+    var datas={devName:$('#devName'+alarmInfoIndex).html(),alertType:$('#alertType'+alarmInfoIndex).html(),speed:$('#speed'+alarmInfoIndex).html(),alertTime:$('#alertTime'+alarmInfoIndex).html(),positionTime:$('#positionTime'+alarmInfoIndex).html(),alarmInfoIndex:alarmInfoIndex};
+    window.setTimeout(function (){
+    getGoogleLocation(googleMarker.position,"addr"+alarmInfoIndex);
+    },500);
+
+    var tpl = template('alarmInfoTpl',datas);
+    var content = $(tpl);
+    var portrait=-291;//减上加下
+
+    var infowindow = new InfoBox({
+    content : content.get(0),
+    disableAutoPan : false,
+    maxWidth : 0,
+    pixelOffset : new google.maps.Size(-246, portrait),//加右减左
+    zIndex : null,
+    closeBoxURL : "",
+    isHidden : false,
+    pane : "floatPane",
+    enableEventPropagation : false
+    });
+
+    content.find(".popover-close").click(function() {
+    InfoWindow_falg = false;
+    infowindow.close();
+    });
+
+    if (prev_infowindow) {
+    prev_infowindow.close();
+    }
+    infowindow.open(allMap,googleMarker);
+    prev_infowindow=infowindow;
+    prev_maker.setZIndex(10000);
+    }
+
+
+    var requestThread = 0 ;
+    //告警管理
+    function getAlarmInfoList(flag,updateListFlag){
+    var statusStr = "";
+    if($("#alarmTypeTable li").length > 0){
+    var check = $("input[name='alarm_item']");
+    $.each(check,function(i,v){
+    if($(v).attr("checked")){
+    statusStr += $(v).val()+",";
+    }
+    });
+    }
+    if(statusStr){
+    statusStr = statusStr.substring(0, statusStr.length-1);
+    }
+
+
+    //异步请求，最后一次请求参数，保证响应回来的数据是正确
+    requestThread++;
+
+    $.ajax({
+    url:"rest/customControl/alertInfo",
+    data: {"searchUserId":searchUserId,"startTime":$("#alarm_startTime").val(),"endTime":$("#alarm_endTime").val()},
+    async: true,
+    cache: false,
+    type:"post",
+    dataType: 'json',
+    beforeSend:function(XHR){
+    /* if(flag){
+    $("#alarm_nodata").hide();
+    $('#alarmInfoTable').hide();
+    $("#alarm_logindata").show();
+    } */
+    },
+    complete: function(){
+    $("#alarm_logindata").hide();
+    $('#alarmInfoTable').show();
+    if($("#alarmMessage").is(":visible")){
+    tableHeaderAutoWidth("#alarmMessageTableHeader","#alarmMessageTableContent");
+    }
+    },
+    success: function(ret){
+    //定时刷新 和 多次请求没有及时响应的，保持最后一次响应的结果
+    if( (ret && ret.code == -2)|| (parseInt(ret.totalDistiance)<requestThread) ){
+    return;
+    }
+    // 去闪灯和提示音
+    $(".js-alarm-toggle-btn").removeClass("active");
+    audioPlay("");
+
+    if(ret && ret.code==0  && ret.data.length>0 ){
+    //有数据返回并且是同一请求
+    $('#alarmInfoTable').html(template('alarmInfoList',{"data" : ret.data}));//装填数据
+    var unread = false;
+    var imeiMap = new Map();
+    $.each(ret.data,function(i,v){
+    if(v.readStatus == -1){
+    unread = true;
+    }
+    if(v.readStatus == -1 && !imeiMap.get(v.imei)){
+    imeiMap.put(v.imei);
+    }
+    });
+    $("#carAlarm").text(imeiMap.arr.length);
+    if(unread){
+    $(".js-alarm-toggle-btn").addClass("active");
+    if($("#alarmSound").attr("checked")){//播放
+    audioPlay("/resource/media/alarm.wav");
+    }
+    }
+    $("#alarmMessage").show();
+    }else{//清空列表,ret.code=-1加载列表没有数据返回,updateListFlag非法操作不等于1、2
+    $("#alarmMessage").show();
+    $('#alarmInfoTable').html(template('alarmInfoList',null));
+    $("#alarm_nodata").show();
+    return;
+    }
+    }
+
+    });
+    }
+
+    /**订单管理***/
+    function getOrderInfoList(flag,updateListFlag){
+
+
+    //从客户树选择时，根据选择的客户刷新告警信息列表
+    <%--var treeObject = $.fn.zTree.getZTreeObj("treeDemo");--%>
+
+<%------------------------------------------------------------------------------------------------------------------------%>
+    var userIdd=$('#factoryId').val();
+    $.ajax({
+    url:"rest/Gps/getOrderInfoByUserId",
+    data: {"userId":userIdd},
+    async: true,
+    cache: false,
+    timeout : 10000,
+    type:"post",
+    dataType: 'json',
+    beforeSend:function(XHR){
+    /* if(flag){
+    $("#alarm_nodata").hide();
+    $('#alarmInfoTable').hide();
+    $("#alarm_logindata").show();
+    } */
+    },
+    complete: function(){
+    $("#alarmMessage").hide();
+    if($("#orderMessage").is(":visible")){
+    tableHeaderAutoWidth("#orderMessageTableHeader","#orderMessageTableContent");
+    }
+    },
+    success: function(ret){
+    if(ret && ret.statusCode==0  && ret.data.length>0 ){
+    //有数据返回并且是同一请求
+    $('#orderInfoTable').html(template('orderInfoList',{"data" : ret.data}));//装填数据
+
+    $("#orderMessage").show();
+    }else{//清空列表,ret.code=-1加载列表没有数据返回,updateListFlag非法操作不等于1、2
+    $("#orderMessage").show();
+    $('#alarmInfoTable').html(template('alarmInfoList',null));
+    $("#alarm_nodata").show();
+    return;
+    }
+    }
+
+    });
+    }
+
+    //告警内容筛选
+    function alarmFilter(){
+    if($("#alarmTypeTable li").length == 0){
+    $.ajax({
+    url:"/alarmInfo/getAllAlarmType",
+    async: false,
+    cache: false,
+    dataType: 'json',
+    complete: function(){
+    if($("#alarmMessage").is(":visible")){
+    tableHeaderAutoWidth("#alarmMessageTableHeader","#alarmMessageTableContent");
+    }
+    },
+    success: function(ret){
+    if(ret && ret.code==0){
+    if(ret.data && ret.data.length>0){
+    $('#alarmTypeTable').html(template('alarmTypeList',{"data" : ret.data}));//装填数据
+    checkboxSelectLine("#alarmAllSelect","input[name='alarm_item']");
+    //告警类型回选处理
+    if(ret.msg){
+    $.each(ret.msg.split(","),function(index,value){
+    <%--$("input[name='alarm_item'][value='"+value+"']").iCheck('check')--%>
+    });
+    }else{//默认选择
+    <%--$("#alarmAllSelect").iCheck('check');--%>
+    <%--$("input[name='alarm_item']").iCheck('check');--%>
+    <%--$("input[name='alarm_item'][value='ACC_ON']").iCheck('uncheck');--%>
+    <%--$("input[name='alarm_item'][value='ACC_OFF']").iCheck('uncheck');--%>
+    }
+    }
+    }
+    }
+    });
+    }
+    alarmFilterHistory = [];
+    filterModalFlag = true;
+    $.each($("input[name='alarm_item']"),function(i,v){
+    if($(v).attr("checked")){
+    alarmFilterHistory.push($(v).val());
+    }
+    });
+    }
+
+    function cancleSelect(){
+    <%--$("#alarmAllSelect").iCheck("uncheck");--%>
+    <%--$("input[name='alarm_item']").iCheck("uncheck");--%>
+    $.each(alarmFilterHistory,function(i,v){
+    <%--$("input[name='alarm_item'][value='"+v+"']").iCheck("check");--%>
+    });
+    if(alarmFilterHistory.length == $("input[name='alarm_item']").length){
+    <%--$("#alarmAllSelect").iCheck("check");--%>
+    }
+    }
+
+
+    //标为已读、全部标为已读
+    function readAlarm(alarmId){
+    if(!alarmId){
+    $.each($("input[name='markAlarmId']"),function(i,v){
+    if($(v).val()){
+    alarmId += $(v).val()+",";
+    }
+    });
+    if(!alarmId){
+    layer.msg($.i18n.prop('Business.Notunreadmessage'));
+    return ;
+    }
+    }
+    $.ajax({
+    url:"/alarmInfo/saveAlarmInfoHasRead",
+    data: {"alarmId":alarmId},
+    async: true,
+    cache: true,
+    dataType: 'json',
+    success: function(ret){
+    if(ret && ret.code == 0){
+    layer.msg($.i18n.prop("comm.Operationdone"),{icon:1});
+    getAlarmInfoList(true,1);//刷新列表
+    }else{
+    layer.msg($.i18n.prop("comm.Failed"),{icon:2});
+    }
+    },
+    complete:function(XMLHttpRequest, textStatus){
+    authorityValide(XMLHttpRequest);
+    }
+    });
+    }
+
+    //处理告警
+    function dealAlarm(alarmId){
+    if(alarmId){
+    $("#alarmDealModal_deal").modal();
+    $("#alarmDealModal_deal_alarmId").val(alarmId);
+
+    $("#alarmDealModal_deal_alarmDealId").val("");
+    $("#alarmDealModal_deal_alarmDealId").removeClass("error");
+    $("label[for='alarmDealModal_deal_inputDealUserName']").remove();
+
+    $("#alarmDealModal_deal_inputDealUserName").val("");
+    $("#alarmDealModal_deal_inputDealUserName").removeClass("error");
+    $("label[for='alarmDealModal_deal_inputDealUserName']").remove();
+
+    $("#alarmDealModal_deal_dealContent").val("");
+    $("#alarmDealModal_deal_dealContent").removeClass("error");
+    $("label[for='alarmDealModal_deal_dealContent']").remove();
+
+    validateAlarmDealForm();
+    }
+    }
+
+    //查看处理
+    function showAlarm(dealUserAccount,inputDealUserName,creationDate,dealContent){
+    $("#alarmDealModal_show").modal();
+    $("#alarmDealModal_show_dealAccount").text(dealUserAccount);
+    $("#alarmDealModal_show_dealAccount").attr("title",dealUserAccount);
+
+    $("#alarmDealModal_show_dealUserName").text(inputDealUserName);
+    $("#alarmDealModal_show_dealUserName").attr("title",inputDealUserName);
+
+    $("#alarmDealModal_show_dealTime").text(creationDate);
+    $("#alarmDealModal_show_dealTime").attr("title",creationDate);
+
+    $("#alarmDealModal_show_dealContent").text(dealContent);
+    $("#alarmDealModal_show_dealContent").attr("title",dealContent);
+    }
+
+    $("#saveAlarmDealBtn").click(function(){
+    saveAlarmDeal();
+    });
+
+    function saveAlarmDeal(){
+    if($("#alarmDealForm").valid()){
+    $.ajax({
+    url:"/alarmInfo/saveAlarmDeal",
+    data: $("#alarmDealForm").serialize(),
+    async: true,
+    cache: true,
+    dataType: 'json',
+    type:"post",
+    success: function(ret){
+    if(ret && ret.code == 0){
+    $("#alarmDealModal_deal").modal('hide');
+    layer.msg($.i18n.prop("comm.Operationdone"),{icon:1});
+    getAlarmInfoList(true,1);//刷新列表
+    }else{
+    layer.msg($.i18n.prop("comm.Failed"),{icon:2});
+    }
+    },
+    complete:function(XMLHttpRequest, textStatus){
+    authorityValide(XMLHttpRequest);
+    }
+    });
+    }
+    }
+    function validateAlarmDealForm(){
+    $("#alarmDealForm").validate({
+    rules:{
+    inputDealUserName:{
+    required: false ,
+    maxlength:50
+    },
+    dealContent:{
+    required: false,
+    maxlength : 500
+    }
+    },
+    messages:{
+    inputDealUserName:{
+    maxlength: $.i18n.prop("Alert.Processing.ProcessingHanderNameLengthValid")
+    },
+    dealContent:{
+    maxlength : $.i18n.prop('Alert.Processing.ProcessingContentLengthValid')
+    }
+    },
+    errorPlacement: function(error, element){
+    error.appendTo(element.parent());
+    }
+    });
+    }
+
+    function openDeviceInfoModal(imei){
+    var ev = window.event || arguments.callee.caller.arguments[0];
+    if (window.event) {
+    ev.cancelBubble = true;
+    } else {
+    ev.stopPropagation();
+    }
+    complex_buildDeviceInfoForm("alarm",imei,"alarmDeviceInfo");
+    }
+
+
+</script>
 
 </body>
 </html>

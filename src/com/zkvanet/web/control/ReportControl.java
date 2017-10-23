@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -369,6 +370,17 @@ public class ReportControl {
 			
 		}
 		return deviceStatis;
+		
+	}
+	
+	@RequestMapping(value = "/runReport/checkStatis")
+	public  @ResponseBody  ResultDto<Map> checkStatis(Integer paramInteger) throws IOException{
+		if(paramInteger==85){
+			paramInteger=null;//Admin账户查所有
+		}
+		ResultDto<Map> map = orderStatisService.checkStatis(paramInteger);
+		
+		return map;
 		
 	}
 }

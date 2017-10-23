@@ -1056,6 +1056,7 @@ function initRunPage(param){
      	}
 	});
 }
+
 function initRunReport(param){
 	isExportRun = false;
 	$('#run-tbody').html(template('run-tbody-json',null));
@@ -1606,6 +1607,7 @@ function cleanStopCarData(type){
 	$("#"+type+"-alltimes").html(0);
 	$("#loading-"+type).hide();
 }
+
 function initStopCarReport(type,pageNo,intPageSize,param){
 	$("#noData-"+type).hide();
 	$("#loading-"+type).show();

@@ -272,6 +272,62 @@ public class MeunControl  {
 		modelMap.put("devicename", devicename);
 		return new ModelAndView("trackreplay/track");
 	}
+	@RequestMapping(value="/ordertrackreplayfor")
+	public ModelAndView ordertrackreplayfor(HttpServletRequest request,ModelMap modelMap) {
+		UserInfoDto user = ResourceUtil.getSessionUserName();
+		String imei = request.getParameter("imei");
+		String createtime = request.getParameter("createtime");
+		String orderindex = request.getParameter("order");
+		 DeviceQueryParms params =new DeviceQueryParms();
+		 params.setImei(imei);
+		 ResultDto<DataGridVo<DeviceDto>> list2 = deviceManager.list(params);
+		 String devicename="";
+		 Integer deviceId=0;
+		 if(list2.getData()!=null&&list2.getData().getList().size()>0){
+			 devicename=list2.getData().getList().get(0).getName();
+			 deviceId=list2.getData().getList().get(0).getId();
+		 }
+		String endtime = request.getParameter("endtime");
+		if(user==null){
+			return new ModelAndView(new RedirectView(
+							"loginController.do?login"));
+		}
+		if("1".equals(orderindex)){
+			if(endtime!=null){
+				modelMap.put("createtime", stampToDate(createtime));
+				modelMap.put("endtime", stampToDate(endtime));
+			}else{
+				modelMap.put("createtime", stampToDate(createtime));
+			}
+		}else{
+			if(endtime!=null){
+				modelMap.put("createtime", stampToDate(createtime));
+				modelMap.put("endtime", stampToDate(endtime));
+			}else{
+				modelMap.put("createtime", createtime);
+			}
+		}
+		
+		//订单详情
+		  OrderQueryParms orderParam=new OrderQueryParms();
+		  orderParam.setDeviceId(deviceId);
+		  ResultDto<DataGridVo<OrderDto>> queryOrder = orderService.queryOrder(orderParam);
+		  List<OrderDto> orderlist=new ArrayList<OrderDto>();
+		  if(queryOrder.getData()!=null){
+			  
+			  orderlist = queryOrder.getData().getList();
+		  }
+		  OrderDto ordershow=new OrderDto();
+		  if(orderlist.size()>0){
+			  ordershow=orderlist.get(0);
+		  }
+		modelMap.put("ordershow", ordershow);
+		modelMap.put("devicename", devicename);
+		System.out.println("开始时间"+createtime);
+		modelMap.put("userName", user.getLoginName());
+		modelMap.put("userId", user.getId());
+		return new ModelAndView("trackreplay/ordertrackFor");
+	}
 	@RequestMapping(value="/ordertrackreplay")
 	public ModelAndView ordertrackreplay(HttpServletRequest request,ModelMap modelMap) {
 		UserInfoDto user = ResourceUtil.getSessionUserName();

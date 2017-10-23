@@ -1342,7 +1342,9 @@ function exitSys()
 				{{each data as row i}}
 					<tr>
           				<td title="{{row.yunshuchehao}}"><a onclick="showOrderInfoForIndex('{{row.deviceSid}}')">{{row.yunshuchehao}}</a></td>
-          				<td  title="{{row.fahuodanhao}}">{{row.fahuodanhao}}</td>
+          				<td  title="{{row.fahuodanhao}}">
+<a class="orderdetail"  href="rest/meunController/ordertrackreplayfor?imei={{row.deviceSid}}&createtime={{row.createTime}}&order=1" target="_blank";>{{row.fahuodanhao}}</a>
+</td>   
           				<td  title="{{row.kehumingcheng}}">{{row.kehumingcheng}}</td>
           				<td  title="{{row.baozhuangfangshi}}">{{row.baozhuangfangshi}}</td>
                         <td title="{{row.isWaring}}">
@@ -5869,7 +5871,7 @@ function drivingrecord(imei) {
 			<a class="tracking" style="display:none"  title="实时跟踪" onclick="trackpreset('{{imei}}');">实时跟踪</a>
 			<a class="playback"   title="轨迹回放" onclick="replayrecord('{{imei}}');">轨迹回放</a>
 			{{if createTime!=null&&createTime!=""}}
-            <a class="orderdetail"   title="订单轨迹" href="rest/meunController/ordertrackreplay?imei={{imei}}&createtime={{createTime}}" target="_blank";>订单轨迹</a>
+            <a class="orderdetail"   title="订单轨迹" href="rest/meunController/ordertrackreplayfor?imei={{imei}}&createtime={{createTime}}" target="_blank";>订单轨迹</a>
 	        {{/if}}			
             {{if complex_loginUserType!=12}}
 			<a class="command"  style="display:none" title="下发指令" onclick="openInstructionModel('{{imei}}');">下发指令</a>

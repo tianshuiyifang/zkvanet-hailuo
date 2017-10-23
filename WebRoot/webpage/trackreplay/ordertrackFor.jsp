@@ -323,19 +323,19 @@ setJsLanguage(locale);
 											${devicename}&nbsp;<span>(IMEI：<%=request.getParameter("imei")%>)</span>
 											</div>
 											<div class="col-sm-12  fw-b" id="driverName">
-											发货单号：&nbsp;<span><%=request.getParameter("fahuodanhao") %></span>
+											发货单号：&nbsp;<span>${ordershow.fahuodanhao}</span>
 											</div>
 											<div class="col-sm-12  fw-b" id="driverName">
-											发货数量：&nbsp;<span><%=request.getParameter("fahuoshuliang") %>(吨)</span>
+											发货数量：&nbsp;<span>${ordershow.fahuoshuliang}(吨)</span>
 											</div>
 											<div class="col-sm-12  fw-b" id="driverName">
-											包装方式：&nbsp;<span><%=new String(request.getParameter("baozhuangfangshi").getBytes("iso-8859-1"),"utf-8") %></span>
+											包装方式：&nbsp;<span>${ordershow.baozhuangfangshi}</span>
 											</div>
 											<div class="col-sm-12  fw-b" id="driverName">
-											客户名称：&nbsp;<span><%=new String(request.getParameter("kehumingcheng").getBytes("iso-8859-1"),"utf-8") %></span>
+											客户名称：&nbsp;<span>${ordershow.kehumingcheng}</span>
 											</div>
 											<div class="col-sm-12  fw-b" id="driverName">
-											产品名称：&nbsp;<span><%=new String(request.getParameter("chanpinmingcheng").getBytes("iso-8859-1"),"utf-8") %></span>
+											产品名称：&nbsp;<span>${ordershow.chanpinmingcheng}</span>
 											</div>
 											
 										</div>

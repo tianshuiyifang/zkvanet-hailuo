@@ -13,7 +13,6 @@
 
 
 
-
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -50,7 +49,8 @@
 <link rel="stylesheet" href="webpage/resource/plugins/ciTy/css/city.css">
 <link rel="stylesheet" href="webpage/resource/css/site.css">
 <link rel="stylesheet" href="webpage/resource/plugins/fileUpLoad/fileinput.css">
-
+	<%--大图--%>
+<link rel="stylesheet" href="webpage/resource/plugins/MagicZoom/MagicZoom.css">
 <!--CSS3 Media Queries (for IE 6-8)-->
 <!--[if lte IE 8]><script src="webpage/resource/js/respond.min.js"></script><![endif]-->
 
@@ -127,6 +127,8 @@ setJsLanguage(locale);
 <script src="webpage/resource/plugins/icheck/icheck.min.js"></script>
 <script src="webpage/resource/plugins/fileUpLoad/fileinput.js"></script>
 <script src="webpage/resource/plugins/fileUpLoad/zh.js"></script>
+
+<script src="webpage/resource/plugins/MagicZoom/magiczoom.js"></script>
 <!--[if lte IE 9]>
 <script src="webpage/resource/js/jquery.placeholder.min.js"></script>
 <script>$(function() {$('input[type="text"],input[type="password"], textarea').placeholder();});</script>
@@ -230,6 +232,17 @@ setJsLanguage(locale);
 	});
 	
 </script>
+	<style>
+		.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{padding: 8px 0}
+		.check_pic img{width: 100%;height: 90px}
+		.check_pic_cont{width: 100%}
+		.check_pic_cont h3{font-size: 16px;padding: 10px}
+		.check_pic_detail{text-align: center}
+		/*.check_pic .span3{float: left;width: 24%;padding: 10px}*/
+
+        #showVerify .modal-body{height: 500px;overflow: auto;overflow-x: hidden;overflow-y: scroll}
+        #showVerify .modal-content{width: 840px}
+	</style>
 <title>订单管理 -Tracker</title>
 <!-- icheck -->
 <link rel="stylesheet" href="webpage/resource/plugins/icheck/icheck.css" >
@@ -1202,11 +1215,11 @@ function exitSys()
        <li class="side-subtitle side-full-subtitle row saleT" style=" cursor: pointer;   height: 40px;
     text-align: center;
     border: 1px solid #e7eae6;
-    margin-bottom: 10px" onClick="showorder(${userId},'2')">销售部审核 </li>
+    margin-bottom: 10px" onClick="showorder(${userId},'2')">销售处审核 </li>
         <li class="side-subtitle side-full-subtitle row financialT" style="  cursor: pointer;  height: 40px;
     text-align: center;
     border: 1px solid #e7eae6;
-    margin-bottom: 10px" onClick="showorder(${userId},'4')">财务部审核</li>
+    margin-bottom: 10px" onClick="showorder(${userId},'4')">财务处审核</li>
 </ul>
 </div>
 </div>
@@ -1351,17 +1364,17 @@ function exitSys()
 									<table id="orderTableHeader" class="table table-hover table-ellipsis m-b0">
 										<thead>
 											<tr>
-												<th style="text-align:center" >发货单号</th>
-												<th style="text-align:center" >运输车号</th>
-												<th style="text-align:center" >包装方式</th>
-												<th style="text-align:center" title="出厂日期">出产日期</th>
-												<th style="text-align:center" title="产品名称">产品名称</th>
-												<th style="text-align:center"  title="市场部审核">市场部审核</th>
-												<th style="text-align:center"  title="销售部审核">销售部审核</th>
-												<th style="text-align:center"  title="市场部审核">财务部审核</th>
-												<th style="text-align:center" >订单状态</th>
-												<th style="text-align:center" >客户名称</th>
-												<th style="text-align:center" width="18%" >订单审核</th>
+												<th style="text-align:center;width:7%" >客户名称</th>
+												<th style="text-align:center;width:7%" >运输车号</th>
+												<th style="text-align:center;width:7%" >发货单号</th>
+												<th style="text-align:center;width:5%"  title="包装方式">包装方式</th>
+												<th style="text-align:center;width:12%" title="出厂日期">出产日期</th>
+												<th style="text-align:center;width:9%" title="产品名称">产品名称</th>
+												<th style="text-align:center;width:11%" >系统预审</th>
+												<th style="text-align:center;width:8%"  title="市场部审核">市场部审核</th>
+												<th style="text-align:center;width:8%"  title="销售部审核">销售处审核</th>
+												<th style="text-align:center;width:8%"  title="财务部审核">财务处审核</th>
+												<th style="text-align:center;width:18%"  >订单审核</th>
 												
 											</tr>
 										</thead>
@@ -1370,28 +1383,41 @@ function exitSys()
 								<div class="table-scrollbar oy-a" >
 									<table id="orderTableContent" class="table table-hover table-ellipsis">
 										<colgroup>
-											  <col  />
-								              <col />
-								              <col/>
-								              <col />
-								              <col />
-								              <col />
-								              <col />
-								              <col />
-								              <col />
-								              <col />
+											  <col width="7%" />
+								              <col width="7%" />
+								              <col width="7%" />
+								              <col width="5%" />
+								              <col width="12%" />
+								              <col width="9%" />
+								              <col width="11%" />
+								              <col width="8%" />
+								              <col width="8%" />
+								              <col width="8%" />
 								              <col width="18%" />
 										</colgroup>
 										<tbody id="run-tbody">
 											<script type="text/html" id="run-tbody-json">
 														{{each result as row i}}
 				                    <tr>
-				                      
-				                      <td style="text-align:center" title="{{row.fahuodanhao}}">{{row.fahuodanhao}}</td>
-				                      <td style="text-align:center" title="{{row.yunshuchehao}}">{{row.yunshuchehao}}</td>
+									  <td style="text-align:center;" title="{{row.kehumingcheng}}"><span style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width:5em;display: inline-block">{{row.kehumingcheng}}</span></td>
+										<td style="text-align:center" title="{{row.yunshuchehao}}">{{row.yunshuchehao}}</td>
+										<td style="text-align:center" title="{{row.fahuodanhao}}">{{row.fahuodanhao}}</td>
 				                      <td style="text-align:center" title="{{row.baozhuangfangshi}}">{{row.baozhuangfangshi}}</td>
 				                      <td style="text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap" title="{{row.chuchangriqi}}">{{row.chuchangriqi}}</td>
 								      <td style="text-align:center" title="{{row.chanpinmingcheng}}">{{row.chanpinmingcheng}}</td>
+										<td title="{{if row.isWaring==0}} 订单正常
+										 {{else }}订单异常{{if row.unHandledExceptionCount<1}}(已处理){{else }}(未处理){{/if}}
+										 {{/if}}" style="text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">
+											{{if row.isWaring==0}}
+											订单正常
+											{{else }}
+											<span style="color:red">订单异常
+                                          {{if row.unHandledExceptionCount<1}}(已处理)
+                                       {{else }}(未处理)
+                                       {{/if}}
+                                         </span>
+											{{/if}}
+										</td>
 								      <td title="{{row.marketCheckStatus}}" style="text-align:center">
                                       {{if row.marketCheckStatus==0||row.marketCheckStatus==null}}
 											 未审核
@@ -1410,22 +1436,8 @@ function exitSys()
 										 {{else if row.financialCheckStatus==1}}审核通过
                                          {{else if row.financialCheckStatus==2}}审核不通过
                                          {{/if}}</td>
-									  <td title="{{if row.isWaring==0}} 订单正常
-										 {{else }}订单异常{{if row.unHandledExceptionCount<1}}(已处理){{else }}(未处理){{/if}}
-										 {{/if}}" style="text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">
-										{{if row.isWaring==0}}
-											 订单正常
-										 {{else }}
-											<span style="color:red">订单异常
-                                          {{if row.unHandledExceptionCount<1}}(已处理)
-                                       {{else }}(未处理)
-                                       {{/if}}
-                                         </span>
-										 {{/if}}
-									   </td>
-                                      <td style="text-align:center;overflow: hidden;text-overflow: ellipsis;white-space: nowrap" title="{{row.kehumingcheng}}">{{row.kehumingcheng}}</td>
 									  <td style="text-align:center">
-                                              <a title="审核"  onclick="showVerify('{{row.id}}','{{row.salesCheckStatus}}','{{row.salesCheckMsg}}','{{row.marketCheckStatus}}','{{row.marketCheckMsg}}','{{row.financialCheckStatus}}','{{row.financialCheckMsg}}')"  class="cp js-editor-users-btn" ;">审核</a>
+                                              <a title="审核"  onclick="showVerify('{{row.id}}','{{row.salesCheckStatus}}','{{row.salesCheckMsg}}','{{row.marketCheckStatus}}','{{row.marketCheckMsg}}','{{row.financialCheckStatus}}','{{row.financialCheckMsg}}','{{row.fahuodanhao}}')"  class="cp js-editor-users-btn" ;">审核</a>
                                               <a title="图片" onclick="uploadimage('{{row.id}}','{{row.fahuodanhao}}')"  class="cp js-editor-users-btn" ;">图片<span {{if row.baozhuangfangshi.indexOf("袋装")>-1&&row.totalP<8}}style="color:red"{{/if}}>({{row.totalP}})</span></a>
                                               <a title="详情" class="cp js-editor-users-btn" onclick="orderinfo('{{row.baozhuangfangshi}}','{{row.createTime}}','{{row.fahuodanhao}}','{{row.beizhu}}','{{row.chanpinmingcheng}}','{{row.yunshuchehao}}','{{row.fahuoshuliang}}','{{row.quyuming}}','{{row.quyuma}}','{{row.chuchangriqi}}','{{row.yunshuchehao}}','{{row.chuchangbianhao}}','{{row.yunshudanwei}}','{{row.kehumingcheng}}');">详情</a>
                                               <a  {{if row.deviceSid==""||row.deviceSid==null}}style="display:none"{{/if}}  title="轨迹" href="rest/meunController/ordertrackreplay?imei={{row.deviceSid}}&createtime={{row.createTime}}&endtime={{row.endTime}}" target="_blank" class="cp js-editor-users-btn" ;">轨迹</a>
@@ -4475,6 +4487,6 @@ var mapType='';
 <script type="text/javascript"  src="webpage/resource/js/customer/order.js"></script>
 <!-- <script type="text/javascript" src="webpage/resource/js/report/ordermotionReport.js"></script> -->
 <script type="text/javascript" src="webpage/resource/js/alarmReport/alarmReport.js"></script>
-</body>
 
+</body>
 </html>

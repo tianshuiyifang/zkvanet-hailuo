@@ -58,7 +58,10 @@ function agencyareaUpdateModal(id,areaName,areaCode,areaManager,areaRail){
 	$("#changshangUid").val(leftNode.id);
 }
 //初始化经销商区域
-function complex_agentcyarea(){
+function complex_agentcyarea(index){
+	if(index==null||index==undefined){
+		index=0;
+	}
 	var leftNode = leftTree.getSelectedNodes()[0];
 	$.ajax({
 		type:"post",
@@ -71,7 +74,8 @@ function complex_agentcyarea(){
 				if(ret.data){
 					$("#agencyArea").html(template("complex_area_options",ret));
 					$("select[name='agencyAreaId']").easyDropDown();
-					$("select[name='agencyAreaId']").easyDropDown("select",0);
+					index=$('select[name=agencyAreaId]').find('option').index($('option[value='+index+']'));
+					$("select[name='agencyAreaId']").easyDropDown("select",index);
 				}
 			} else {
 				layer.msg($.i18n.prop("comm.Failed"), {icon : 2});
@@ -114,6 +118,7 @@ function agencyUpdateModal(id){
 					$("#agencyContactsName").val(ret.data.agencyContactsName);
 					$("#agencyLat").val(ret.data.agencyLat);
 					$("#agencyLon").val(ret.data.agencyLon);
+					complex_agentcyarea(ret.data.agencyAreaId);
 				}
 			}
 		},

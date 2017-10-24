@@ -1211,9 +1211,14 @@ function exitSys()
 								<label class="label-first" title="区域名">区域名:</label>
 								<div class="pr d-ib">
 								<div class="input-group input-group-sm">
+								<span class="easydropdown easydropdown-sm easydropdown-full va-m js-select-quyu-div" id="quyumingw" ></span>
+			                   
+								</div> 
+								<!-- <div class="input-group input-group-sm">
 								<input style="top:10px;position:relative;" type="text" size="17" name="areaName" id="areaName"  placeholder="请输入区域名" class="form-control search-text" >
+								</div> -->
 								</div>
-								</div>
+								
 								</div>
 								
 								<div class="form-group fl p-r15">
@@ -1331,7 +1336,7 @@ function exitSys()
 											<a title="详情" class="cp js-editor-users-btn" onclick="orderinfo('{{row.baozhuangfangshi}}','{{row.createTime}}','{{row.fahuodanhao}}','{{row.beizhu}}','{{row.chanpinmingcheng}}','{{row.yunshuchehao}}','{{row.fahuoshuliang}}','{{row.quyuming}}','{{row.quyuma}}','{{row.chuchangriqi}}','{{row.yunshuchehao}}','{{row.chuchangbianhao}}','{{row.yunshudanwei}}','{{row.kehumingcheng}}');">详情</a>
 											<a title="图片" onclick="uploadimage('{{row.id}}','{{row.fahuodanhao}}')"  class="cp js-editor-users-btn" ;">图片<span {{if row.baozhuangfangshi.indexOf("袋装")>-1&&row.totalP<8}}style="color:red"{{/if}}>({{row.totalP}})</span></a>
 											<a title="异常列表" {{if row.isWaring==0}}style="display:none"{{/if}}  onclick="showException({{row.id}})"  class="cp js-editor-users-btn" ;">异常列表</a>
-											<a  {{if row.deviceSid==""||row.deviceSid==null}}style="display:none"{{/if}}  title="详情" href="rest/meunController/ordertrackreplay?imei={{row.deviceSid}}&createtime={{row.createTime}}&endtime={{row.endTime}}" target="_blank" class="cp js-editor-users-btn" ;">轨迹</a>
+											<a  {{if row.deviceSid==""||row.deviceSid==null}}style="display:none"{{/if}}  title="详情" href="rest/meunController/ordertrackreplay?imei={{row.deviceSid}}&createtime={{row.createTime}}&endtime={{row.endTime}}&fahuodanhao={{row.fahuodanhao}}&fahuoshuliang={{row.fahuoshuliang}}&baozhuangfangshi={{row.baozhuangfangshi}}&kehumingcheng={{row.kehumingcheng}}&chanpinmingcheng={{row.chanpinmingcheng}}" target="_blank" class="cp js-editor-users-btn" ;">轨迹</a>
 									</td>
 				                    </tr>
 				                    {{/each}}
@@ -3921,7 +3926,14 @@ function exitSys()
 		{{/each}}
 	</select>
 </script>
-
+<!-- quyu -->
+<script type="text/html" id="complex_quyu_options">
+	<select name="quyuType" class="js-select-quyuming">
+		{{each data as row index}}
+			<option   class="selected" value="{{row.name}}">{{row.name}}</option>
+		{{/each}}
+	</select>
+</script>
 
 <script type="text/html" id="complex_package_tmp">	
            {{each data as row i}}

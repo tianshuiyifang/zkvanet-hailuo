@@ -1,3 +1,4 @@
+
 function orderinfo(baozhuangfangshi,createTime,
 		fahuodanhao,beizhu,chanpinmingcheng,yunshuchehao,fahuoshuliang,quyuming,quyuma,chuchangriqi,yunshuchehao,
 		chuchangbianhao,yunshudanwei,kehumingcheng){
@@ -36,7 +37,6 @@ var id='';
 var picNo=""; //下一个图片的编号
 //上传图片
 function uploadimage(orderid,orderNo){
-	
 	id=orderid;
 	$("#orderimage").modal();
 	getImage(orderNo);
@@ -44,10 +44,35 @@ function uploadimage(orderid,orderNo){
 
 function showVerify(orderid,salesCheckStatus,salesCheckMsg,
 		marketCheckStatus,marketCheckMsg,
-		financialCheckStatus,financialCheckMsg){
-	
+		financialCheckStatus,financialCheckMsg,fahuodanhao){
 	id=orderid;
-	
+    $.ajax({
+        type:'POST',
+        url: 'rest/Gps/getimage',
+        data: {"orderNo": fahuodanhao},
+        async: true,
+        dataType: 'json',
+        success: function(data){
+            $(".check_pic img").attr('src','');
+            $(".check_pic img").parent('a').attr('href','');
+            if(data.statusCode==0){
+
+				$('.check_pic img').each(function (i) {
+					var x=i%4;
+					$(this).attr('src',data.data[x]);
+					$(this).parent('a').attr({'href':data.data[x],'target':'_blank'})
+                });
+
+            }else{
+
+                layer.msg(data.message);
+            }
+        },
+        error: function(err){
+            layer.msg('网络故障');
+
+        }
+    });
 	$("#showVerify").modal();
 	
 	//审核标签
@@ -81,8 +106,8 @@ function showVerify(orderid,salesCheckStatus,salesCheckMsg,
 	//审核图表
 	
 	$('#marketAdvisetag').html("市场部审核");
-	$('#financeAdvisetag').html("财务部审核");
-	$('#saleAdvisetag').html("销售部审核");
+	$('#financeAdvisetag').html("财务处审核");
+	$('#saleAdvisetag').html("销售处审核");
 	
 	var htmlpass="<i class='fa  fa-check-square' style='color:#29de29;left:15px;position:relative'></i>";
 	var htmlnopass="<i class='fa  fa-exclamation' style='color:#efa22c;left:15px;position:relative'></i>"
@@ -171,9 +196,8 @@ function  verifyStatus(statusCode){
 					layer.msg('网络故障');
 				}
 	});
-} 
+}
 function  getImage(orderNo){
-	
 	$.ajax({
 			type:'POST',
 			url: 'rest/Gps/getimage', 
@@ -181,9 +205,9 @@ function  getImage(orderNo){
 			async: false,
 			dataType: 'json',
 			success: function(data){
+					console.log(data)
 				    $("#imagearea").html("");
 					if(data.statusCode==0){
-						
 						for(var i=0;i<data.data.length;i++){
 							var name=data.data[i].substring(9);
 							var	html="<img class='orderimg' style='margin:10px;border:8px #987cb9 double' title='"+name+"' id='img"+i+"'"+ "src='.."+data.data[i]+"' height='100' width='170' onclick='javascript:window.open(this.src)'/>"
@@ -338,7 +362,7 @@ function showorder(id,role){
 		},
 		complete:function(XMLHttpRequest, textStatus){
 			authorityValide(XMLHttpRequest);
-			tableHeaderAutoWidth("#orderTableHeader","#orderTableContent")
+			// tableHeaderAutoWidth("#orderTableHeader","#orderTableContent")
 		},
 	    data:param,
 	    url:_ctx+"rest/Gps/getOrderByPage",

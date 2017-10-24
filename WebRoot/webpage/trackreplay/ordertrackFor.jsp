@@ -3567,7 +3567,14 @@ function addGoogleControl(map) {
 		$('#weight_container').highcharts({
         chart: {
             alignTicks: false,
-            type: 'line'
+            type: 'line',
+             events: {
+                click: function (e) {
+					var x = e.xAxis[0].value;					
+					$('#playSlider').nstSlider('set_position', parseInt(x/(points.length-1)*1000));
+					$('#playSlider').mousedown();
+                }
+            }
         },
         credits: {
             enabled: false
